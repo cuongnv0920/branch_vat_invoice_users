@@ -26,7 +26,10 @@ function App() {
   return (
     <Box className="root">
       <MiniDrawer />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, backgroundColor: "rgb(244, 244, 244)" }}
+      >
         <DrawerHeader />
         <Routes>
           {routeList.map((route, _) => (

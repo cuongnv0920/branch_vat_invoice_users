@@ -1,5 +1,5 @@
+import ListPage from "features/pages/listPage";
 import { Route, Routes } from "react-router-dom";
-import InvoiceList from "./components/InvoiceList";
 
 Invoice.propTypes = {};
 
@@ -7,7 +7,7 @@ function Invoice(props) {
   return (
     <div>
       <Routes>
-        <Route path="/*" element={<InvoiceList />} />
+        <Route path="/*" element={<ListPage />} />
       </Routes>
     </div>
   );

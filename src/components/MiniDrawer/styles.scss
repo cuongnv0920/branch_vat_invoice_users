@@ -12,7 +12,7 @@
 
   &__navLink {
     width: 100%;
-    padding: 8px 15px;
+    padding: 4px 16px;
     display: flex;
     text-decoration: none;
   }
@@ -27,14 +27,14 @@
     color: #00524e;
   }
   &__icon svg {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   &__text {
-    margin-left: 16px;
+    margin-left: 18px;
     color: #1c2e36;
     font-weight: 600;
-    font-size: 1.3rem;
-    line-height: 2;
+    font-size: 1.1rem;
+    line-height: 2.2;
   }
 }
