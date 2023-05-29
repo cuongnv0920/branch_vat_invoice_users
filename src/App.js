@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import MiniDrawer from "components/MiniDrawer";
+import Invoice from "features/Invoice";
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}));
+
+const routeList = [
+  {
+    path: "invoice/*",
+    element: <Invoice />,
+    role: ["user"],
+  },
+];
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box className="root">
+      <MiniDrawer />
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <DrawerHeader />
+        <Routes>
+          {routeList.map((route, _) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+        </Routes>
+      </Box>
+    </Box>
   );
 }
 
