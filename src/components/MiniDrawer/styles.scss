@@ -1,0 +1,40 @@
+.menuList {
+  &__listItem {
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #f8f8f8;
+  }
+
+  &__listItem:hover {
+    background: linear-gradient(45deg, #4caf50 20%, #ffcd38 90%);
+    color: #00524e;
+  }
+
+  &__navLink {
+    width: 100%;
+    padding: 8px 15px;
+    display: flex;
+    text-decoration: none;
+  }
+
+  &__navLink.active {
+    background: linear-gradient(45deg, #4caf50 20%, #ffcd38 90%);
+    color: #00524e;
+  }
+
+  &__icon {
+    margin-top: 4px;
+    color: #00524e;
+  }
+  &__icon svg {
+    font-size: 2rem;
+  }
+
+  &__text {
+    margin-left: 16px;
+    color: #1c2e36;
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 2;
+  }
+}
