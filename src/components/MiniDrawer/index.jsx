@@ -4,8 +4,9 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DescriptionIcon from "@mui/icons-material/Description";
 import Logout from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import Settings from "@mui/icons-material/Settings";
-import { Menu, MenuItem, Tooltip } from "@mui/material";
+import { Badge, Menu, MenuItem, Tooltip } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -125,7 +126,7 @@ export default function MiniDrawer() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} className="appbar">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -139,69 +140,86 @@ export default function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <h1 style={{ flexGrow: 1 }}>
+          <h1 className="appbar__title">
             Chương trình theo dõi hóa đơn Chi nhánh
           </h1>
 
-          <Tooltip title="Người dùng">
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenMenu}
-              sx={{ backgroundColor: "rgba(0, 0, 0, 0.08)", color: "#fff" }}
-            >
-              <AccountCircle />
-            </IconButton>
-          </Tooltip>
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Tooltip title="Thông báo">
+              <IconButton
+                size="large"
+                sx={{
+                  backgroundColor: "rgba(0, 0, 0, 0.08)",
+                  color: "#fff",
+                  marginRight: "16px",
+                }}
+              >
+                <Badge badgeContent={10} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </Tooltip>
 
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            PaperProps={{
-              elevation: 0,
-              sx: {
-                overflow: "visible",
-                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                mt: 1,
-                "& .MuiAvatar-root": {
-                  width: 32,
-                  height: 32,
-                  ml: -0.5,
-                  mr: 1,
+            <Tooltip title="Người dùng">
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenMenu}
+                sx={{ backgroundColor: "rgba(0, 0, 0, 0.08)", color: "#fff" }}
+              >
+                <AccountCircle />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 1,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  "&:before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 18,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
                 },
-                "&:before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                  top: 0,
-                  right: 14,
-                  width: 10,
-                  height: 10,
-                  bgcolor: "background.paper",
-                  transform: "translateY(-50%) rotate(45deg)",
-                  zIndex: 0,
-                },
-              },
-            }}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            open={Boolean(anchorEl)}
-            onClose={handleCloseMenu}
-          >
-            <MenuItem onClick={handleCloseMenu}>
-              <ListItemIcon>
-                <Settings sx={{ color: "#00a152" }} fontSize="small" />
-              </ListItemIcon>
-              Cài đặt tài khoản
-            </MenuItem>
-            <MenuItem onClick={handleCloseMenu}>
-              <ListItemIcon>
-                <Logout sx={{ color: "#f50057" }} fontSize="small" />
-              </ListItemIcon>
-              Thoát
-            </MenuItem>
-          </Menu>
+              }}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              open={Boolean(anchorEl)}
+              onClose={handleCloseMenu}
+            >
+              <MenuItem onClick={handleCloseMenu}>
+                <ListItemIcon>
+                  <Settings sx={{ color: "#00a152" }} fontSize="small" />
+                </ListItemIcon>
+                Cài đặt tài khoản
+              </MenuItem>
+              <MenuItem onClick={handleCloseMenu}>
+                <ListItemIcon>
+                  <Logout sx={{ color: "#f50057" }} fontSize="small" />
+                </ListItemIcon>
+                Thoát
+              </MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -219,7 +237,9 @@ export default function MiniDrawer() {
           {menuList.map((menu, _) => (
             <ListItem key={menu.href} className="menuList__listItem">
               <NavLink className="menuList__navLink" to={menu.href}>
-                <div className="menuList__icon">{menu.icon}</div>
+                <div className="menuList__icon">
+                  <Tooltip title="Hóa đơn">{menu.icon}</Tooltip>
+                </div>
                 <h3 className="menuList__text">{menu.name}</h3>
               </NavLink>
             </ListItem>

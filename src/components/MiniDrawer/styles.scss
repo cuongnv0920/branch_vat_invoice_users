@@ -1,4 +1,16 @@
+.appbar {
+  &__title {
+    flex-grow: 1;
+    font-size: 1.5rem;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .menuList {
+  flex-grow: 1;
+
   &__listItem {
     margin: 0 !important;
     padding: 0 !important;
@@ -23,7 +35,7 @@
   }
 
   &__icon {
-    margin-top: 4px;
+    margin-top: 4px !important;
     color: #00524e;
   }
   &__icon svg {
