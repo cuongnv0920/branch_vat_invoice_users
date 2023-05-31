@@ -2,9 +2,16 @@
   &__title {
     flex-grow: 1;
     font-size: 1.5rem;
-    white-space: normal;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+
+.drawer {
+  &__logo {
+    width: 100px;
+    margin-right: 25px;
   }
 }
 

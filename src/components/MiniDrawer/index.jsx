@@ -20,6 +20,7 @@ import Toolbar from "@mui/material/Toolbar";
 import { styled, useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import logo from "../../images/logo-header.png";
 import "./styles.scss";
 
 const drawerWidth = 240;
@@ -222,8 +223,9 @@ export default function MiniDrawer() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} className="drawer">
         <DrawerHeader>
+          <img src={logo} alt="logo" className="drawer__logo" />
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />

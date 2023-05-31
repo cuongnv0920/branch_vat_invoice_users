@@ -5,9 +5,11 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
+  Tooltip,
 } from "@mui/material";
-import Paper from "@mui/material/Paper";
+import "./styles.scss";
 
 InvoiceList.propTypes = {};
 
@@ -106,9 +108,9 @@ const rows = [
 
 function InvoiceList(props) {
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 680 }}>
-        <Table stickyHeader sx={{ minWidth: 650 }} className="invoiceTable">
+    <>
+      <TableContainer className="invoiceTable">
+        <Table stickyHeader className="invoiceTable__table">
           <TableHead className="invoiceTable__head">
             <TableRow className="invoiceTable__rowHead">
               <TableCell className="invoiceTable__cellHead">
@@ -141,24 +143,46 @@ function InvoiceList(props) {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 className="invoiceTable__rowBody"
               >
-                <TableCell>
-                  <CheckBox />
+                <TableCell className="invoiceTable__cellBody">
+                  <CheckBox className="invoiceTable__checkBox" />
                 </TableCell>
-                <TableCell>{row.stt}</TableCell>
-                <TableCell>{row.serial}</TableCell>
-                <TableCell>{row.no}</TableCell>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.seller}</TableCell>
-                <TableCell>
-                  <button>Đã duyệt</button>
+                <TableCell className="invoiceTable__cellBody">
+                  {row.stt}
                 </TableCell>
-                <TableCell>{row.payment}</TableCell>
+                <TableCell className="invoiceTable__cellBody">
+                  {row.serial}
+                </TableCell>
+                <TableCell className="invoiceTable__cellBody">
+                  {row.no}
+                </TableCell>
+                <TableCell className="invoiceTable__cellBody">
+                  {row.date}
+                </TableCell>
+                <Tooltip title={row.seller}>
+                  <TableCell className="invoiceTable__cellBody">
+                    {row.seller}
+                  </TableCell>
+                </Tooltip>
+                <TableCell className="invoiceTable__cellBody">
+                  <button className="invoiceTable__buttonStatus">
+                    Đã duyệt
+                  </button>
+                </TableCell>
+                <TableCell className="invoiceTable__cellBody">
+                  {row.payment}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </Paper>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={10}
+        rowsPerPage={10}
+      />
+    </>
   );
 }
 
