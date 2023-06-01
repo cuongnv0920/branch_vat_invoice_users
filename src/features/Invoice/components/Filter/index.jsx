@@ -16,7 +16,7 @@ function Filter(props) {
 
   return (
     <div className="filter">
-      <form>
+      <form className="filter__form">
         <Grid container spacing={3}>
           <Grid item xs={4} md={4} sm={4}>
             <SelectField name="room" label="Phòng/ban" form={form}>
@@ -27,6 +27,7 @@ function Filter(props) {
           </Grid>
           <Grid item xs={4} md={4} sm={4}>
             <DateField
+              className="filter__date"
               name="date"
               lable="Ngày hóa đơn"
               inputFormat="DD/MM/YYYY"

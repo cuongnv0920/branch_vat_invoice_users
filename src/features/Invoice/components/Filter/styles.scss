@@ -1,4 +1,9 @@
 .filter {
   min-height: 50px;
-  padding: 8px 16px;
+  padding: 16px;
+
+  &__date {
+    margin-top: 16px !important;
+    width: 100%;
+  }
 }
