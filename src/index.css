@@ -176,3 +176,22 @@ html {
 .main {
   margin: 2rem 0;
 }
+
+/* button */
+.button {
+  font-family: "Muli", sans-serif !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+}
+.buttonAdd {
+  background: #4ec332 !important;
+}
+.buttonView {
+  background: #47544d !important;
+}
+.buttonEdit {
+  background-color: #d6c52d !important;
+}
+.buttonDelete {
+  background-color: #ed4949 !important;
+}

@@ -19,90 +19,70 @@ const rows = [
     serial: "1K23THA",
     no: "3288816",
     date: "30/05/2023",
-    seller:
-      "Trung tâm Kinh doanh VNPT thành phố Hồ Chí Minh - Chi nhánh Tổng công ty Dịch vụ Viễn Thông",
-    payment: "1,000,000",
+    user: "Nguyễn Văn Cường",
   },
   {
     stt: 2,
     serial: "1K23THA",
     no: "3288816",
     date: "30/05/2023",
-    seller:
-      "Trung tâm Kinh doanh VNPT thành phố Hồ Chí Minh - Chi nhánh Tổng công ty Dịch vụ Viễn Thông",
-    payment: "1,000,000",
+    user: "Nguyễn Văn Cường",
   },
   {
     stt: 3,
     serial: "1K23THA",
     no: "3288816",
     date: "30/05/2023",
-    seller:
-      "Trung tâm Kinh doanh VNPT thành phố Hồ Chí Minh - Chi nhánh Tổng công ty Dịch vụ Viễn Thông",
-    payment: "1,000,000",
+    user: "Nguyễn Văn Cường",
   },
   {
     stt: 4,
     serial: "1K23THA",
     no: "3288816",
     date: "30/05/2023",
-    seller:
-      "Trung tâm Kinh doanh VNPT thành phố Hồ Chí Minh - Chi nhánh Tổng công ty Dịch vụ Viễn Thông",
-    payment: "1,000,000",
+    user: "Nguyễn Văn Cường",
   },
   {
     stt: 5,
     serial: "1K23THA",
     no: "3288816",
     date: "30/05/2023",
-    seller:
-      "Trung tâm Kinh doanh VNPT thành phố Hồ Chí Minh - Chi nhánh Tổng công ty Dịch vụ Viễn Thông",
-    payment: "1,000,000",
+    user: "Nguyễn Văn Cường",
   },
   {
     stt: 6,
     serial: "1K23THA",
     no: "3288816",
     date: "30/05/2023",
-    seller:
-      "Trung tâm Kinh doanh VNPT thành phố Hồ Chí Minh - Chi nhánh Tổng công ty Dịch vụ Viễn Thông",
-    payment: "1,000,000",
+    user: "Nguyễn Văn Cường",
   },
   {
     stt: 7,
     serial: "1K23THA",
     no: "3288816",
     date: "30/05/2023",
-    seller:
-      "Trung tâm Kinh doanh VNPT thành phố Hồ Chí Minh - Chi nhánh Tổng công ty Dịch vụ Viễn Thông",
-    payment: "1,000,000",
+    user: "Nguyễn Văn Cường",
   },
   {
     stt: 8,
     serial: "1K23THA",
     no: "3288816",
     date: "30/05/2023",
-    seller:
-      "Trung tâm Kinh doanh VNPT thành phố Hồ Chí Minh - Chi nhánh Tổng công ty Dịch vụ Viễn Thông",
-    payment: "1,000,000",
+    user: "Nguyễn Văn Cường",
   },
   {
     stt: 9,
     serial: "1K23THA",
     no: "3288816",
     date: "30/05/2023",
-    seller:
-      "Trung tâm Kinh doanh VNPT thành phố Hồ Chí Minh - Chi nhánh Tổng công ty Dịch vụ Viễn Thông",
-    payment: "1,000,000",
+    user: "Nguyễn Văn Cường",
   },
   {
     stt: 10,
     serial: "1K23THA",
     no: "3288816",
     date: "30/05/2023",
-    seller:
-      "Trung tâm Kinh doanh VNPT thành phố Hồ Chí Minh - Chi nhánh Tổng công ty Dịch vụ Viễn Thông",
-    payment: "1,000,000",
+    user: "Nguyễn Văn Cường",
   },
 ];
 
@@ -125,12 +105,11 @@ function InvoiceList(props) {
                 Ngày hóa đơn
               </TableCell>
               <TableCell className="invoiceTable__cellHead">
-                Đơn vị cung cấp
+                Cán bộ khởi tạo
               </TableCell>
               <TableCell className="invoiceTable__cellHead">
                 Trạng thái
               </TableCell>
-              <TableCell className="invoiceTable__cellHead">Số tiền</TableCell>
               <TableCell className="invoiceTable__cellHead">
                 File đính kèm
               </TableCell>
@@ -160,7 +139,7 @@ function InvoiceList(props) {
                 </TableCell>
                 <Tooltip title={row.seller}>
                   <TableCell className="invoiceTable__cellBody">
-                    {row.seller}
+                    {row.user}
                   </TableCell>
                 </Tooltip>
                 <TableCell className="invoiceTable__cellBody">

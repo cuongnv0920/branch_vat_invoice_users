@@ -129,18 +129,20 @@ export default function MiniDrawer() {
       <CssBaseline />
       <AppBar position="fixed" open={open} className="appbar">
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <Tooltip title="Menu">
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: "none" }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
           <h1 className="appbar__title">
             Chương trình theo dõi hóa đơn Chi nhánh
           </h1>
