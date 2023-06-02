@@ -10,7 +10,6 @@
 
   &__cellHead {
     font-weight: 600 !important;
-    text-align: center !important;
     font-size: 1rem !important;
     white-space: nowrap;
   }
@@ -35,5 +34,9 @@
     background-color: #c6f8e085;
     color: #024e2a;
     font-family: "Muli", sans-serif;
+  }
+
+  &__buttonIcon {
+    text-align: center !important;
   }
 }

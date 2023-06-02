@@ -184,7 +184,7 @@ html {
   font-weight: 500 !important;
 }
 .buttonAdd {
-  background: #4ec332 !important;
+  background: #07b963 !important;
 }
 .buttonView {
   background: #47544d !important;
@@ -192,6 +192,38 @@ html {
 .buttonEdit {
   background-color: #d6c52d !important;
 }
-.buttonDelete {
+.buttonDelete,
+.buttonManual {
   background-color: #ed4949 !important;
+}
+
+/* dialog */
+.dialogButtonClose {
+  font-family: "Muli", sans-serif !important;
+  color: #1c2e36 !important;
+  font-weight: 600 !important;
+}
+.dialogButtonSave {
+  background: linear-gradient(45deg, #07b963 35%, #d1ff33 90%) !important;
+  color: #1c2e36 !important;
+  margin: 16px 0px !important;
+  padding: 6px 16px !important;
+  font-family: "Muli", sans-serif !important;
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+}
+.dialogButtonDelete {
+  background: linear-gradient(45deg, #ff3d00 20%, #ffcf33 90%) !important;
+  color: #1c2e36 !important;
+  margin: 16px 0px !important;
+  padding: 6px 16px !important;
+  font-family: "Muli", sans-serif !important;
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+}
+.dialogAction {
+  background-color: #f8f8f8;
+  border-top: 1.5px solid #daa520;
 }
