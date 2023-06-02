@@ -1,14 +1,19 @@
 import { CheckBox } from "@mui/icons-material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
+  IconButton,
+  Menu,
+  MenuItem,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
   Tooltip,
 } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import { useState } from "react";
 import "./styles.scss";
 
 InvoiceList.propTypes = {};
@@ -87,81 +92,151 @@ const rows = [
 ];
 
 function InvoiceList(props) {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleOpenMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <>
-      <TableContainer className="invoiceTable">
-        <Table stickyHeader className="invoiceTable__table">
-          <TableHead className="invoiceTable__head">
-            <TableRow className="invoiceTable__rowHead">
-              <TableCell className="invoiceTable__cellHead">
-                Check box
+    <TableContainer className="invoiceTable" component={Paper}>
+      <Table stickyHeader className="invoiceTable__table">
+        <TableHead className="invoiceTable__head">
+          <TableRow className="invoiceTable__rowHead">
+            <TableCell
+              className="invoiceTable__cellHead"
+              sx={{ textAlign: "center" }}
+            >
+              Check box
+            </TableCell>
+            <TableCell
+              className="invoiceTable__cellHead"
+              sx={{ textAlign: "center" }}
+            >
+              STT
+            </TableCell>
+            <TableCell className="invoiceTable__cellHead">Ký hiệu</TableCell>
+            <TableCell className="invoiceTable__cellHead">Số hóa đơn</TableCell>
+            <TableCell className="invoiceTable__cellHead">
+              Ngày hóa đơn
+            </TableCell>
+            <TableCell className="invoiceTable__cellHead">
+              Cán bộ khởi tạo
+            </TableCell>
+            <TableCell
+              className="invoiceTable__cellHead"
+              sx={{ textAlign: "center" }}
+            >
+              Trạng thái
+            </TableCell>
+            <TableCell
+              className="invoiceTable__cellHead"
+              sx={{ textAlign: "center" }}
+            >
+              File đính kèm
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody className="invoiceTable__body">
+          {rows.map((row, _) => (
+            <TableRow
+              key={row.name}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              className="invoiceTable__rowBody"
+            >
+              <TableCell
+                className="invoiceTable__cellBody"
+                sx={{ textAlign: "center" }}
+              >
+                <CheckBox className="invoiceTable__checkBox" />
               </TableCell>
-              <TableCell className="invoiceTable__cellHead">STT</TableCell>
-              <TableCell className="invoiceTable__cellHead">Ký hiệu</TableCell>
-              <TableCell className="invoiceTable__cellHead">
-                Số hóa đơn
+              <TableCell
+                className="invoiceTable__cellBody"
+                sx={{ textAlign: "center" }}
+              >
+                {row.stt}
               </TableCell>
-              <TableCell className="invoiceTable__cellHead">
-                Ngày hóa đơn
+              <TableCell className="invoiceTable__cellBody">
+                {row.serial}
               </TableCell>
-              <TableCell className="invoiceTable__cellHead">
-                Cán bộ khởi tạo
+              <TableCell className="invoiceTable__cellBody">{row.no}</TableCell>
+              <TableCell className="invoiceTable__cellBody">
+                {row.date}
               </TableCell>
-              <TableCell className="invoiceTable__cellHead">
-                Trạng thái
+              <Tooltip title={row.seller}>
+                <TableCell className="invoiceTable__cellBody">
+                  {row.user}
+                </TableCell>
+              </Tooltip>
+              <TableCell
+                className="invoiceTable__cellBody"
+                sx={{ textAlign: "center" }}
+              >
+                <button className="invoiceTable__buttonStatus">Đã duyệt</button>
               </TableCell>
-              <TableCell className="invoiceTable__cellHead">
-                File đính kèm
+              <TableCell
+                className="invoiceTable__cellBody"
+                sx={{ textAlign: "center" }}
+              >
+                <Tooltip title="File đính kèm">
+                  <IconButton
+                    size="large"
+                    aria-label="file of current user"
+                    aria-controls="menu-file"
+                    aria-haspopup="true"
+                    onClick={handleOpenMenu}
+                    className="invoiceTable__buttonIcon"
+                  >
+                    <MoreVertIcon className="invoiceTable__iconMenuFile" />
+                  </IconButton>
+                </Tooltip>
+
+                <Menu
+                  id="menu-file"
+                  anchorEl={anchorEl}
+                  PaperProps={{
+                    elevation: 0,
+                    sx: {
+                      overflow: "visible",
+                      filter: "drop-shadow(0px 2px 4px rgba(0,0,0,0.12))",
+                      mt: 1,
+                      "& .MuiAvatar-root": {
+                        width: 32,
+                        height: 32,
+                        ml: -0.5,
+                        mr: 1,
+                      },
+                      "&:before": {
+                        content: '""',
+                        display: "block",
+                        position: "absolute",
+                        top: 0,
+                        right: 18,
+                        width: 10,
+                        height: 10,
+                        bgcolor: "background.paper",
+                        transform: "translateY(-50%) rotate(45deg)",
+                        zIndex: 0,
+                      },
+                    },
+                  }}
+                  transformOrigin={{ horizontal: "right", vertical: "top" }}
+                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleCloseMenu}
+                >
+                  <MenuItem onClick={handleCloseMenu}>Tên file PDF</MenuItem>
+                  <MenuItem onClick={handleCloseMenu}>Tên file XML</MenuItem>
+                </Menu>
               </TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody className="invoiceTable__body">
-            {rows.map((row, _) => (
-              <TableRow
-                key={row.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                className="invoiceTable__rowBody"
-              >
-                <TableCell className="invoiceTable__cellBody">
-                  <CheckBox className="invoiceTable__checkBox" />
-                </TableCell>
-                <TableCell className="invoiceTable__cellBody">
-                  {row.stt}
-                </TableCell>
-                <TableCell className="invoiceTable__cellBody">
-                  {row.serial}
-                </TableCell>
-                <TableCell className="invoiceTable__cellBody">
-                  {row.no}
-                </TableCell>
-                <TableCell className="invoiceTable__cellBody">
-                  {row.date}
-                </TableCell>
-                <Tooltip title={row.seller}>
-                  <TableCell className="invoiceTable__cellBody">
-                    {row.user}
-                  </TableCell>
-                </Tooltip>
-                <TableCell className="invoiceTable__cellBody">
-                  <button className="invoiceTable__buttonStatus">
-                    Đã duyệt
-                  </button>
-                </TableCell>
-                <TableCell className="invoiceTable__cellBody">
-                  {row.payment}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={10}
-        rowsPerPage={10}
-      />
-    </>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 

@@ -2,6 +2,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DescriptionIcon from "@mui/icons-material/Description";
+import InfoIcon from "@mui/icons-material/Info";
 import Logout from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -31,6 +32,13 @@ const menuList = [
     href: "invoice",
     role: ["user"],
     icon: <DescriptionIcon />,
+  },
+
+  {
+    name: "About",
+    href: "about",
+    role: ["user"],
+    icon: <InfoIcon />,
   },
 ];
 
@@ -237,18 +245,20 @@ export default function MiniDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List className="menuList">
-          {menuList.map((menu, _) => (
-            <ListItem key={menu.href} className="menuList__listItem">
-              <NavLink className="menuList__navLink" to={menu.href}>
-                <div className="menuList__icon">
-                  <Tooltip title="Hóa đơn">{menu.icon}</Tooltip>
-                </div>
-                <h3 className="menuList__text">{menu.name}</h3>
-              </NavLink>
-            </ListItem>
-          ))}
-        </List>
+        <div className="menu">
+          <List className="menu__menuList">
+            {menuList.map((menu, _) => (
+              <ListItem key={menu.href} className="menu__listItem">
+                <NavLink className="menu__navLink" to={menu.href}>
+                  <div className="menu__icon">
+                    <Tooltip title={menu.name}>{menu.icon}</Tooltip>
+                  </div>
+                  <h3 className="menu__text">{menu.name}</h3>
+                </NavLink>
+              </ListItem>
+            ))}
+          </List>
+        </div>
       </Drawer>
     </Box>
   );

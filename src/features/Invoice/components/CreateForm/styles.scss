@@ -1,0 +1,10 @@
+.createInvoice {
+  &__actionBar {
+    float: right;
+  }
+
+  &__dateField {
+    margin-top: 16px !important;
+    width: 100%;
+  }
+}

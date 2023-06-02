@@ -1,9 +1,9 @@
-import "./styles.scss";
-import { useForm } from "react-hook-form";
-import InputField from "components/InputField";
 import { Grid, MenuItem } from "@mui/material";
-import { SelectField } from "components/SelectField";
 import { DateField } from "components/DateField";
+import InputField from "components/InputField";
+import { SelectField } from "components/SelectField";
+import { useForm } from "react-hook-form";
+import "./styles.scss";
 
 Filter.propTypes = {};
 

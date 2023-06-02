@@ -15,18 +15,19 @@
   }
 }
 
-.menuList {
+.menu {
   flex-grow: 1;
+  background: linear-gradient(45deg, #00524ec0 35%, #ebdc5cea 90%);
 
   &__listItem {
-    margin: 0 !important;
+    margin: 8px 0px 0px 0px !important;
     padding: 0 !important;
-    background-color: #f8f8f8;
   }
 
   &__listItem:hover {
-    background: linear-gradient(45deg, #4caf50 20%, #ffcd38 90%);
+    background-color: #f8f8f8;
     color: #00524e;
+    transition: all 0.4s;
   }
 
   &__navLink {
@@ -37,7 +38,7 @@
   }
 
   &__navLink.active {
-    background: linear-gradient(45deg, #4caf50 20%, #ffcd38 90%);
+    background-color: rgb(244, 244, 244);
     color: #00524e;
   }
 
