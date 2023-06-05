@@ -6,6 +6,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import Logout from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import RoomIcon from "@mui/icons-material/Room";
 import Settings from "@mui/icons-material/Settings";
 import { Badge, Menu, MenuItem, Tooltip } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
@@ -32,6 +33,20 @@ const menuList = [
     href: "invoice",
     role: ["user"],
     icon: <DescriptionIcon />,
+  },
+
+  {
+    name: "Phòng/ ban",
+    href: "room",
+    role: ["admin"],
+    icon: <RoomIcon />,
+  },
+
+  {
+    name: "Người dùng",
+    href: "user",
+    role: ["admin"],
+    icon: <AccountCircle />,
   },
 
   {
