@@ -4,3 +4,4 @@ export * from "./SelectField";
 export * from "./DateField";
 export * from "./UploadField";
 export * from "./TextareaField";
+export * from "./RadioField";

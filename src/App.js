@@ -4,6 +4,8 @@ import MiniDrawer from "components/MiniDrawer";
 import Invoice from "features/Invoice";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import Auth from "features/Auth";
+import { useSelector } from "react-redux";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -18,26 +20,45 @@ const routeList = [
   {
     path: "invoice/*",
     element: <Invoice />,
-    role: ["user"],
+    role: ["user", "admin"],
   },
 ];
 
 function App() {
+  const logged = useSelector((state) => state.auth.current);
+  const isLogged = !!logged.role;
+
+  const routes = routeList.filter((route) => {
+    if (isLogged) {
+      return route.role.includes(logged.role[0]);
+    }
+  });
+
   return (
-    <Box className="root">
-      <MiniDrawer />
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, backgroundColor: "rgb(244, 244, 244)" }}
-      >
-        <DrawerHeader />
-        <Routes>
-          {routeList.map((route, _) => (
-            <Route key={route.path} path={route.path} element={route.element} />
-          ))}
-        </Routes>
-      </Box>
-    </Box>
+    <>
+      {!isLogged && <Auth />}
+
+      {isLogged && (
+        <Box className="root">
+          <MiniDrawer />
+          <Box
+            component="main"
+            sx={{ flexGrow: 1, p: 3, backgroundColor: "rgb(244, 244, 244)" }}
+          >
+            <DrawerHeader />
+            <Routes>
+              {routes.map((route, _) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
+            </Routes>
+          </Box>
+        </Box>
+      )}
+    </>
   );
 }
 
