@@ -183,7 +183,8 @@ html {
   font-size: 0.9rem !important;
   font-weight: 500 !important;
 }
-.buttonAdd {
+.buttonAdd,
+.avatarAdd {
   background: #07b963 !important;
 }
 .buttonView {

@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Auth from "features/Auth";
 import { useSelector } from "react-redux";
+import User from "features/User";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -21,6 +22,11 @@ const routeList = [
     path: "invoice/*",
     element: <Invoice />,
     role: ["user", "admin"],
+  },
+  {
+    path: "user/*",
+    element: <User />,
+    role: ["admin"],
   },
 ];
 

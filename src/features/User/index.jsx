@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import ListPage from "./pages/listPage";
+import ListPage from "./pages/ListPage";
 
-Invoice.propTypes = {};
+User.propTypes = {};
 
-function Invoice(props) {
+function User(props) {
   return (
     <div>
       <Routes>
@@ -13,4 +13,4 @@ function Invoice(props) {
   );
 }
 
-export default Invoice;
+export default User;
