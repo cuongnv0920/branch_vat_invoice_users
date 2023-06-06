@@ -2,6 +2,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DescriptionIcon from "@mui/icons-material/Description";
+import StarsIcon from "@mui/icons-material/Stars";
 import InfoIcon from "@mui/icons-material/Info";
 import Logout from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -40,6 +41,13 @@ const menuList = [
     href: "room",
     role: ["admin"],
     icon: <RoomIcon />,
+  },
+
+  {
+    name: "Chức danh",
+    href: "level",
+    role: ["admin"],
+    icon: <StarsIcon />,
   },
 
   {

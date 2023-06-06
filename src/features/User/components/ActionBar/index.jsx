@@ -1,6 +1,7 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import PropTypes from "prop-types";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import {
   Button,
@@ -9,20 +10,56 @@ import {
   DialogContent,
   Stack,
 } from "@mui/material";
+import { userApi } from "api";
+import { getEdit } from "features/User/userSlice";
+import { useSnackbar } from "notistack";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Create from "../Create";
+import Edit from "../Edit";
 import "./styles.scss";
 
-ActionBar.propTypes = {};
+ActionBar.propTypes = {
+  refreshData: PropTypes.bool,
+};
 
 function ActionBar(props) {
+  const { refreshData } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
   const [openDialogCreate, setOpenDialogCreate] = useState(false);
+  const [openDialogEdit, setOpenDialogEdit] = useState(false);
+  const selectdRow = useSelector((state) => state.user.selected);
+  const isDisabled = !!selectdRow.id || "";
 
   const handleOpenDialogCreate = () => {
     setOpenDialogCreate(true);
   };
   const handleCloseDialogCreate = () => {
     setOpenDialogCreate(false);
+  };
+
+  const handleOpenDialogEdit = async () => {
+    try {
+      const getUser = await userApi.get(selectdRow.id);
+      const action = getEdit(getUser);
+      dispatch(action);
+
+      setOpenDialogEdit(true);
+      if (refreshData) {
+        refreshData(false);
+      }
+    } catch (error) {
+      enqueueSnackbar(
+        "Không thể lấy dữ liệu người dùng, vui lòng liên hệ Quản trị Chi nhánh.",
+        {
+          variant: "error",
+        }
+      );
+    }
+  };
+  const handleCloseDialogEdit = () => {
+    setOpenDialogEdit(false);
   };
 
   return (
@@ -38,6 +75,7 @@ function ActionBar(props) {
         </Button>
 
         <Button
+          disabled={!isDisabled}
           variant="contained"
           className="actionBar__button button buttonView"
           startIcon={<RemoveRedEyeIcon />}
@@ -46,16 +84,17 @@ function ActionBar(props) {
         </Button>
 
         <Button
-          disabled
+          disabled={!isDisabled}
           variant="contained"
           className="actionBar__button button buttonEdit"
           startIcon={<EditIcon />}
+          onClick={handleOpenDialogEdit}
         >
           Sửa
         </Button>
 
         <Button
-          disabled
+          disabled={!isDisabled}
           variant="contained"
           className="actionBar__button button buttonDelete"
           startIcon={<DeleteIcon />}
@@ -73,7 +112,6 @@ function ActionBar(props) {
             handleCloseDialogCreate(event, reason);
           }
         }}
-        disableEscapeKeyDown={true}
       >
         <DialogContent>
           <Create />
@@ -83,6 +121,26 @@ function ActionBar(props) {
             onClick={handleCloseDialogCreate}
             className="dialogButtonClose"
           >
+            Thoát
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        maxWidth="md"
+        fullWidth="md"
+        open={openDialogEdit}
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick") {
+            handleCloseDialogEdit(event, reason);
+          }
+        }}
+      >
+        <DialogContent>
+          <Edit closeDialog={handleCloseDialogEdit} />
+        </DialogContent>
+        <DialogActions className="dialogAction">
+          <Button onClick={handleCloseDialogEdit} className="dialogButtonClose">
             Thoát
           </Button>
         </DialogActions>

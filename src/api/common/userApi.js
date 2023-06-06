@@ -16,6 +16,11 @@ export const userApi = {
     return axiosClient.get(url, data, configJson);
   },
 
+  get(id) {
+    const url = `/user/get/${id}`;
+    return axiosClient.get(url, id, configJson);
+  },
+
   update(data) {
     const url = `/user/update/${data.id}`;
     return axiosClient.put(url, data, configJson);

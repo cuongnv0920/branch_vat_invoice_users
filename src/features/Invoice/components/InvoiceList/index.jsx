@@ -1,9 +1,12 @@
 import { CheckBox } from "@mui/icons-material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
+  FormControlLabel,
   IconButton,
   Menu,
   MenuItem,
+  Radio,
+  RadioGroup,
   Table,
   TableBody,
   TableCell,
@@ -93,6 +96,11 @@ const rows = [
 
 function InvoiceList(props) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedRow, setSelectedRow] = useState("");
+
+  const handleSelectRow = (event) => {
+    setSelectedRow(event.target.value);
+  };
 
   const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -106,12 +114,7 @@ function InvoiceList(props) {
       <Table stickyHeader className="invoiceTable__table">
         <TableHead className="invoiceTable__head">
           <TableRow className="invoiceTable__rowHead">
-            <TableCell
-              className="invoiceTable__cellHead"
-              sx={{ textAlign: "center" }}
-            >
-              Check box
-            </TableCell>
+            <TableCell className="invoiceTable__cellHead">Chọn</TableCell>
             <TableCell
               className="invoiceTable__cellHead"
               sx={{ textAlign: "center" }}
@@ -147,11 +150,19 @@ function InvoiceList(props) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               className="invoiceTable__rowBody"
             >
-              <TableCell
-                className="invoiceTable__cellBody"
-                sx={{ textAlign: "center" }}
-              >
-                <CheckBox className="invoiceTable__checkBox" />
+              <TableCell className="invoiceTable__cellBody">
+                <RadioGroup
+                  value={selectedRow}
+                  onChange={handleSelectRow}
+                  sx={{ marginLeft: "16px" }}
+                >
+                  <FormControlLabel
+                    value={rows.serial}
+                    control={
+                      <Radio inputProps={{ "aria-label": row.serial }} />
+                    }
+                  />
+                </RadioGroup>
               </TableCell>
               <TableCell
                 className="invoiceTable__cellBody"

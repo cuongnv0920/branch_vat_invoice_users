@@ -1,4 +1,4 @@
-.invoiceTable {
+.userTable {
   max-height: 577px;
   position: absolute;
   background-color: #fff;
@@ -34,11 +34,5 @@
     background-color: #c6f8e085;
     color: #024e2a;
     font-family: "Muli", sans-serif;
-  }
-
-  &__buttonIcon {
-    width: 38px !important;
-    height: 38px !important;
-    text-align: center !important;
   }
 }
