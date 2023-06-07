@@ -67,12 +67,6 @@ function RoomList(props) {
             >
               Số sắp xếp
             </TableCell>
-            <TableCell
-              className="roomTable__cellHead"
-              sx={{ textAlign: "center" }}
-            >
-              Trạng thái
-            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody className="roomTable__body">
@@ -83,12 +77,9 @@ function RoomList(props) {
               className="roomTable__rowBody"
             >
               <TableCell className="roomTable__cellBody">
-                <RadioGroup
-                  value={selectedRow}
-                  onChange={handleSelectRow}
-                  sx={{ marginLeft: "16px" }}
-                >
+                <RadioGroup value={selectedRow} onChange={handleSelectRow}>
                   <FormControlLabel
+                    className="roomTable__formControlLabel"
                     value={room.id}
                     control={<Radio inputProps={{ "aria-label": room.id }} />}
                   />
@@ -112,13 +103,6 @@ function RoomList(props) {
                 sx={{ textAlign: "center" }}
               >
                 {room.sort}
-              </TableCell>
-
-              <TableCell
-                className="roomTable__cellBody"
-                sx={{ textAlign: "center" }}
-              >
-                <button className="roomTable__buttonStatus">Hoạt động</button>
               </TableCell>
             </TableRow>
           ))}

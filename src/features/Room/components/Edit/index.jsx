@@ -1,8 +1,7 @@
 import { unwrapResult } from "@reduxjs/toolkit";
-import { edit } from "features/User/userSlice";
+import { edit } from "features/Room/roomSlice";
 import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
-import React from "react";
 import { useDispatch } from "react-redux";
 import EditForm from "../EditForm";
 

@@ -35,10 +35,24 @@ const userSlice = createSlice({
       };
     },
 
+    removeSelected(state) {
+      return {
+        ...state,
+        selected: {},
+      };
+    },
+
     get(state, action) {
       return {
         ...state,
         get: action.payload,
+      };
+    },
+
+    filter(state, action) {
+      return {
+        ...state,
+        filter: action.payload,
       };
     },
 
@@ -65,5 +79,5 @@ const userSlice = createSlice({
 });
 
 const { actions, reducer } = userSlice;
-export const { selected, get, refreshData } = actions;
+export const { selected, removeSelected, get, filter, refreshData } = actions;
 export default reducer;

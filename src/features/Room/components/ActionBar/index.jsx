@@ -54,6 +54,9 @@ function ActionBar(props) {
   };
   const handleCloseDialogEdit = () => {
     setOpenDialogEdit(false);
+
+    const action = refreshData();
+    dispatch(action);
   };
 
   return (
@@ -69,7 +72,7 @@ function ActionBar(props) {
         </Button>
 
         <Button
-          disabled={!isDisabled}
+          disabled
           variant="contained"
           className="actionBar__button button buttonView"
           startIcon={<RemoveRedEyeIcon />}
@@ -88,7 +91,7 @@ function ActionBar(props) {
         </Button>
 
         <Button
-          disabled={!isDisabled}
+          disabled
           variant="contained"
           className="actionBar__button button buttonDelete"
           startIcon={<DeleteIcon />}

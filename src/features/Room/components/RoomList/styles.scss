@@ -9,13 +9,14 @@
   }
 
   &__cellHead {
+    padding: 16px !important;
     font-weight: 600 !important;
     font-size: 1rem !important;
     white-space: nowrap;
   }
 
   &__cellBody {
-    padding: 6px 8px !important;
+    padding: 6px 16px !important;
     font-size: 0.9rem !important;
     max-width: 350px;
     white-space: nowrap;
@@ -23,16 +24,11 @@
     text-overflow: ellipsis;
   }
 
-  &__rowBody:nth-of-type(odd) {
-    background-color: #ebedf0;
+  &__formControlLabel {
+    margin: 0 !important;
   }
 
-  &__buttonStatus {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    background-color: #c6f8e085;
-    color: #024e2a;
-    font-family: "Muli", sans-serif;
+  &__rowBody:nth-of-type(odd) {
+    background-color: #ebedf0;
   }
 }
