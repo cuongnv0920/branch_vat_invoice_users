@@ -22,6 +22,7 @@ function CreateForm(props) {
 
   const form = useForm({
     defaultValues: {
+      id: room._id,
       code: room.code,
       name: room.name,
       sort: room.sort,
