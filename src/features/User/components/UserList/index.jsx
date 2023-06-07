@@ -14,11 +14,13 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { userApi } from "api";
 import { selected } from "features/User/userSlice";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./styles.scss";
 
 function UserList(props) {
   const dispatch = useDispatch();
+  const refreshData = useSelector((state) => state.user.refreshData);
+  const refresh = !!refreshData;
   const [userList, setUserList] = useState([]);
   const [selectedRow, setSelectedRow] = useState("");
 
@@ -37,7 +39,7 @@ function UserList(props) {
     };
 
     fetchUser();
-  }, []);
+  }, [refresh]);
 
   return (
     <TableContainer className="userTable" component={Paper}>

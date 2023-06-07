@@ -190,7 +190,8 @@ html {
 .buttonView {
   background: #47544d !important;
 }
-.buttonEdit {
+.buttonEdit,
+.avatarEdit {
   background-color: #d6c52d !important;
 }
 .buttonDelete,

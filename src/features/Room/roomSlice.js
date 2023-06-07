@@ -1,30 +1,31 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { userApi } from "api";
+import { roomApi } from "api";
 
-export const create = createAsyncThunk("user/create", async (payload) => {
-  const data = await userApi.create(payload);
-
-  return data;
-});
-
-export const edit = createAsyncThunk("user/edit", async (payload) => {
-  const data = await userApi.update(payload);
+export const create = createAsyncThunk("room/create", async (payload) => {
+  const data = await roomApi.create(payload);
 
   return data;
 });
 
-export const deleted = createAsyncThunk("user/delete", async (payload) => {
-  const data = await userApi.delete(payload);
+export const edit = createAsyncThunk("room/edit", async (payload) => {
+  const data = await roomApi.update(payload);
+
+  return data;
+});
+
+export const deleted = createAsyncThunk("room/delete", async (payload) => {
+  const data = await roomApi.delete(payload);
 
   return data;
 });
 
 const userSlice = createSlice({
-  name: "user",
+  name: "room",
   initialState: {
     selected: {},
-    getEdit: {},
+    get: {},
     filter: {},
+    refreshData: 0,
   },
   reducers: {
     selected(state, action) {
@@ -34,15 +35,18 @@ const userSlice = createSlice({
       };
     },
 
-    getUser(state, action) {
+    get(state, action) {
       return {
         ...state,
-        getUser: action.payload,
+        get: action.payload,
       };
     },
 
-    removeSelected(state) {
-      return (state = {});
+    refreshData(state, action) {
+      return {
+        ...state,
+        refreshData: state.refreshData + 1,
+      };
     },
   },
   extraReducers: {
@@ -61,5 +65,5 @@ const userSlice = createSlice({
 });
 
 const { actions, reducer } = userSlice;
-export const { selected, getEdit, removeSelected } = actions;
+export const { selected, get, refreshData } = actions;
 export default reducer;

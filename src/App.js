@@ -7,6 +7,7 @@ import "./App.css";
 import Auth from "features/Auth";
 import { useSelector } from "react-redux";
 import User from "features/User";
+import Room from "features/Room";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -22,6 +23,11 @@ const routeList = [
     path: "invoice/*",
     element: <Invoice />,
     role: ["user", "admin"],
+  },
+  {
+    path: "room/*",
+    element: <Room />,
+    role: ["admin"],
   },
   {
     path: "user/*",

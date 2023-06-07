@@ -11,7 +11,7 @@ import {
   Stack,
 } from "@mui/material";
 import { userApi } from "api";
-import { getEdit } from "features/User/userSlice";
+import { getEdit, refreshData } from "features/User/userSlice";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,12 +19,9 @@ import Create from "../Create";
 import Edit from "../Edit";
 import "./styles.scss";
 
-ActionBar.propTypes = {
-  refreshData: PropTypes.bool,
-};
+ActionBar.propTypes = {};
 
 function ActionBar(props) {
-  const { refreshData } = props;
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const [openDialogCreate, setOpenDialogCreate] = useState(false);
@@ -37,6 +34,9 @@ function ActionBar(props) {
   };
   const handleCloseDialogCreate = () => {
     setOpenDialogCreate(false);
+
+    const action = refreshData(true);
+    dispatch(action);
   };
 
   const handleOpenDialogEdit = async () => {
@@ -46,9 +46,6 @@ function ActionBar(props) {
       dispatch(action);
 
       setOpenDialogEdit(true);
-      if (refreshData) {
-        refreshData(false);
-      }
     } catch (error) {
       enqueueSnackbar(
         "Không thể lấy dữ liệu người dùng, vui lòng liên hệ Quản trị Chi nhánh.",
@@ -114,7 +111,7 @@ function ActionBar(props) {
         }}
       >
         <DialogContent>
-          <Create />
+          <Create closeDialog={handleCloseDialogCreate} />
         </DialogContent>
         <DialogActions className="dialogAction">
           <Button
