@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import ListPage from "./pages/ListPage";
 
-User.propTypes = {};
+Room.propTypes = {};
 
-function User(props) {
+function Room(props) {
   return (
     <div>
       <Routes>
@@ -13,4 +13,4 @@ function User(props) {
   );
 }
 
-export default User;
+export default Room;

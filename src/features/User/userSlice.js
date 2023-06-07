@@ -23,8 +23,9 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     selected: {},
-    getEdit: {},
+    getUser: {},
     filter: {},
+    refreshData: false,
   },
   reducers: {
     selected(state, action) {
@@ -41,8 +42,11 @@ const userSlice = createSlice({
       };
     },
 
-    removeSelected(state) {
-      return (state = {});
+    refreshData(state, action) {
+      return {
+        ...state,
+        refreshData: action.payload,
+      };
     },
   },
   extraReducers: {
@@ -61,5 +65,5 @@ const userSlice = createSlice({
 });
 
 const { actions, reducer } = userSlice;
-export const { selected, getEdit, removeSelected } = actions;
+export const { selected, getEdit, refreshData } = actions;
 export default reducer;

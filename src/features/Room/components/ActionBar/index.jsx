@@ -10,20 +10,20 @@ import {
   Stack,
 } from "@mui/material";
 import { useState } from "react";
-import Create from "../Create";
-import Edit from "../Edit";
 import "./styles.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { userApi } from "api";
-import { getEdit } from "features/User/userSlice";
+import Create from "../Create";
+import Edit from "../Edit";
+import { roomApi } from "api";
+import { get, refreshData } from "features/Room/roomSlice";
 
 function ActionBar(props) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const [openDialogCreate, setOpenDialogCreate] = useState(false);
   const [openDialogEdit, setOpenDialogEdit] = useState(false);
-  const selectdRow = useSelector((state) => state.user.selected);
+  const selectdRow = useSelector((state) => state.room.selected);
   const isDisabled = !!selectdRow.id || "";
 
   const handleOpenDialogCreate = () => {
@@ -31,12 +31,15 @@ function ActionBar(props) {
   };
   const handleCloseDialogCreate = () => {
     setOpenDialogCreate(false);
+
+    const action = refreshData();
+    dispatch(action);
   };
 
   const handleOpenDialogEdit = async () => {
     try {
-      const getUser = await userApi.get(selectdRow.id);
-      const action = getEdit(getUser);
+      const getRoom = await roomApi.get(selectdRow.id);
+      const action = get(getRoom);
       dispatch(action);
 
       setOpenDialogEdit(true);
@@ -95,8 +98,8 @@ function ActionBar(props) {
       </Stack>
 
       <Dialog
-        maxWidth="md"
-        fullWidth="md"
+        maxWidth="xs"
+        fullWidth="xs"
         open={openDialogCreate}
         onClose={(event, reason) => {
           if (reason !== "backdropClick") {
@@ -105,7 +108,7 @@ function ActionBar(props) {
         }}
       >
         <DialogContent>
-          <Create />
+          <Create closeDialog={handleCloseDialogCreate} />
         </DialogContent>
         <DialogActions className="dialogAction">
           <Button
@@ -118,8 +121,8 @@ function ActionBar(props) {
       </Dialog>
 
       <Dialog
-        maxWidth="md"
-        fullWidth="md"
+        maxWidth="xs"
+        fullWidth="xs"
         open={openDialogEdit}
         onClose={(event, reason) => {
           if (reason !== "backdropClick") {

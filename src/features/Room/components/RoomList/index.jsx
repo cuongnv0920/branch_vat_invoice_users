@@ -11,15 +11,16 @@ import {
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { unwrapResult } from "@reduxjs/toolkit";
-import { userApi } from "api";
-import { selected } from "features/User/userSlice";
+import { roomApi } from "api";
+import { selected } from "features/Room/roomSlice";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./styles.scss";
 
-function UserList(props) {
+function RoomList(props) {
   const dispatch = useDispatch();
-  const [userList, setUserList] = useState([]);
+  const refreshData = useSelector((state) => state.room.refreshData);
+  const [roomList, setRoomList] = useState([]);
   const [selectedRow, setSelectedRow] = useState("");
 
   const handleSelectRow = async (event) => {
@@ -31,87 +32,93 @@ function UserList(props) {
   };
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const users = await userApi.getAll();
-      setUserList(users.map((user, index) => ({ ...user, stt: index + 1 })));
+    const fetchRoom = async () => {
+      const rooms = await roomApi.getAll();
+      setRoomList(rooms.map((room, index) => ({ ...room, stt: index + 1 })));
     };
 
-    fetchUser();
-  }, []);
+    fetchRoom();
+  }, [refreshData]);
 
   return (
-    <TableContainer className="userTable" component={Paper}>
-      <Table stickyHeader className="userTable__table">
-        <TableHead className="userTable__head">
-          <TableRow className="userTable__rowHead">
+    <TableContainer className="roomTable" component={Paper}>
+      <Table stickyHeader className="roomTable__table">
+        <TableHead className="roomTable__head">
+          <TableRow className="roomTable__rowHead">
+            <TableCell className="roomTable__cellHead">Chọn</TableCell>
             <TableCell
-              className="userTable__cellHead"
-              sx={{ textAlign: "center" }}
-            >
-              Chọn
-            </TableCell>
-            <TableCell
-              className="userTable__cellHead"
+              className="roomTable__cellHead"
               sx={{ textAlign: "center" }}
             >
               STT
             </TableCell>
-            <TableCell className="userTable__cellHead">Họ và tên</TableCell>
-            <TableCell className="userTable__cellHead">Địa chỉ email</TableCell>
-            <TableCell className="userTable__cellHead">Phòng/ ban</TableCell>
-            <TableCell className="userTable__cellHead">Chức danh</TableCell>
             <TableCell
-              className="userTable__cellHead"
+              className="roomTable__cellHead"
+              sx={{ textAlign: "center" }}
+            >
+              Mã phòng/ ban
+            </TableCell>
+            <TableCell className="roomTable__cellHead">
+              Tên phòng/ ban
+            </TableCell>
+            <TableCell
+              className="roomTable__cellHead"
+              sx={{ textAlign: "center" }}
+            >
+              Số sắp xếp
+            </TableCell>
+            <TableCell
+              className="roomTable__cellHead"
               sx={{ textAlign: "center" }}
             >
               Trạng thái
             </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody className="userTable__body">
-          {userList.map((user, _) => (
+        <TableBody className="roomTable__body">
+          {roomList.map((room, _) => (
             <TableRow
-              key={user.email}
+              key={room.code}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              className="userTable__rowBody"
+              className="roomTable__rowBody"
             >
-              <TableCell className="userTable__cellBody">
+              <TableCell className="roomTable__cellBody">
                 <RadioGroup
                   value={selectedRow}
                   onChange={handleSelectRow}
                   sx={{ marginLeft: "16px" }}
                 >
                   <FormControlLabel
-                    value={user.id}
-                    control={<Radio inputProps={{ "aria-label": user.id }} />}
+                    value={room.id}
+                    control={<Radio inputProps={{ "aria-label": room.id }} />}
                   />
                 </RadioGroup>
               </TableCell>
               <TableCell
-                className="userTable__cellBody"
+                className="roomTable__cellBody"
                 sx={{ textAlign: "center" }}
               >
-                {user.stt}
+                {room.stt}
               </TableCell>
-              <TableCell className="userTable__cellBody">
-                {user.fullName}
+              <TableCell
+                className="roomTable__cellBody"
+                sx={{ textAlign: "center" }}
+              >
+                {room.code}
               </TableCell>
-              <TableCell className="userTable__cellBody">
-                {user.email}
-              </TableCell>
-              <TableCell className="userTable__cellBody">
-                {user.room?.name}
-              </TableCell>
-
-              <TableCell className="userTable__cellBody">
-                {user.level?.name}
+              <TableCell className="roomTable__cellBody">{room.name}</TableCell>
+              <TableCell
+                className="roomTable__cellBody"
+                sx={{ textAlign: "center" }}
+              >
+                {room.sort}
               </TableCell>
 
               <TableCell
-                className="userTable__cellBody"
+                className="roomTable__cellBody"
                 sx={{ textAlign: "center" }}
               >
-                <button className="userTable__buttonStatus">Hoạt động</button>
+                <button className="roomTable__buttonStatus">Hoạt động</button>
               </TableCell>
             </TableRow>
           ))}
@@ -121,4 +128,4 @@ function UserList(props) {
   );
 }
 
-export default UserList;
+export default RoomList;

@@ -1,7 +1,7 @@
 import { Box, Grid, Paper } from "@mui/material";
-import ActionBar from "features/User/components/ActionBar";
-import Filter from "features/User/components/Filter";
-import UserList from "features/User/components/UserList";
+import ActionBar from "features/Room/components/ActionBar";
+import Filter from "features/Room/components/Filter";
+import RoomList from "features/Room/components/RoomList";
 
 ListPage.propTypes = {};
 
@@ -13,7 +13,7 @@ function ListPage(props) {
           <Paper elevation={1} sx={{ position: "relative" }}>
             <Filter />
             <ActionBar />
-            <UserList />
+            <RoomList />
           </Paper>
         </Grid>
       </Grid>

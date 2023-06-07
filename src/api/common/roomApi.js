@@ -16,6 +16,11 @@ export const roomApi = {
     return axiosClient.get(url, data, configJson);
   },
 
+  get(id) {
+    const url = `/room/get/${id}`;
+    return axiosClient.get(url, id, configJson);
+  },
+
   update(data) {
     const url = `/room/update/${data.id}`;
     return axiosClient.put(url, data, configJson);

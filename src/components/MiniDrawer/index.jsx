@@ -25,6 +25,8 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../../images/logo-header.png";
 import "./styles.scss";
+import { logout } from "features/Auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const drawerWidth = 240;
 
@@ -135,6 +137,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MiniDrawer() {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -152,6 +155,12 @@ export default function MiniDrawer() {
   };
 
   const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    const action = logout();
+    dispatch(action);
     setAnchorEl(null);
   };
 
@@ -246,7 +255,7 @@ export default function MiniDrawer() {
                 </ListItemIcon>
                 Cài đặt tài khoản
               </MenuItem>
-              <MenuItem onClick={handleCloseMenu}>
+              <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                   <Logout sx={{ color: "#f50057" }} fontSize="small" />
                 </ListItemIcon>
