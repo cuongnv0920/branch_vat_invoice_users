@@ -12,7 +12,7 @@ import {
 import Paper from "@mui/material/Paper";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { roomApi } from "api";
-import { selected } from "features/Room/roomSlice";
+import { roomFilters, selected } from "features/Room/roomSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./styles.scss";
@@ -20,8 +20,19 @@ import "./styles.scss";
 function RoomList(props) {
   const dispatch = useDispatch();
   const refreshData = useSelector((state) => state.room.refreshData);
+  const roomFilters = useSelector((state) => state.room.roomFilters);
   const [roomList, setRoomList] = useState([]);
+  const [loadding, setLoadding] = useState(true);
   const [selectedRow, setSelectedRow] = useState("");
+  const [pagination, setPagination] = useState({
+    limit: 8,
+    count: 8,
+    page: 1,
+  });
+  const [filters, setFilters] = useState({
+    _page: 1,
+    _limit: 8,
+  });
 
   const handleSelectRow = async (event) => {
     const value = event.target.value;
@@ -33,13 +44,29 @@ function RoomList(props) {
 
   useEffect(() => {
     const fetchRoom = async () => {
-      const rooms = await roomApi.getAll();
+      const { rooms, paginations } = await roomApi.getAll(filters);
       setRoomList(rooms.map((room, index) => ({ ...room, stt: index + 1 })));
+      setPagination(paginations);
+    };
+    fetchRoom();
+  }, [filters, refreshData]);
+
+  useEffect(() => {
+    const fetchSearchTerm = async () => {
+      await setFilters((prevFilters) => ({
+        ...prevFilters,
+        _search: roomFilters.value?.searchTerm,
+      }));
     };
 
-    fetchRoom();
-  }, [refreshData]);
+    const timer = setTimeout(() => {
+      fetchSearchTerm();
+    }, 200);
 
+    return () => clearTimeout(timer);
+  }, [filters]);
+
+  console.log(filters);
   return (
     <TableContainer className="roomTable" component={Paper}>
       <Table stickyHeader className="roomTable__table">
@@ -69,6 +96,7 @@ function RoomList(props) {
             </TableCell>
           </TableRow>
         </TableHead>
+
         <TableBody className="roomTable__body">
           {roomList.map((room, _) => (
             <TableRow

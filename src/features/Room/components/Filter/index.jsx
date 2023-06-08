@@ -1,57 +1,17 @@
-import { Grid } from "@mui/material";
-import InputField from "components/InputField";
-import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import { useForm } from "react-hook-form";
-import "./styles.scss";
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
+import { roomFilters } from "features/Room/roomSlice";
 import { useRef, useState } from "react";
-import { filter } from "features/Room/roomSlice";
 import { useDispatch } from "react-redux";
+import "./styles.scss";
 
 Filter.propTypes = {};
-
-const Search = styled("form")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.black, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.black, 0.25),
-  },
-  margin: "0px 5px",
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
-  },
-}));
 
 function Filter(props) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -70,7 +30,7 @@ function Filter(props) {
       const formValue = {
         searchTerm: value,
       };
-      const action = filter({
+      const action = roomFilters({
         value: formValue,
       });
       dispatch(action);
@@ -79,21 +39,36 @@ function Filter(props) {
 
   return (
     <div className="filter">
-      <Grid container spacing={3}>
-        <Grid item xs={4} md={4} sm={4}></Grid>
-        <Grid item xs={4} md={4} sm={4}></Grid>
+      <Grid container spacing={3} className="filter__boxFilter">
         <Grid item xs={4} md={4} sm={4}>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Tìm kiếm..."
-              inputProps={{ "aria-label": "search" }}
-              onChange={handleSearchTermChange}
-              value={searchTerm}
-            />
-          </Search>
+          <TextField
+            fullWidth
+            onChange={handleSearchTermChange}
+            value={searchTerm}
+            label="Tìm kiếm..."
+            size="small"
+            name="search"
+          />
+        </Grid>
+        <Grid item xs={4} md={4} sm={4}>
+          <FormControl fullWidth disabled size="small">
+            <InputLabel>Disabled</InputLabel>
+            <Select label="Chọn" value="" inputProps={{ readOnly: true }}>
+              <MenuItem value="">
+                <em>Disabled</em>
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={4} md={4} sm={4}>
+          <FormControl fullWidth disabled size="small">
+            <InputLabel>Disabled</InputLabel>
+            <Select label="Chọn" value="" inputProps={{ readOnly: true }}>
+              <MenuItem value="">
+                <em>Disabled</em>
+              </MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
       </Grid>
     </div>

@@ -11,9 +11,9 @@ export const roomApi = {
     return axiosClient.post(url, data, configJson);
   },
 
-  getAll(data) {
+  getAll(params) {
     const url = "/room/getAll";
-    return axiosClient.get(url, data, configJson);
+    return axiosClient.get(url, { params }, configJson);
   },
 
   get(id) {

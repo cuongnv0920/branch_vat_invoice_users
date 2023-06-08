@@ -229,3 +229,23 @@ html {
   background-color: #f8f8f8;
   border-top: 1.5px solid #daa520;
 }
+
+/* title table */
+.titleTable {
+  padding: 8px 16px;
+  border-bottom: 1.5px solid #daa520;
+}
+.tileTableContent {
+  font-size: 1.2rem;
+  color: #333333;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* pagination */
+.paginationStack {
+  padding: 16px;
+}
+.paginationCount {
+  flex-grow: 1;
+}
