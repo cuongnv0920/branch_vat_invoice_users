@@ -11,6 +11,9 @@ function ListPage(props) {
       <Grid container>
         <Grid item xs={12} md={12} sx={{ position: "relative" }}>
           <Paper elevation={1} sx={{ position: "relative" }}>
+            <div className="titleTable">
+              <h2 className="tileTableContent">Danh sách phòng/ ban</h2>
+            </div>
             <Filter />
             <ActionBar />
             <RoomList />
