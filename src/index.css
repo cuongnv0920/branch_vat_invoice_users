@@ -241,11 +241,3 @@ html {
   font-weight: 600;
   text-transform: uppercase;
 }
-
-/* pagination */
-.paginationStack {
-  padding: 16px;
-}
-.paginationCount {
-  flex-grow: 1;
-}
