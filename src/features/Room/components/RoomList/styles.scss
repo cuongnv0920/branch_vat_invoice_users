@@ -1,11 +1,11 @@
 .roomTable {
-  max-height: 580px;
-  position: absolute;
+  min-height: 510px;
+  position: relative;
   background-color: #fff;
   overflow: auto;
 
   &__table {
-    position: relative;
+    position: absolute;
   }
 
   &__cellHead {
@@ -17,7 +17,7 @@
   }
 
   &__cellBody {
-    padding: 4px 16px !important;
+    padding: 3px 16px !important;
     font-size: 0.9rem !important;
     max-width: 350px;
     white-space: nowrap;
