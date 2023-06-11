@@ -1,18 +1,23 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Avatar, Button, CircularProgress, Stack } from "@mui/material";
 import InputField from "components/InputField";
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import * as yup from "yup";
 import "./styles.scss";
 
-CreateForm.propTypes = {
+ShowForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-function CreateForm(props) {
+function ShowForm(props) {
+  const room = useSelector((state) => state.room.getData);
+  const [disabledField, setDisabledField] = useState(true);
   const schema = yup.object().shape({
     code: yup.string().required("Vui lòng nhập mã Phòng/ ban."),
     name: yup.string().required("Vui lòng nhập tên Phòng/ ban."),
@@ -21,9 +26,10 @@ function CreateForm(props) {
 
   const form = useForm({
     defaultValues: {
-      code: "",
-      name: "",
-      sort: "",
+      id: room._id,
+      code: room.code,
+      name: room.name,
+      sort: room.sort,
     },
 
     resolver: yupResolver(schema),
@@ -36,40 +42,63 @@ function CreateForm(props) {
     }
   };
 
+  const handleChangeDisabledField = () => {
+    setDisabledField(false);
+  };
+
   const { isSubmitting } = form.formState;
 
   return (
-    <div className="createRoom">
-      <Avatar className="createRoom__avatar avatarCreate">
-        <AddCircleIcon />
+    <div className="showRoom">
+      <Avatar className="showRoom__avatar avatarShow">
+        <VisibilityIcon />
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <InputField name="code" label="Mã phòng/ ban" form={form} />
-        <InputField name="name" label="Tên phòng/ ban" form={form} />
         <InputField
+          disabled={disabledField}
+          name="code"
+          label="Mã phòng/ ban"
+          form={form}
+        />
+        <InputField
+          disabled={disabledField}
+          name="name"
+          label="Tên phòng/ ban"
+          form={form}
+        />
+        <InputField
+          disabled={disabledField}
           name="sort"
           label="Số sắp xếp thứ tự"
           type="number"
           form={form}
         />
-        <Stack direction="row" spacing={3} mt={3} className="createRoom__stack">
+        <Stack direction="row" spacing={3} mt={3} className="showRoom__stack">
           <Button
             className="dialogButtonSave dialogButton"
             type="submit"
             variant="contained"
-            fullWidth
             startIcon={<SaveIcon />}
-            disabled={isSubmitting}
+            disabled={disabledField ? disabledField : isSubmitting}
           >
             {isSubmitting ? (
               <CircularProgress
                 size={20}
                 color="secondary"
-                className="createUser__progress"
+                className="showUser__progress"
               />
             ) : (
               "Lưu"
             )}
+          </Button>
+          <Button
+            type="button"
+            variant="contained"
+            startIcon={<EditIcon />}
+            className="dialogButtonEdit dialogButton"
+            onClick={handleChangeDisabledField}
+          >
+            Sửa
           </Button>
         </Stack>
       </form>
@@ -77,4 +106,4 @@ function CreateForm(props) {
   );
 }
 
-export default CreateForm;
+export default ShowForm;

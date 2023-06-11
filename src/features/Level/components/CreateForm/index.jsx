@@ -14,14 +14,12 @@ CreateForm.propTypes = {
 
 function CreateForm(props) {
   const schema = yup.object().shape({
-    code: yup.string().required("Vui lòng nhập mã Phòng/ ban."),
-    name: yup.string().required("Vui lòng nhập tên Phòng/ ban."),
+    name: yup.string().required("Vui lòng nhập Tên chức danh."),
     sort: yup.string().required("Vui lòng nhập Số sắp xếp thứ tự."),
   });
 
   const form = useForm({
     defaultValues: {
-      code: "",
       name: "",
       sort: "",
     },
@@ -39,20 +37,24 @@ function CreateForm(props) {
   const { isSubmitting } = form.formState;
 
   return (
-    <div className="createRoom">
-      <Avatar className="createRoom__avatar avatarCreate">
+    <div className="createLevel">
+      <Avatar className="createLevel__avatar avatarCreate">
         <AddCircleIcon />
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <InputField name="code" label="Mã phòng/ ban" form={form} />
-        <InputField name="name" label="Tên phòng/ ban" form={form} />
+        <InputField name="name" label="Tên chức danh" form={form} />
         <InputField
           name="sort"
           label="Số sắp xếp thứ tự"
           type="number"
           form={form}
         />
-        <Stack direction="row" spacing={3} mt={3} className="createRoom__stack">
+        <Stack
+          direction="row"
+          spacing={3}
+          mt={3}
+          className="createLevel__stack"
+        >
           <Button
             className="dialogButtonSave dialogButton"
             type="submit"

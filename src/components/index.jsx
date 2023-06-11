@@ -6,3 +6,5 @@ export * from "./UploadField";
 export * from "./TextareaField";
 export * from "./RadioField";
 export * from "./LoaddingTable";
+export * from "./PaginationPage";
+export * from "./ActionBar";

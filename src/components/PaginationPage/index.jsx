@@ -1,5 +1,6 @@
 import { Pagination, Stack } from "@mui/material";
 import PropTypes from "prop-types";
+import "./styles.scss";
 
 PaginationPage.propTypes = {
   onChange: PropTypes.func,
@@ -17,16 +18,18 @@ function PaginationPage(props) {
   };
 
   return (
-    <Stack direction="row" spacing={3}>
-      <h5>{`${item} item`}</h5>
-      <Pagination
-        color="primary"
-        variant="outlined"
-        count={count}
-        page={page}
-        onChange={handleChangePage}
-      />
-    </Stack>
+    <div className="paginationPage">
+      <Stack direction="row" spacing={3}>
+        <h5 className="paginationPage__item">{`${item} item`}</h5>
+        <Pagination
+          color="primary"
+          variant="outlined"
+          count={count}
+          page={page}
+          onChange={handleChangePage}
+        />
+      </Stack>
+    </div>
   );
 }
 

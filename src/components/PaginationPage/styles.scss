@@ -1,0 +1,9 @@
+.paginationPage {
+  border-top: 1px solid #daa520;
+  padding: 16px 32px;
+
+  &__item {
+    flex-grow: 1;
+    line-height: 1.8;
+  }
+}

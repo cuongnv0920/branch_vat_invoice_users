@@ -1,16 +1,15 @@
 import { unwrapResult } from "@reduxjs/toolkit";
-import { edit } from "features/User/userSlice";
 import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
-import React from "react";
 import { useDispatch } from "react-redux";
-import EditForm from "../EditForm";
+import ShowForm from "../ShowForm";
+import { edit } from "features/Level/levelSlice";
 
-Edit.propTypes = {
+Show.propTypes = {
   closeDialog: PropTypes.func,
 };
 
-function Edit(props) {
+function Show(props) {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -32,9 +31,9 @@ function Edit(props) {
 
   return (
     <div>
-      <EditForm onSubmit={handleSubmit} />
+      <ShowForm onSubmit={handleSubmit} />
     </div>
   );
 }
 
-export default Edit;
+export default Show;

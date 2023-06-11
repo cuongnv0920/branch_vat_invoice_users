@@ -11,9 +11,14 @@ export const levelApi = {
     return axiosClient.post(url, data, configJson);
   },
 
-  getAll(data) {
+  getAll(params) {
     const url = "/level/getAll";
-    return axiosClient.get(url, data, configJson);
+    return axiosClient.get(url, { params }, configJson);
+  },
+
+  get(id) {
+    const url = `/level/get/${id}`;
+    return axiosClient.get(url, id, configJson);
   },
 
   update(data) {

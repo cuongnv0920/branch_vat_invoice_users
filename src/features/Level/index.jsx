@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import ListPage from "./pages/ListPage";
 
-Room.propTypes = {};
+Level.propTypes = {};
 
-function Room(props) {
+function Level(props) {
   return (
     <div>
       <Routes>
@@ -13,4 +13,4 @@ function Room(props) {
   );
 }
 
-export default Room;
+export default Level;
