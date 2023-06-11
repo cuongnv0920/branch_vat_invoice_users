@@ -1,26 +1,26 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { userApi } from "api";
+import { levelApi } from "api";
 
-export const create = createAsyncThunk("user/create", async (payload) => {
-  const data = await userApi.create(payload);
-
-  return data;
-});
-
-export const edit = createAsyncThunk("user/edit", async (payload) => {
-  const data = await userApi.update(payload);
+export const create = createAsyncThunk("level/create", async (payload) => {
+  const data = await levelApi.create(payload);
 
   return data;
 });
 
-export const deleted = createAsyncThunk("user/delete", async (payload) => {
-  const data = await userApi.delete(payload);
+export const edit = createAsyncThunk("level/edit", async (payload) => {
+  const data = await levelApi.update(payload);
+
+  return data;
+});
+
+export const deleted = createAsyncThunk("level/delete", async (payload) => {
+  const data = await levelApi.delete(payload);
 
   return data;
 });
 
 const userSlice = createSlice({
-  name: "user",
+  name: "level",
   initialState: {
     getData: {},
   },

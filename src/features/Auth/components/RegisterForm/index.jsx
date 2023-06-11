@@ -26,14 +26,14 @@ function RegisterForm(props) {
   const [birthday, setBirthday] = useState(new Date());
 
   const schema = yup.object().shape({
-    fullName: yup.string().required("Vui lòng nhập họ và tên người dùng."),
+    fullName: yup.string().required("Vui lòng nhập họ và tên."),
     email: yup
       .string()
-      .required("Vui lòng nhập địa chỉ email người dùng.")
+      .required("Vui lòng nhập địa chỉ email")
       .email("Địa chỉ email không hợp lệ."),
     password: yup
       .string()
-      .required("Vui lòng nhập mật khẩu người dùng.")
+      .required("Vui lòng nhập mật khẩu")
       .min(6, "Mật khẩu phải có ít nhất 6 ký tự."),
     retypePassword: yup
       .string()

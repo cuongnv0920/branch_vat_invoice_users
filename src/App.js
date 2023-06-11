@@ -8,6 +8,7 @@ import Auth from "features/Auth";
 import { useSelector } from "react-redux";
 import User from "features/User";
 import Room from "features/Room";
+import Level from "features/Level";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -27,6 +28,11 @@ const routeList = [
   {
     path: "room/*",
     element: <Room />,
+    role: ["admin"],
+  },
+  {
+    path: "level/*",
+    element: <Level />,
     role: ["admin"],
   },
   {

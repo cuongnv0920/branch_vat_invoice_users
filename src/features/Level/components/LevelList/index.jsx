@@ -13,10 +13,10 @@ import Paper from "@mui/material/Paper";
 import LoaddingTable from "components/LoaddingTable";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import Moment from "react-moment";
 import "./styles.scss";
+import Moment from "react-moment";
 
-RoomList.propTypes = {
+LevelList.propTypes = {
   data: PropTypes.array.isRequired,
   loadding: PropTypes.bool,
   selectedRow: PropTypes.func,
@@ -32,11 +32,7 @@ const columns = [
     field: "stt",
   },
   {
-    title: "Mã phòng/ ban",
-    field: "code",
-  },
-  {
-    title: "Tên phòng/ ban",
+    title: "Tên chức danh",
     field: "name",
   },
   {
@@ -49,7 +45,7 @@ const columns = [
   },
 ];
 
-function RoomList(props) {
+function LevelList(props) {
   const { data, loadding, selectedRow } = props;
   const [value, setValue] = useState(undefined || "");
 
@@ -61,54 +57,54 @@ function RoomList(props) {
   };
 
   return (
-    <div className="roomTable">
+    <div className="levelTable">
       {loadding ? (
         <LoaddingTable columns={columns} colSpan={columns.length} />
       ) : (
         <TableContainer component={Paper}>
-          <Table stickyHeader className="roomTable__table">
-            <TableHead className="roomTable__head">
-              <TableRow className="roomTable__rowHead">
+          <Table stickyHeader className="levelTable__table">
+            <TableHead className="levelTable__head">
+              <TableRow className="levelTable__rowHead">
                 {columns.map((column, index) => (
-                  <TableCell key={column.field} className="roomTable__cellHead">
+                  <TableCell
+                    key={column.field}
+                    className="levelTable__cellHead"
+                  >
                     {column.title}
                   </TableCell>
                 ))}
               </TableRow>
             </TableHead>
 
-            <TableBody className="roomTable__body">
-              {data.map((room, _) => (
+            <TableBody className="levelTable__body">
+              {data.map((level, _) => (
                 <TableRow
-                  key={room.code}
+                  key={level.code}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  className="roomTable__rowBody"
+                  className="levelTable__rowBody"
                 >
-                  <TableCell className="roomTable__cellBody">
+                  <TableCell className="levelTable__cellBody">
                     <RadioGroup value={value} onChange={handleSelectRow}>
                       <FormControlLabel
-                        className="roomTable__formControlLabel"
-                        value={room.id}
+                        className="levelTable__formControlLabel"
+                        value={level.id}
                         control={
-                          <Radio inputProps={{ "aria-label": room.id }} />
+                          <Radio inputProps={{ "aria-label": level.id }} />
                         }
                       />
                     </RadioGroup>
                   </TableCell>
-                  <TableCell className="roomTable__cellBody">
-                    {room.stt}
+                  <TableCell className="levelTable__cellBody">
+                    {level.stt}
                   </TableCell>
-                  <TableCell className="roomTable__cellBody">
-                    {room.code}
+                  <TableCell className="levelTable__cellBody">
+                    {level.name}
                   </TableCell>
-                  <TableCell className="roomTable__cellBody">
-                    {room.name}
+                  <TableCell className="levelTable__cellBody">
+                    {level.sort}
                   </TableCell>
-                  <TableCell className="roomTable__cellBody">
-                    {room.sort}
-                  </TableCell>
-                  <TableCell className="roomTable__cellBody">
-                    <Moment format="DD/MM/YYYY">{room.createdAt}</Moment>
+                  <TableCell className="levelTable__cellBody">
+                    <Moment format="DD/MM/YYY">{level.createdAt}</Moment>
                   </TableCell>
                 </TableRow>
               ))}
@@ -120,4 +116,4 @@ function RoomList(props) {
   );
 }
 
-export default RoomList;
+export default LevelList;

@@ -1,21 +1,21 @@
 import { unwrapResult } from "@reduxjs/toolkit";
-import { edit } from "features/Room/roomSlice";
 import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import EditForm from "../EditForm";
+import CreateForm from "../CreateForm";
+import { create } from "features/Level/levelSlice";
 
-Edit.propTypes = {
+Create.propTypes = {
   closeDialog: PropTypes.func,
 };
 
-function Edit(props) {
+function Create(props) {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values) => {
     try {
-      const action = edit(values);
+      const action = create(values);
       const resultAction = await dispatch(action);
       unwrapResult(resultAction);
 
@@ -23,7 +23,6 @@ function Edit(props) {
       if (closeDialog) {
         closeDialog();
       }
-      enqueueSnackbar("Cập nhật thành công.", { variant: "success" });
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
     }
@@ -31,9 +30,9 @@ function Edit(props) {
 
   return (
     <div>
-      <EditForm onSubmit={handleSubmit} />
+      <CreateForm onSubmit={handleSubmit} />
     </div>
   );
 }
 
-export default Edit;
+export default Create;

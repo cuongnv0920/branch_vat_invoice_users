@@ -22,44 +22,13 @@ export const deleted = createAsyncThunk("room/delete", async (payload) => {
 const userSlice = createSlice({
   name: "room",
   initialState: {
-    selected: {},
-    get: {},
-    roomFilters: {},
-    refreshData: 0,
+    getData: {},
   },
   reducers: {
-    selected(state, action) {
+    getData(state, action) {
       return {
         ...state,
-        selected: action.payload,
-      };
-    },
-
-    removeSelected(state) {
-      return {
-        ...state,
-        selected: {},
-      };
-    },
-
-    get(state, action) {
-      return {
-        ...state,
-        get: action.payload,
-      };
-    },
-
-    roomFilters(state, action) {
-      return {
-        ...state,
-        roomFilters: action.payload,
-      };
-    },
-
-    refreshData(state, action) {
-      return {
-        ...state,
-        refreshData: state.refreshData + 1,
+        getData: action.payload,
       };
     },
   },
@@ -79,6 +48,5 @@ const userSlice = createSlice({
 });
 
 const { actions, reducer } = userSlice;
-export const { selected, removeSelected, get, roomFilters, refreshData } =
-  actions;
+export const { getData } = actions;
 export default reducer;

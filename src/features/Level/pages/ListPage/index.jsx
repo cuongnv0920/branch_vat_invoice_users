@@ -8,14 +8,14 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
-import { roomApi, userApi } from "api";
+import { levelApi } from "api";
 import ActionBar from "components/ActionBar";
 import PaginationPage from "components/PaginationPage";
-import Create from "features/User/components/Create";
-import Filter from "features/User/components/Filter";
-import Show from "features/User/components/Show";
-import UserList from "features/User/components/UserList";
-import { getData } from "features/User/userSlice";
+import Create from "features/Level/components/Create";
+import Filter from "features/Level/components/Filter";
+import LevelList from "features/Level/components/LevelList";
+import Show from "features/Level/components/Show";
+import { getData } from "features/Level/levelSlice";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -25,7 +25,7 @@ function ListPage(props) {
   const [openDialogCreate, setOpenDialogCreate] = useState(false);
   const [openDialogShow, setOpenDialogShow] = useState(false);
   const [closeDialog, setCloseDialog] = useState(0);
-  const [userList, setUserList] = useState([]);
+  const [levelList, setLevelList] = useState([]);
   const [loadding, setLoadding] = useState(true);
   const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
@@ -42,9 +42,9 @@ function ListPage(props) {
   useEffect(() => {
     (async () => {
       try {
-        const { userList, paginations } = await userApi.getAll(filters);
-        setUserList(
-          userList.map((user, index) => ({ ...user, stt: index + 1 }))
+        const { levelList, paginations } = await levelApi.getAll(filters);
+        setLevelList(
+          levelList.map((level, index) => ({ ...level, stt: index + 1 }))
         );
         setPaginations(paginations);
         setLoadding(false);
@@ -61,28 +61,15 @@ function ListPage(props) {
     }));
   };
 
-  const handleChangeSearchTerm = (value) => {
+  const handleChangeFilter = (values) => {
     setFilters((prevFilter) => ({
       ...prevFilter,
-      _search: value?.searchTerm,
-    }));
-  };
-
-  const handleChangeFilterRoom = (value) => {
-    setFilters((prevFilter) => ({
-      ...prevFilter,
-      _filterRoom: value,
-    }));
-  };
-  const handleChangeFilterLevel = (value) => {
-    setFilters((prevFilter) => ({
-      ...prevFilter,
-      _filterLevel: value,
+      _search: values?.searchTerm,
     }));
   };
 
   const handleSelectedRow = async (value) => {
-    const data = await roomApi.get(value);
+    const data = await levelApi.get(value);
     const action = getData(data);
     dispatch(action);
     setDisabled(!!value);
@@ -110,20 +97,16 @@ function ListPage(props) {
         <Grid item xs={12} md={12}>
           <Paper elevation={1}>
             <div className="titleTable">
-              <h2 className="tileTableContent">Danh sách người dùng</h2>
+              <h2 className="tileTableContent">Danh sách chức danh</h2>
             </div>
-            <Filter
-              search={handleChangeSearchTerm}
-              filterRoom={handleChangeFilterRoom}
-              filterLevel={handleChangeFilterLevel}
-            />
+            <Filter values={handleChangeFilter} />
             <ActionBar
               disabledButton={!disabled}
               openDialogCreate={handleOpenDialogCreate}
               openDialogShow={handleOpenDialogShow}
             />
-            <UserList
-              data={userList}
+            <LevelList
+              data={levelList}
               loadding={loadding}
               selectedRow={handleSelectedRow}
             />
@@ -138,8 +121,8 @@ function ListPage(props) {
       </Grid>
 
       <Dialog
-        maxWidth="md"
-        fullWidth="md"
+        maxWidth="xs"
+        fullWidth="xs"
         open={openDialogCreate}
         onClose={(event, reason) => {
           if (reason !== "backdropClick") {
