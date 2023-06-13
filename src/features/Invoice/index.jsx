@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import ListPage from "./pages/listPage";
+import ListPage from "./pages/ListPage";
 
 Invoice.propTypes = {};
 

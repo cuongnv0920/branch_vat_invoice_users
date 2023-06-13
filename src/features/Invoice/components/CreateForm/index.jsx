@@ -1,118 +1,205 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import EditIcon from "@mui/icons-material/Edit";
-import { Button, Grid, Stack } from "@mui/material";
-import { DateField, TextareaField, UploadField } from "components";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import SaveIcon from "@mui/icons-material/Save";
+import {
+  Avatar,
+  Button,
+  CircularProgress,
+  FormControlLabel,
+  Grid,
+  MenuItem,
+  Radio,
+  Stack,
+} from "@mui/material";
 import InputField from "components/InputField";
-import { useState } from "react";
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import "./styles.scss";
+import { useEffect, useState } from "react";
+import {
+  DateField,
+  PasswordField,
+  RadioField,
+  SelectField,
+  UploadField,
+} from "components";
+import { levelApi, roomApi } from "api";
 
-CreateForm.propTypes = {};
+CreateForm.propTypes = {
+  onSubmit: PropTypes.func,
+};
 
 function CreateForm(props) {
-  const [disabledField, setDisabledField] = useState(true);
-
-  const handleDisabledField = () => {
-    setDisabledField(false);
-  };
+  const [roomList, setRoomList] = useState([]);
+  const [levelList, setLevelList] = useState([]);
+  const [sex, setSex] = useState("Mr");
+  const [birthday, setBirthday] = useState(new Date());
 
   const schema = yup.object().shape({
-    serial: yup
+    file_1: yup.string().required("Vui lòng chọn file hóa đơn .xml."),
+    email: yup
       .string()
-      .required("Vui lòng nhập Ký hiệu hóa đơn.")
-      .min(6, "Ký hiệu hóa đơn phải có ít nhất 7 ký tự."),
-    no: yup
+      .required("Vui lòng nhập địa chỉ email.")
+      .email("Địa chỉ email không hợp lệ."),
+    password: yup
       .string()
-      .required("Vui lòng nhập Số hóa đơn.")
-      .min(7, "Số hóa đơn phải có ít nhất 7 chữ số.")
-      .max(8, "Số hóa đơn không được vượt quá 8 chữ số."),
-    date: yup.string().required("Vui lòng chọn Ngày hóa đơn."),
-    seller: yup.string().required("Vui lòng điền tên Đơn vị cung cấp."),
-    payment: yup.string().required("Vui lòng điền Tổng số tiền trên hóa đơn."),
-    content: yup.string().required("Vui lòng điền Nội dung thanh toán."),
+      .required("Vui lòng nhập mật khẩu.")
+      .min(6, "Mật khẩu phải có ít nhất 6 ký tự."),
+    retypePassword: yup
+      .string()
+      .required("Vui lòng xác nhận lại mật khẩu.")
+      .oneOf([yup.ref("password")], "Mật khẩu xác nhận không đúng."),
+    room: yup.string().required("Vui phòng chọn phòng/ ban."),
+    level: yup.string().required("Vui phòng chọn chức danh."),
+    phone: yup.string().required("Vui phòng nhập số điện thoại di động."),
   });
+
+  useEffect(() => {
+    (async () => {
+      const { roomList } = await roomApi.getAll();
+      setRoomList(roomList);
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const { levelList } = await levelApi.getAll();
+      setLevelList(levelList);
+    })();
+  }, []);
 
   const form = useForm({
     defaultValues: {
-      serial: "",
-      no: "",
-      date: "",
-      seller: "",
-      payment: "",
-      content: "",
+      file_1: "",
+      email: "",
+      password: "",
+      retypePassword: "",
+      room: "",
+      level: "",
+      phone: "",
+      ext: "",
+      sex: sex,
+      role: "user",
+      birthday: birthday,
     },
 
     resolver: yupResolver(schema),
   });
 
+  const handleSubmit = async (values) => {
+    const { onSubmit } = props;
+    if (onSubmit) {
+      await onSubmit(values);
+    }
+  };
+
+  const handleChangeBirtday = (date) => {
+    setBirthday(date);
+  };
+  const handleChangeSex = (event) => {
+    setSex(event.target.value);
+  };
+
+  const { isSubmitting } = form.formState;
+
   return (
-    <div className="createInvoice">
-      <Stack direction="row" spacing={3} className="createInvoice__actionBar">
-        <Button
-          variant="contained"
-          className="createInvoice__button button buttonManual"
-          startIcon={<EditIcon />}
-          onClick={handleDisabledField}
-        >
-          Nhập thủ công
-        </Button>
-      </Stack>
-
-      <form className="createInvoice__form" action="">
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6} sm={12}>
-            <UploadField name="xml" label="File .xml" form={form} />
+    <div className="createUser">
+      <Avatar className="createUser__avatar avatarCreate">
+        <AddCircleIcon />
+      </Avatar>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} sm={6}>
+            <UploadField name="file_1" label="File hóa đơn .xml" form={form} />
           </Grid>
-          <Grid item xs={12} md={6} sm={12}>
-            <UploadField name="pdf" label="File .pdf" form={form} />
+          <Grid item xs={12} md={6} sm={6}>
+            <InputField name="email" label="Địa chỉ email" form={form} />
           </Grid>
         </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6} sm={12}>
-            <InputField
-              disabled={disabledField}
-              name="serial"
-              label="Ký hiệu"
-              form={form}
-            />
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} sm={6}>
+            <PasswordField name="password" label="Mật khẩu" form={form} />
           </Grid>
-          <Grid item xs={12} md={6} sm={12}>
-            <InputField
-              disabled={disabledField}
-              name="no"
-              label="Số hóa đơn"
+          <Grid item xs={12} md={6} sm={6}>
+            <PasswordField
+              name="retypePassword"
+              label="Xác nhận lại mật khẩu"
               form={form}
             />
           </Grid>
         </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6} sm={12}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} sm={6}>
+            <SelectField name="room" label="Phòng/ ban" form={form}>
+              {roomList.map((room, _) => (
+                <MenuItem value={room.id}>{room.name}</MenuItem>
+              ))}
+            </SelectField>
+          </Grid>
+          <Grid item xs={12} md={6} sm={6}>
+            <SelectField name="level" label="Chức danh" form={form}>
+              {levelList.map((level, _) => (
+                <MenuItem value={level.id}>{level.name}</MenuItem>
+              ))}
+            </SelectField>
+          </Grid>
+        </Grid>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} sm={6}>
+            <InputField
+              name="phone"
+              label="Số điện thoại di động"
+              form={form}
+            />
+          </Grid>
+          <Grid item xs={12} md={6} sm={6}>
+            <InputField name="ext" label="Số điện thoại nội bộ" form={form} />
+          </Grid>
+        </Grid>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} sm={6} mt={1}>
+            <RadioField
+              name="sex"
+              label="Giới tính"
+              onChange={handleChangeSex}
+              form={form}
+            >
+              <FormControlLabel value="Mr" control={<Radio />} label="Nam" />
+              <FormControlLabel value="Ms" control={<Radio />} label="Nữ" />
+            </RadioField>
+          </Grid>
+          <Grid item xs={12} md={6} sm={6}>
             <DateField
-              disabled={disabledField}
-              className="createInvoice__dateField"
-              name="date"
-              label="Ngày hóa đơn"
+              name="birthday"
               inputFormat="DD/MM/YYYY"
-              form={form}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} sm={12}>
-            <InputField
-              disabled={disabledField}
-              name="payment"
-              type="number"
-              label="Số tiền thanh toán"
+              value={birthday}
+              onChange={handleChangeBirtday}
+              label="Ngày sinh nhật"
               form={form}
             />
           </Grid>
         </Grid>
-
-        <TextareaField name="content" label="Nội dùng thanh toán" form={form} />
-
-        <Button type="submit" fullWidth className="dialogButtonSave">
-          Lưu
-        </Button>
+        <Stack direction="row" spacing={3} mt={3} className="createUser__stack">
+          <Button
+            className="dialogButtonSave dialogButton"
+            type="submit"
+            variant="contained"
+            fullWidth
+            startIcon={<SaveIcon />}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <CircularProgress
+                size={20}
+                color="secondary"
+                className="createUser__progress"
+              />
+            ) : (
+              "Lưu"
+            )}
+          </Button>
+        </Stack>
       </form>
     </div>
   );

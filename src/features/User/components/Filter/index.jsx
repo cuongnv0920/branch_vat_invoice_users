@@ -94,6 +94,7 @@ function Filter(props) {
               label="Phòng/ ban"
               onChange={handleChangeRoom}
             >
+              <MenuItem value="">Chọn tất cả...</MenuItem>
               {roomList.map((room, _) => (
                 <MenuItem value={room.id}>{room.name}</MenuItem>
               ))}
@@ -109,6 +110,7 @@ function Filter(props) {
               value={levelFilter}
               onChange={handleChangeLevel}
             >
+              <MenuItem value="">Chọn tất cả...</MenuItem>
               {levelList.map((level, _) => (
                 <MenuItem value={level.id}>{level.name}</MenuItem>
               ))}

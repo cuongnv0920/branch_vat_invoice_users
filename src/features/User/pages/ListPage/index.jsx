@@ -8,10 +8,11 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
-import { roomApi, userApi } from "api";
+import { userApi } from "api";
 import ActionBar from "components/ActionBar";
 import PaginationPage from "components/PaginationPage";
 import Create from "features/User/components/Create";
+import Delete from "features/User/components/Delete";
 import Filter from "features/User/components/Filter";
 import Show from "features/User/components/Show";
 import UserList from "features/User/components/UserList";
@@ -24,6 +25,7 @@ ListPage.propTypes = {};
 function ListPage(props) {
   const [openDialogCreate, setOpenDialogCreate] = useState(false);
   const [openDialogShow, setOpenDialogShow] = useState(false);
+  const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const [closeDialog, setCloseDialog] = useState(0);
   const [userList, setUserList] = useState([]);
   const [loadding, setLoadding] = useState(true);
@@ -82,7 +84,8 @@ function ListPage(props) {
   };
 
   const handleSelectedRow = async (value) => {
-    const data = await roomApi.get(value);
+    const data = await userApi.get(value);
+    console.log(data);
     const action = getData(data);
     dispatch(action);
     setDisabled(!!value);
@@ -101,6 +104,15 @@ function ListPage(props) {
   };
   const handleCloseDialogShow = () => {
     setOpenDialogShow(false);
+    setCloseDialog(closeDialog + 1);
+  };
+
+  const handleOpenDialogDelete = () => {
+    setOpenDialogShow(false);
+    setOpenDialogDelete(true);
+  };
+  const handleCloseDialogDelete = () => {
+    setOpenDialogDelete(false);
     setCloseDialog(closeDialog + 1);
   };
 
@@ -163,8 +175,8 @@ function ListPage(props) {
       </Dialog>
 
       <Dialog
-        maxWidth="xs"
-        fullWidth="xs"
+        maxWidth="md"
+        fullWidth="md"
         open={openDialogShow}
         onClose={(event, reason) => {
           if (reason !== "backdropClick") {
@@ -173,11 +185,38 @@ function ListPage(props) {
         }}
       >
         <DialogContent>
-          <Show closeDialog={handleCloseDialogShow} />
+          <Show
+            closeDialog={handleCloseDialogShow}
+            openDialogDelete={handleOpenDialogDelete}
+          />
         </DialogContent>
         <DialogActions className="dialogAction">
           <Button
             onClick={handleCloseDialogShow}
+            className="dialogButtonClose dialogButton"
+            variant="contained"
+            startIcon={<CancelIcon />}
+          >
+            Thoát
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        maxWidth="md"
+        open={openDialogDelete}
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick") {
+            handleCloseDialogDelete(event, reason);
+          }
+        }}
+      >
+        <DialogContent>
+          <Delete closeDialog={handleCloseDialogDelete} />
+        </DialogContent>
+        <DialogActions className="dialogAction">
+          <Button
+            onClick={handleCloseDialogDelete}
             className="dialogButtonClose dialogButton"
             variant="contained"
             startIcon={<CancelIcon />}

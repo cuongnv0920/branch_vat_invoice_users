@@ -1,10 +1,5 @@
-import { CheckBox } from "@mui/icons-material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   FormControlLabel,
-  IconButton,
-  Menu,
-  MenuItem,
   Radio,
   RadioGroup,
   Table,
@@ -13,241 +8,176 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
+import LoaddingTable from "components/LoaddingTable";
+import PropTypes from "prop-types";
 import { useState } from "react";
+import Moment from "react-moment";
+import { showStatus } from "utils/showStatus";
 import "./styles.scss";
 
-InvoiceList.propTypes = {};
+InvoiceList.propTypes = {
+  data: PropTypes.array.isRequired,
+  loadding: PropTypes.bool,
+  selectedRow: PropTypes.func,
+};
 
-const rows = [
+const columns = [
   {
-    stt: 1,
-    serial: "1K23THA",
-    no: "3288816",
-    date: "30/05/2023",
-    user: "Nguyễn Văn Cường",
+    title: "Chọn",
+    field: "selected",
   },
   {
-    stt: 2,
-    serial: "1K23THA",
-    no: "3288816",
-    date: "30/05/2023",
-    user: "Nguyễn Văn Cường",
+    title: "STT",
+    field: "stt",
   },
   {
-    stt: 3,
-    serial: "1K23THA",
-    no: "3288816",
-    date: "30/05/2023",
-    user: "Nguyễn Văn Cường",
+    title: "Ký hiệu",
+    field: "serial",
   },
   {
-    stt: 4,
-    serial: "1K23THA",
-    no: "3288816",
-    date: "30/05/2023",
-    user: "Nguyễn Văn Cường",
+    title: "Số hóa đơn",
+    field: "no",
   },
   {
-    stt: 5,
-    serial: "1K23THA",
-    no: "3288816",
-    date: "30/05/2023",
-    user: "Nguyễn Văn Cường",
+    title: "Ngày hóa đơn",
+    field: "date",
   },
   {
-    stt: 6,
-    serial: "1K23THA",
-    no: "3288816",
-    date: "30/05/2023",
-    user: "Nguyễn Văn Cường",
+    title: "Đơn vị cung cấp",
+    field: "seller",
   },
   {
-    stt: 7,
-    serial: "1K23THA",
-    no: "3288816",
-    date: "30/05/2023",
-    user: "Nguyễn Văn Cường",
+    title: "Tổng số tiền",
+    field: "payment",
   },
   {
-    stt: 8,
-    serial: "1K23THA",
-    no: "3288816",
-    date: "30/05/2023",
-    user: "Nguyễn Văn Cường",
+    title: "Nội dung thanh toán",
+    field: "content",
   },
   {
-    stt: 9,
-    serial: "1K23THA",
-    no: "3288816",
-    date: "30/05/2023",
-    user: "Nguyễn Văn Cường",
+    title: "Cán bộ tạo",
+    field: "createUser",
   },
   {
-    stt: 10,
-    serial: "1K23THA",
-    no: "3288816",
-    date: "30/05/2023",
-    user: "Nguyễn Văn Cường",
+    title: "Cán bộ xử lý",
+    field: "approveUser",
+  },
+  {
+    title: "Trạng thái",
+    field: "status",
+  },
+  {
+    title: "Ngày khởi tạo",
+    field: "createdAt",
+  },
+  {
+    title: "Ngày xử lý",
+    field: "updatedAt",
   },
 ];
 
 function InvoiceList(props) {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedRow, setSelectedRow] = useState("");
+  const { data, loadding, selectedRow } = props;
+  const [value, setValue] = useState(undefined || "");
 
-  const handleSelectRow = (event) => {
-    setSelectedRow(event.target.value);
-  };
-
-  const handleOpenMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
+  const handleSelectRow = async (event) => {
+    setValue(event.target.value);
+    if (selectedRow) {
+      selectedRow(event.target.value);
+    }
   };
 
   return (
-    <TableContainer className="invoiceTable" component={Paper}>
-      <Table stickyHeader className="invoiceTable__table">
-        <TableHead className="invoiceTable__head">
-          <TableRow className="invoiceTable__rowHead">
-            <TableCell className="invoiceTable__cellHead">Chọn</TableCell>
-            <TableCell
-              className="invoiceTable__cellHead"
-              sx={{ textAlign: "center" }}
-            >
-              STT
-            </TableCell>
-            <TableCell className="invoiceTable__cellHead">Ký hiệu</TableCell>
-            <TableCell className="invoiceTable__cellHead">Số hóa đơn</TableCell>
-            <TableCell className="invoiceTable__cellHead">
-              Ngày hóa đơn
-            </TableCell>
-            <TableCell className="invoiceTable__cellHead">
-              Cán bộ khởi tạo
-            </TableCell>
-            <TableCell
-              className="invoiceTable__cellHead"
-              sx={{ textAlign: "center" }}
-            >
-              Trạng thái
-            </TableCell>
-            <TableCell
-              className="invoiceTable__cellHead"
-              sx={{ textAlign: "center" }}
-            >
-              File đính kèm
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody className="invoiceTable__body">
-          {rows.map((row, _) => (
-            <TableRow
-              key={row.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              className="invoiceTable__rowBody"
-            >
-              <TableCell className="invoiceTable__cellBody">
-                <RadioGroup
-                  value={selectedRow}
-                  onChange={handleSelectRow}
-                  sx={{ marginLeft: "16px" }}
-                >
-                  <FormControlLabel
-                    value={rows.serial}
-                    control={
-                      <Radio inputProps={{ "aria-label": row.serial }} />
-                    }
-                  />
-                </RadioGroup>
-              </TableCell>
-              <TableCell
-                className="invoiceTable__cellBody"
-                sx={{ textAlign: "center" }}
-              >
-                {row.stt}
-              </TableCell>
-              <TableCell className="invoiceTable__cellBody">
-                {row.serial}
-              </TableCell>
-              <TableCell className="invoiceTable__cellBody">{row.no}</TableCell>
-              <TableCell className="invoiceTable__cellBody">
-                {row.date}
-              </TableCell>
-              <Tooltip title={row.seller}>
-                <TableCell className="invoiceTable__cellBody">
-                  {row.user}
-                </TableCell>
-              </Tooltip>
-              <TableCell
-                className="invoiceTable__cellBody"
-                sx={{ textAlign: "center" }}
-              >
-                <button className="invoiceTable__buttonStatus">Đã duyệt</button>
-              </TableCell>
-              <TableCell
-                className="invoiceTable__cellBody"
-                sx={{ textAlign: "center" }}
-              >
-                <Tooltip title="File đính kèm">
-                  <IconButton
-                    size="large"
-                    aria-label="file of current user"
-                    aria-controls="menu-file"
-                    aria-haspopup="true"
-                    onClick={handleOpenMenu}
-                    className="invoiceTable__buttonIcon"
+    <div className="invoiceTable">
+      {/* {loadding ? (
+        <LoaddingTable columns={columns} colSpan={columns.length} />
+      ) : (
+        <TableContainer component={Paper}>
+          <Table stickyHeader className="invoiceTable__table">
+            <TableHead className="invoiceTable__head">
+              <TableRow className="invoiceTable__rowHead">
+                {columns.map((column, index) => (
+                  <TableCell
+                    key={column.field}
+                    className="invoiceTable__cellHead"
                   >
-                    <MoreVertIcon className="invoiceTable__iconMenuFile" />
-                  </IconButton>
-                </Tooltip>
+                    {column.title}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
 
-                <Menu
-                  id="menu-file"
-                  anchorEl={anchorEl}
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      overflow: "visible",
-                      filter: "drop-shadow(0px 2px 4px rgba(0,0,0,0.12))",
-                      mt: 1,
-                      "& .MuiAvatar-root": {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
-                      },
-                      "&:before": {
-                        content: '""',
-                        display: "block",
-                        position: "absolute",
-                        top: 0,
-                        right: 18,
-                        width: 10,
-                        height: 10,
-                        bgcolor: "background.paper",
-                        transform: "translateY(-50%) rotate(45deg)",
-                        zIndex: 0,
-                      },
-                    },
-                  }}
-                  transformOrigin={{ horizontal: "right", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleCloseMenu}
+            <TableBody className="invoiceTable__body">
+              {data.map((invoice, _) => (
+                <TableRow
+                  key={invoice.code}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  className="invoiceTable__rowBody"
                 >
-                  <MenuItem onClick={handleCloseMenu}>Tên file PDF</MenuItem>
-                  <MenuItem onClick={handleCloseMenu}>Tên file XML</MenuItem>
-                </Menu>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                  <TableCell className="invoiceTable__cellBody">
+                    <RadioGroup value={value} onChange={handleSelectRow}>
+                      <FormControlLabel
+                        className="invoiceTable__formControlLabel"
+                        value={invoice.id}
+                        control={
+                          <Radio inputProps={{ "aria-label": invoice.id }} />
+                        }
+                      />
+                    </RadioGroup>
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    {invoice.stt}
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    {invoice.serial}
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    {invoice.no}
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    <Moment format="DD/MM/YYYY">{invoice.date}</Moment>
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    {invoice.seller}
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    {invoice.payment}
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    {invoice.content}
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    {invoice.createUser.fullName}
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    {invoice.approveUser.fullName}
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    <button
+                      className={
+                        invoice.status
+                          ? "statusTrue buttonStatus"
+                          : "statusFalse buttonStatus"
+                      }
+                    >
+                      {showStatus(invoice.status)}
+                    </button>
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    <Moment format="DD/MM/YYYY">{invoice.createdAt}</Moment>
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
+                    <Moment format="DD/MM/YYYY">{invoice.updatedAt}</Moment>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )} */}
+    </div>
   );
 }
 
