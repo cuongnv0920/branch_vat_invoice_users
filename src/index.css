@@ -183,13 +183,11 @@ html {
   font-weight: 600 !important;
   font-family: "Muli", sans-serif !important;
 }
-.buttonCreate,
-.avatarCreate {
+.buttonCreate {
   background: rgba(198, 251, 191, 0.815) !important;
   color: rgb(2, 78, 42) !important;
 }
-.buttonShow,
-.avatarShow {
+.buttonShow {
   background: rgba(248, 202, 291, 0.815) !important;
   color: rgba(237, 73, 73) !important;
 }
@@ -203,25 +201,30 @@ html {
   font-size: 1rem !important;
   font-weight: 600 !important;
 }
-.dialogButtonSave {
+.dialogButtonSave,
+.avatarCreate {
   background: rgba(198, 251, 191, 0.815) !important;
   color: rgb(2, 78, 42) !important;
 }
-.dialogButtonEdit {
+.dialogButtonEdit,
+.avatarShow {
   background: rgba(251, 247, 191, 0.815) !important;
   color: rgb(150, 136, 12) !important;
 }
-.dialogButtonDelete {
+.dialogButtonDelete,
+.avatarDelete {
   background: rgba(248, 202, 291, 0.815) !important;
   color: rgba(237, 73, 73) !important;
 }
 .dialogAction {
+  padding: 16px 24px !important;
   background-color: #f8f8f8;
   border-top: 1.5px solid #daa520;
 }
 .dialogButtonClose {
-  background: rgba(216, 215, 215, 0.815) !important;
-  color: rgb(51, 51, 51) !important;
+  background-color: rgba(20, 33, 65, 0.06) !important;
+  color: rgb(38, 40, 44) !important;
+  text-transform: capitalize !important;
 }
 
 /* style table */

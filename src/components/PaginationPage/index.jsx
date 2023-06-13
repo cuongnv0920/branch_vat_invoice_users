@@ -20,9 +20,9 @@ function PaginationPage(props) {
   return (
     <div className="paginationPage">
       <Stack direction="row" spacing={3}>
-        <h5 className="paginationPage__item">{`${item} item`}</h5>
+        <h5 className="paginationPage__item">{`${item || 0} item`}</h5>
         <Pagination
-          color="primary"
+          color="secondary"
           variant="outlined"
           count={count}
           page={page}

@@ -50,6 +50,14 @@ const columns = [
     field: "level",
   },
   {
+    title: "Số điện thoại di động",
+    field: "phone",
+  },
+  {
+    title: "Số điện thoại nội bộ",
+    field: "ext",
+  },
+  {
     title: "Nhóm quyền",
     field: "role",
   },
@@ -128,6 +136,12 @@ function UserList(props) {
                   <TableCell className="userTable__cellBody">
                     {user.level?.name}
                   </TableCell>
+                  <TableCell className="userTable__cellBody">
+                    {user?.phone}
+                  </TableCell>
+                  <TableCell className="userTable__cellBody">
+                    {user?.ext}
+                  </TableCell>
                   <TableCell
                     className={
                       user.role[0] === "admin"
@@ -137,6 +151,7 @@ function UserList(props) {
                   >
                     {showPermissionName(user.role)}
                   </TableCell>
+
                   <TableCell className="userTable__cellBody">
                     <Moment format="DD/MM/YYYY">{user.birthday}</Moment>
                   </TableCell>

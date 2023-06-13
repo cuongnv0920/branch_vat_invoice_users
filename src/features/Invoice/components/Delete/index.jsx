@@ -1,21 +1,21 @@
 import { unwrapResult } from "@reduxjs/toolkit";
+import { deleted } from "features/User/userSlice";
 import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import RegisterForm from "../RegisterForm";
-import { create } from "features/User/userSlice";
+import DeleteForm from "../DeleteForm";
 
-Register.propTypes = {
+Delete.propTypes = {
   closeDialog: PropTypes.func,
 };
 
-function Register(props) {
+function Delete(props) {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values) => {
     try {
-      const action = create(values);
+      const action = deleted(values);
       const resultAction = await dispatch(action);
       unwrapResult(resultAction);
 
@@ -23,7 +23,7 @@ function Register(props) {
       if (closeDialog) {
         closeDialog();
       }
-      enqueueSnackbar("Đăng ký tài khoản thành công.", { variant: "success" });
+      enqueueSnackbar("Xóa người dùng thành công.", { variant: "success" });
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
     }
@@ -31,9 +31,9 @@ function Register(props) {
 
   return (
     <div>
-      <RegisterForm onSubmit={handleSubmit} />
+      <DeleteForm onSubmit={handleSubmit} />
     </div>
   );
 }
 
-export default Register;
+export default Delete;
