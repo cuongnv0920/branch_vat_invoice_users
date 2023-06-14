@@ -4,11 +4,19 @@ import contentType from "configs/contentTypeConf";
 const configJson = {
   headers: contentType.headersJson,
 };
+const configFormData = {
+  headers: contentType.headersFormData,
+};
 
 export const invoiceApi = {
+  readXml(data) {
+    const url = "invoice/readXml";
+    return axiosClient.post(url, data, configFormData);
+  },
+
   create(data) {
     const url = "/invoice/create";
-    return axiosClient.post(url, data, configJson);
+    return axiosClient.post(url, data, configFormData);
   },
 
   getAll(params) {

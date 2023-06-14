@@ -91,7 +91,7 @@ function InvoiceList(props) {
 
   return (
     <div className="invoiceTable">
-      {/* {loadding ? (
+      {loadding ? (
         <LoaddingTable columns={columns} colSpan={columns.length} />
       ) : (
         <TableContainer component={Paper}>
@@ -176,7 +176,7 @@ function InvoiceList(props) {
             </TableBody>
           </Table>
         </TableContainer>
-      )} */}
+      )}
     </div>
   );
 }

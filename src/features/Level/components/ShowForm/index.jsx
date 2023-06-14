@@ -17,6 +17,7 @@ ShowForm.propTypes = {
 
 function ShowForm(props) {
   const level = useSelector((state) => state.level.getData);
+  const { _id: id, name, sort } = level;
   const [disabledField, setDisabledField] = useState(true);
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập Tên chức danh."),
@@ -25,9 +26,9 @@ function ShowForm(props) {
 
   const form = useForm({
     defaultValues: {
-      id: level._id,
-      name: level.name,
-      sort: level.sort,
+      id,
+      name,
+      sort,
     },
 
     resolver: yupResolver(schema),

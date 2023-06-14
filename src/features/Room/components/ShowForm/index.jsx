@@ -17,6 +17,7 @@ ShowForm.propTypes = {
 
 function ShowForm(props) {
   const room = useSelector((state) => state.room.getData);
+  const { _id: id, code, name, sort } = room;
   const [disabledField, setDisabledField] = useState(true);
   const schema = yup.object().shape({
     code: yup.string().required("Vui lòng nhập mã Phòng/ ban."),
@@ -26,10 +27,10 @@ function ShowForm(props) {
 
   const form = useForm({
     defaultValues: {
-      id: room._id,
-      code: room.code,
-      name: room.name,
-      sort: room.sort,
+      id,
+      code,
+      name,
+      sort,
     },
 
     resolver: yupResolver(schema),

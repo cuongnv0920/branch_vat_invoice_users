@@ -30,6 +30,7 @@ ShowForm.propTypes = {
 function ShowForm(props) {
   const { onSubmit, openDialogDelete } = props;
   const user = useSelector((state) => state.user.getData);
+  const { _id: id, fullName, email, room, level, phone, ext } = user;
   const [sex, setSex] = useState(user.sex);
   const [birthday, setBirthday] = useState(user.birthday);
   const [roomList, setRoomList] = useState([]);
@@ -66,15 +67,15 @@ function ShowForm(props) {
 
   const form = useForm({
     defaultValues: {
-      id: user._id,
-      fullName: user.fullName,
-      email: user.email,
+      id,
+      fullName,
+      email,
       password: "",
       retypePassword: "",
-      room: user.room._id,
-      level: user.level._id,
-      phone: user.phone,
-      ext: user.ext,
+      room: room?._id,
+      level: level?._id,
+      phone,
+      ext,
       sex: sex,
       birthday: birthday,
     },
