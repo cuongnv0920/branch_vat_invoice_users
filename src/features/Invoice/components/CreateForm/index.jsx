@@ -37,11 +37,8 @@ function CreateForm(props) {
   const [birthday, setBirthday] = useState(new Date());
 
   const schema = yup.object().shape({
-    file_1: yup.string().required("Vui lòng chọn file hóa đơn .xml."),
-    email: yup
-      .string()
-      .required("Vui lòng nhập địa chỉ email.")
-      .email("Địa chỉ email không hợp lệ."),
+    file_1: yup.string().required("Vui lòng đính kèm file hóa đơn .xml."),
+    file_2: yup.string().required("Vui lòng đính kèm file hóa đơn .pdf."),
     password: yup
       .string()
       .required("Vui lòng nhập mật khẩu.")
@@ -72,7 +69,7 @@ function CreateForm(props) {
   const form = useForm({
     defaultValues: {
       file_1: "",
-      email: "",
+      file_2: "",
       password: "",
       retypePassword: "",
       room: "",
@@ -88,6 +85,7 @@ function CreateForm(props) {
   });
 
   const handleSubmit = async (values) => {
+    console.log(values);
     const { onSubmit } = props;
     if (onSubmit) {
       await onSubmit(values);
@@ -113,11 +111,11 @@ function CreateForm(props) {
           <Grid item xs={12} md={6} sm={6}>
             <UploadField name="file_1" label="File hóa đơn .xml" form={form} />
           </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField name="email" label="Địa chỉ email" form={form} />
-          </Grid>
+          {/* <Grid item xs={12} md={6} sm={6}>
+            <UploadField name="file_2" label="File hóa đơn .pdf" form={form} />
+          </Grid> */}
         </Grid>
-        <Grid container spacing={3}>
+        {/* <Grid container spacing={3}>
           <Grid item xs={12} md={6} sm={6}>
             <PasswordField name="password" label="Mật khẩu" form={form} />
           </Grid>
@@ -179,7 +177,7 @@ function CreateForm(props) {
               form={form}
             />
           </Grid>
-        </Grid>
+        </Grid> */}
         <Stack direction="row" spacing={3} mt={3} className="createUser__stack">
           <Button
             className="dialogButtonSave dialogButton"

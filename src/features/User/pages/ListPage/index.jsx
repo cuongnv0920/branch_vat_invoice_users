@@ -85,7 +85,6 @@ function ListPage(props) {
 
   const handleSelectedRow = async (value) => {
     const data = await userApi.get(value);
-    console.log(data);
     const action = getData(data);
     dispatch(action);
     setDisabled(!!value);

@@ -15,6 +15,7 @@ import Create from "features/Invoice/components/Create";
 import Delete from "features/Invoice/components/Delete";
 import Filter from "features/Invoice/components/Filter";
 import InvoiceList from "features/Invoice/components/InvoiceList";
+import ReadXml from "features/Invoice/components/ReadXml";
 import Show from "features/Invoice/components/Show";
 import { getData } from "features/Invoice/invoiceSlice";
 import { useEffect, useState } from "react";
@@ -23,6 +24,7 @@ import { useDispatch } from "react-redux";
 ListPage.propTypes = {};
 
 function ListPage(props) {
+  const [openDialogReadXml, setOpenDialogReadXml] = useState(false);
   const [openDialogCreate, setOpenDialogCreate] = useState(false);
   const [openDialogShow, setOpenDialogShow] = useState(false);
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
@@ -91,6 +93,14 @@ function ListPage(props) {
     setDisabled(!!value);
   };
 
+  const handleOpenDialogReadXml = () => {
+    setOpenDialogReadXml(true);
+  };
+  const handleCloseDialogReadXml = () => {
+    setOpenDialogReadXml(false);
+    setCloseDialog(closeDialog + 1);
+  };
+
   const handleOpenDialogCreate = () => {
     setOpenDialogCreate(true);
   };
@@ -131,7 +141,7 @@ function ListPage(props) {
             />
             <ActionBar
               disabledButton={!disabled}
-              openDialogCreate={handleOpenDialogCreate}
+              openDialogCreate={handleOpenDialogReadXml}
               openDialogShow={handleOpenDialogShow}
             />
             <InvoiceList
@@ -148,6 +158,31 @@ function ListPage(props) {
           </Paper>
         </Grid>
       </Grid>
+
+      <Dialog
+        maxWidth="xs"
+        fullWidth="xs"
+        open={openDialogReadXml}
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick") {
+            handleCloseDialogReadXml(event, reason);
+          }
+        }}
+      >
+        <DialogContent>
+          <ReadXml closeDialog={handleCloseDialogReadXml} />
+        </DialogContent>
+        <DialogActions className="dialogAction">
+          <Button
+            onClick={handleCloseDialogReadXml}
+            className="dialogButtonClose dialogButton"
+            variant="contained"
+            startIcon={<CancelIcon />}
+          >
+            Thoát
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Dialog
         maxWidth="md"
