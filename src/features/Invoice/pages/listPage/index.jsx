@@ -102,6 +102,7 @@ function ListPage(props) {
   };
 
   const handleOpenDialogCreate = () => {
+    setOpenDialogReadXml(false);
     setOpenDialogCreate(true);
   };
   const handleCloseDialogCreate = () => {
@@ -160,8 +161,8 @@ function ListPage(props) {
       </Grid>
 
       <Dialog
-        maxWidth="xs"
-        fullWidth="xs"
+        maxWidth="sm"
+        fullWidth="sm"
         open={openDialogReadXml}
         onClose={(event, reason) => {
           if (reason !== "backdropClick") {
@@ -170,7 +171,10 @@ function ListPage(props) {
         }}
       >
         <DialogContent>
-          <ReadXml closeDialog={handleCloseDialogReadXml} />
+          <ReadXml
+            closeDialog={handleCloseDialogReadXml}
+            openDialogCreate={handleOpenDialogCreate}
+          />
         </DialogContent>
         <DialogActions className="dialogAction">
           <Button
