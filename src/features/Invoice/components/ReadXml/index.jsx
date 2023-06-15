@@ -7,9 +7,12 @@ import ReadXmlFrom from "../ReaXmlForm";
 
 ReadXml.propTypes = {
   closeDialog: PropTypes.func,
+  openDialogCreate: PropTypes.func,
 };
 
 function ReadXml(props) {
+  const { closeDialog, openDialogCreate } = props;
+
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -19,7 +22,6 @@ function ReadXml(props) {
       const resultAction = await dispatch(action);
       unwrapResult(resultAction);
 
-      const { closeDialog } = props; // close dialog
       if (closeDialog) {
         closeDialog();
       }
@@ -28,9 +30,18 @@ function ReadXml(props) {
     }
   };
 
+  const handleCloseDialogCreate = () => {
+    if (openDialogCreate) {
+      openDialogCreate();
+    }
+  };
+
   return (
     <div>
-      <ReadXmlFrom onSubmit={handleSubmit} />
+      <ReadXmlFrom
+        onSubmit={handleSubmit}
+        openDialogCreate={handleCloseDialogCreate}
+      />
     </div>
   );
 }
