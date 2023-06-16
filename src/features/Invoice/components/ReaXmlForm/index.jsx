@@ -18,12 +18,12 @@ function ReadXmlFrom(props) {
   const { onSubmit, openDialogCreate } = props;
 
   const schema = yup.object().shape({
-    file_1: yup.string().required("Vui lòng đính kèm file hóa đơn .xml."),
+    upload: yup.string().required("Vui lòng đính kèm file hóa đơn .xml."),
   });
 
   const form = useForm({
     defaultValues: {
-      file_1: "",
+      upload: "",
     },
 
     resolver: yupResolver(schema),
@@ -47,7 +47,7 @@ function ReadXmlFrom(props) {
         <MarkChatReadIcon />
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <UploadField name="file_1" label="Chọn file hóa đơn .xml" form={form} />
+        <UploadField name="upload" label="Chọn file hóa đơn .xml" form={form} />
         <Stack
           direction="row"
           spacing={3}
