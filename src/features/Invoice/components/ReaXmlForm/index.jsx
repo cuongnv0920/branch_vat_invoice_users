@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import MarkChatReadIcon from "@mui/icons-material/MarkChatRead";
-import SaveIcon from "@mui/icons-material/Save";
+import SendIcon from "@mui/icons-material/Send";
 import { Avatar, Button, CircularProgress, Stack } from "@mui/material";
 import { UploadField } from "components";
 import PropTypes from "prop-types";
@@ -58,7 +58,7 @@ function ReadXmlFrom(props) {
             className="dialogButtonSave dialogButton"
             type="submit"
             variant="contained"
-            startIcon={<SaveIcon />}
+            startIcon={<SendIcon />}
             disabled={isSubmitting}
           >
             {isSubmitting ? (
@@ -68,7 +68,7 @@ function ReadXmlFrom(props) {
                 className="createUser__progress"
               />
             ) : (
-              "Đọc file .xml"
+              "Gửi"
             )}
           </Button>
           <Button
