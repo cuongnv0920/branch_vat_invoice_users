@@ -10,7 +10,7 @@ const configFormData = {
 
 export const invoiceApi = {
   readXml(data) {
-    const url = "invoice/readXml";
+    const url = "/invoice/readXml";
     return axiosClient.post(url, data, configFormData);
   },
 
