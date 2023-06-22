@@ -25,12 +25,15 @@ import {
   UploadField,
 } from "components";
 import { levelApi, roomApi } from "api";
+import storageKeys from "configs/storageKeysConf";
 
 CreateForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
 function CreateForm(props) {
+  const invoice = localStorage.getItem(storageKeys.READXML);
+  console.log(invoice);
   const [roomList, setRoomList] = useState([]);
   const [levelList, setLevelList] = useState([]);
   const [sex, setSex] = useState("Mr");
@@ -69,16 +72,7 @@ function CreateForm(props) {
   const form = useForm({
     defaultValues: {
       file_1: "",
-      file_2: "",
-      password: "",
-      retypePassword: "",
-      room: "",
-      level: "",
-      phone: "",
-      ext: "",
-      sex: sex,
-      role: "user",
-      birthday: birthday,
+      serial: invoice.serial,
     },
 
     resolver: yupResolver(schema),
@@ -111,73 +105,11 @@ function CreateForm(props) {
           <Grid item xs={12} md={6} sm={6}>
             <UploadField name="file_1" label="File hóa đơn .xml" form={form} />
           </Grid>
-          {/* <Grid item xs={12} md={6} sm={6}>
-            <UploadField name="file_2" label="File hóa đơn .pdf" form={form} />
-          </Grid> */}
-        </Grid>
-        {/* <Grid container spacing={3}>
           <Grid item xs={12} md={6} sm={6}>
-            <PasswordField name="password" label="Mật khẩu" form={form} />
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <PasswordField
-              name="retypePassword"
-              label="Xác nhận lại mật khẩu"
-              form={form}
-            />
+            <InputField name="serial" label="Ký hiệu hóa đơn" form={form} />
           </Grid>
         </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <SelectField name="room" label="Phòng/ ban" form={form}>
-              {roomList.map((room, _) => (
-                <MenuItem value={room.id}>{room.name}</MenuItem>
-              ))}
-            </SelectField>
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <SelectField name="level" label="Chức danh" form={form}>
-              {levelList.map((level, _) => (
-                <MenuItem value={level.id}>{level.name}</MenuItem>
-              ))}
-            </SelectField>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField
-              name="phone"
-              label="Số điện thoại di động"
-              form={form}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField name="ext" label="Số điện thoại nội bộ" form={form} />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6} mt={1}>
-            <RadioField
-              name="sex"
-              label="Giới tính"
-              onChange={handleChangeSex}
-              form={form}
-            >
-              <FormControlLabel value="Mr" control={<Radio />} label="Nam" />
-              <FormControlLabel value="Ms" control={<Radio />} label="Nữ" />
-            </RadioField>
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <DateField
-              name="birthday"
-              inputFormat="DD/MM/YYYY"
-              value={birthday}
-              onChange={handleChangeBirtday}
-              label="Ngày sinh nhật"
-              form={form}
-            />
-          </Grid>
-        </Grid> */}
+
         <Stack direction="row" spacing={3} mt={3} className="createUser__stack">
           <Button
             className="dialogButtonSave dialogButton"
