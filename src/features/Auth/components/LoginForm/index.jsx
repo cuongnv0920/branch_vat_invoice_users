@@ -1,7 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, CircularProgress } from "@mui/material";
-import { PasswordField } from "components";
-import InputField from "components/InputField";
+import { InputField, PasswordField } from "components";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import "./styles.scss";

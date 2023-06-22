@@ -2,11 +2,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SaveIcon from "@mui/icons-material/Save";
 import { Avatar, Button, CircularProgress, Stack } from "@mui/material";
-import InputField from "components/InputField";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import "./styles.scss";
+import { InputField } from "components";
 
 CreateForm.propTypes = {
   onSubmit: PropTypes.func,

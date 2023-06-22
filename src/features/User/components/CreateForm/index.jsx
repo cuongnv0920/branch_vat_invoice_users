@@ -6,19 +6,23 @@ import {
   Button,
   CircularProgress,
   FormControlLabel,
-  Grid,
   MenuItem,
   Radio,
   Stack,
 } from "@mui/material";
-import InputField from "components/InputField";
+import { levelApi, roomApi } from "api";
+import {
+  DateField,
+  InputField,
+  PasswordField,
+  RadioField,
+  SelectField,
+} from "components";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import "./styles.scss";
-import { useEffect, useState } from "react";
-import { DateField, PasswordField, RadioField, SelectField } from "components";
-import { levelApi, roomApi } from "api";
 
 CreateForm.propTypes = {
   onSubmit: PropTypes.func,
@@ -103,77 +107,45 @@ function CreateForm(props) {
         <AddCircleIcon />
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField name="fullName" label="Họ và tên" form={form} />
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField name="email" label="Địa chỉ email" form={form} />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <PasswordField name="password" label="Mật khẩu" form={form} />
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <PasswordField
-              name="retypePassword"
-              label="Xác nhận lại mật khẩu"
-              form={form}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <SelectField name="room" label="Phòng/ ban" form={form}>
-              {roomList.map((room, _) => (
-                <MenuItem value={room.id}>{room.name}</MenuItem>
-              ))}
-            </SelectField>
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <SelectField name="level" label="Chức danh" form={form}>
-              {levelList.map((level, _) => (
-                <MenuItem value={level.id}>{level.name}</MenuItem>
-              ))}
-            </SelectField>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField
-              name="phone"
-              label="Số điện thoại di động"
-              form={form}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField name="ext" label="Số điện thoại nội bộ" form={form} />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6} mt={1}>
-            <RadioField
-              name="sex"
-              label="Giới tính"
-              onChange={handleChangeSex}
-              form={form}
-            >
-              <FormControlLabel value="Mr" control={<Radio />} label="Nam" />
-              <FormControlLabel value="Ms" control={<Radio />} label="Nữ" />
-            </RadioField>
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <DateField
-              name="birthday"
-              inputFormat="DD/MM/YYYY"
-              value={birthday}
-              onChange={handleChangeBirtday}
-              label="Ngày sinh nhật"
-              form={form}
-            />
-          </Grid>
-        </Grid>
+        <InputField name="fullName" label="Họ và tên" form={form} />
+        <InputField name="email" label="Địa chỉ email" form={form} />
+        <PasswordField name="password" label="Mật khẩu" form={form} />
+        <PasswordField
+          name="retypePassword"
+          label="Xác nhận lại mật khẩu"
+          form={form}
+        />
+        <SelectField name="room" label="Phòng/ ban" form={form}>
+          {roomList.map((room, _) => (
+            <MenuItem value={room.id}>{room.name}</MenuItem>
+          ))}
+        </SelectField>
+        <SelectField name="level" label="Chức danh" form={form}>
+          {levelList.map((level, _) => (
+            <MenuItem value={level.id}>{level.name}</MenuItem>
+          ))}
+        </SelectField>
+        <InputField name="phone" label="Số điện thoại di động" form={form} />
+        <InputField name="ext" label="Số điện thoại nội bộ" form={form} />
+        <DateField
+          name="birthday"
+          inputFormat="DD/MM/YYYY"
+          value={birthday}
+          onChange={handleChangeBirtday}
+          label="Ngày sinh nhật"
+          form={form}
+        />
+
+        <RadioField
+          name="sex"
+          label="Giới tính"
+          onChange={handleChangeSex}
+          form={form}
+        >
+          <FormControlLabel value="Mr" control={<Radio />} label="Nam" />
+          <FormControlLabel value="Ms" control={<Radio />} label="Nữ" />
+        </RadioField>
+
         <Stack direction="row" spacing={3} mt={3} className="createUser__stack">
           <Button
             className="dialogButtonSave dialogButton"

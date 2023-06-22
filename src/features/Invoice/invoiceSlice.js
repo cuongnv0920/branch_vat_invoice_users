@@ -6,7 +6,7 @@ export const readXml = createAsyncThunk("invoice/readXml", async (payload) => {
   const data = await invoiceApi.readXml(payload);
 
   // save data to local storage
-  localStorage.setItem(storageKeys.READXML, JSON.stringify(data[0]));
+  localStorage.setItem(storageKeys.READXML, JSON.stringify(data.invoice));
 
   return data;
 });
