@@ -38,7 +38,7 @@ function LoginForm(props) {
         <PasswordField name="password" label="Mật khẩu" form={form} />
 
         <Button
-          className="dialogButtonSave"
+          className="login__button"
           type="submit"
           variant="contained"
           fullWidth

@@ -14,14 +14,15 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import "./styles.scss";
 
 RegisterForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
 function RegisterForm(props) {
-  const [rooms, setRooms] = useState([]);
-  const [levels, setLevels] = useState([]);
+  const [roomList, setRoomList] = useState([]);
+  const [levelList, setLevelList] = useState([]);
   const [sex, setSex] = useState("Mr");
   const [birthday, setBirthday] = useState(new Date());
 
@@ -62,19 +63,17 @@ function RegisterForm(props) {
   });
 
   useEffect(() => {
-    const fetchRooms = async () => {
-      const rooms = await roomApi.getAll();
-      setRooms(rooms);
-    };
-    fetchRooms();
+    (async () => {
+      const { roomList } = await roomApi.getAll();
+      setRoomList(roomList);
+    })();
   }, []);
 
   useEffect(() => {
-    const fetchLevels = async () => {
-      const levels = await levelApi.getAll();
-      setLevels(levels);
-    };
-    fetchLevels();
+    (async () => {
+      const { levelList } = await levelApi.getAll();
+      setLevelList(levelList);
+    })();
   }, []);
 
   const handleChangeBirtday = (date) => {
@@ -105,12 +104,12 @@ function RegisterForm(props) {
           form={form}
         />
         <SelectField name="room" label="Phòng/ ban" form={form}>
-          {rooms.map((room, _) => (
+          {roomList.map((room, _) => (
             <MenuItem value={room.id}>{room.name}</MenuItem>
           ))}
         </SelectField>
         <SelectField name="level" label="Chức danh" form={form}>
-          {levels.map((level, _) => (
+          {levelList.map((level, _) => (
             <MenuItem value={level.id}>{level.name}</MenuItem>
           ))}
         </SelectField>
@@ -142,7 +141,7 @@ function RegisterForm(props) {
         </Grid>
 
         <Button
-          className="dialogButtonSave"
+          className="register__button"
           type="submit"
           variant="contained"
           fullWidth

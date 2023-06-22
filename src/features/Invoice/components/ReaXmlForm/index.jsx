@@ -15,10 +15,8 @@ ReadXmlFrom.propTypes = {
 };
 
 function ReadXmlFrom(props) {
-  const { onSubmit, openDialogCreate } = props;
-
   const schema = yup.object().shape({
-    upload: yup.string().required("Vui lòng đính kèm file hóa đơn .xml."),
+    upload: yup.mixed().required("Vui lòng đính kèm file hóa đơn .xml."),
   });
 
   const form = useForm({
@@ -30,12 +28,14 @@ function ReadXmlFrom(props) {
   });
 
   const handleSubmit = async (values) => {
+    const { onSubmit } = props;
     if (onSubmit) {
       await onSubmit(values);
     }
   };
 
   const handleOpenDialogCreate = () => {
+    const { openDialogCreate } = props;
     openDialogCreate();
   };
 
