@@ -149,8 +149,8 @@ function ListPage(props) {
       </Grid>
 
       <Dialog
-        maxWidth="md"
-        fullWidth="md"
+        maxWidth="xs"
+        fullWidth="xs"
         open={openDialogCreate}
         onClose={(event, reason) => {
           if (reason !== "backdropClick") {
@@ -174,8 +174,8 @@ function ListPage(props) {
       </Dialog>
 
       <Dialog
-        maxWidth="md"
-        fullWidth="md"
+        maxWidth="xs"
+        fullWidth="xs"
         open={openDialogShow}
         onClose={(event, reason) => {
           if (reason !== "backdropClick") {

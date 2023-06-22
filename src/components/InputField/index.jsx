@@ -15,7 +15,7 @@ InputField.defaultProps = {
   type: "text",
 };
 
-function InputField(props) {
+export function InputField(props) {
   const { form, name, label, inputProps, disabled, type } = props;
   const { control } = form;
 
@@ -48,5 +48,3 @@ function InputField(props) {
     </div>
   );
 }
-
-export default InputField;

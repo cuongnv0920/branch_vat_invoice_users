@@ -7,20 +7,24 @@ import {
   Button,
   CircularProgress,
   FormControlLabel,
-  Grid,
   MenuItem,
   Radio,
   Stack,
 } from "@mui/material";
-import InputField from "components/InputField";
+import { levelApi, roomApi } from "api";
+import {
+  DateField,
+  InputField,
+  PasswordField,
+  RadioField,
+  SelectField,
+} from "components";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import "./styles.scss";
-import { levelApi, roomApi } from "api";
-import { DateField, PasswordField, RadioField, SelectField } from "components";
 
 ShowForm.propTypes = {
   onSubmit: PropTypes.func,
@@ -115,120 +119,91 @@ function ShowForm(props) {
         <VisibilityIcon />
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField
-              disabled={disabledField}
-              name="fullName"
-              label="Họ và tên"
-              form={form}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField
-              disabled={disabledField}
-              name="email"
-              label="Địa chỉ email"
-              form={form}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <PasswordField
-              disabled={disabledField}
-              name="password"
-              label="Mật khẩu"
-              form={form}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <PasswordField
-              disabled={disabledField}
-              name="retypePassword"
-              label="Xác nhận lại mật khẩu"
-              form={form}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <SelectField
-              disabled={disabledField}
-              name="room"
-              label="Phòng/ ban"
-              form={form}
-            >
-              {roomList.map((room, _) => (
-                <MenuItem value={room.id}>{room.name}</MenuItem>
-              ))}
-            </SelectField>
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <SelectField
-              disabled={disabledField}
-              name="level"
-              label="Chức danh"
-              form={form}
-            >
-              {levelList.map((level, _) => (
-                <MenuItem value={level.id}>{level.name}</MenuItem>
-              ))}
-            </SelectField>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField
-              disabled={disabledField}
-              name="phone"
-              label="Số điện thoại di động"
-              form={form}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField
-              disabled={disabledField}
-              name="ext"
-              label="Số điện thoại nội bộ"
-              form={form}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6} mt={1}>
-            <RadioField
-              name="sex"
-              label="Giới tính"
-              onChange={handleChangeSex}
-              form={form}
-            >
-              <FormControlLabel
-                disabled={disabledField}
-                value="Mr"
-                control={<Radio />}
-                label="Nam"
-              />
-              <FormControlLabel
-                disabled={disabledField}
-                value="Ms"
-                control={<Radio />}
-                label="Nữ"
-              />
-            </RadioField>
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <DateField
-              disabled={disabledField}
-              name="birthday"
-              inputFormat="DD/MM/YYYY"
-              value={birthday}
-              onChange={handleChangeBirtday}
-              label="Ngày sinh nhật"
-              form={form}
-            />
-          </Grid>
-        </Grid>
+        <InputField
+          disabled={disabledField}
+          name="fullName"
+          label="Họ và tên"
+          form={form}
+        />
+        <InputField
+          disabled={disabledField}
+          name="email"
+          label="Địa chỉ email"
+          form={form}
+        />
+        <PasswordField
+          disabled={disabledField}
+          name="password"
+          label="Mật khẩu"
+          form={form}
+        />
+        <PasswordField
+          disabled={disabledField}
+          name="retypePassword"
+          label="Xác nhận lại mật khẩu"
+          form={form}
+        />
+        <SelectField
+          disabled={disabledField}
+          name="room"
+          label="Phòng/ ban"
+          form={form}
+        >
+          {roomList.map((room, _) => (
+            <MenuItem value={room.id}>{room.name}</MenuItem>
+          ))}
+        </SelectField>
+        <SelectField
+          disabled={disabledField}
+          name="level"
+          label="Chức danh"
+          form={form}
+        >
+          {levelList.map((level, _) => (
+            <MenuItem value={level.id}>{level.name}</MenuItem>
+          ))}
+        </SelectField>
+        <InputField
+          disabled={disabledField}
+          name="phone"
+          label="Số điện thoại di động"
+          form={form}
+        />
+        <InputField
+          disabled={disabledField}
+          name="ext"
+          label="Số điện thoại nội bộ"
+          form={form}
+        />
+        <DateField
+          disabled={disabledField}
+          name="birthday"
+          inputFormat="DD/MM/YYYY"
+          value={birthday}
+          onChange={handleChangeBirtday}
+          label="Ngày sinh nhật"
+          form={form}
+        />
+        <RadioField
+          name="sex"
+          label="Giới tính"
+          onChange={handleChangeSex}
+          form={form}
+        >
+          <FormControlLabel
+            disabled={disabledField}
+            value="Mr"
+            control={<Radio />}
+            label="Nam"
+          />
+          <FormControlLabel
+            disabled={disabledField}
+            value="Ms"
+            control={<Radio />}
+            label="Nữ"
+          />
+        </RadioField>
+
         <Stack direction="row" spacing={3} mt={3} className="showUser__stack">
           <Button
             className="dialogButtonSave dialogButton"

@@ -12,7 +12,6 @@ import {
   Radio,
   Stack,
 } from "@mui/material";
-import InputField from "components/InputField";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -20,7 +19,13 @@ import { useSelector } from "react-redux";
 import * as yup from "yup";
 import "./styles.scss";
 import { levelApi, roomApi } from "api";
-import { DateField, PasswordField, RadioField, SelectField } from "components";
+import {
+  DateField,
+  InputField,
+  PasswordField,
+  RadioField,
+  SelectField,
+} from "components";
 
 ShowForm.propTypes = {
   onSubmit: PropTypes.func,

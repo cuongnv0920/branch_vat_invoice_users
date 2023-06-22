@@ -17,26 +17,28 @@ export function RadioField(props) {
   const { control } = form;
 
   return (
-    <Controller
-      name={name}
-      control={control}
-      render={({
-        field: { onChange, onBlur, value },
-        fieldState: { invalid, error },
-      }) => (
-        <>
-          <FormLabel component="legend">{label}</FormLabel>
-          <RadioGroup
-            name={name}
-            row
-            value={value}
-            onChange={onChange}
-            onBlur={onBlur}
-          >
-            {children}
-          </RadioGroup>
-        </>
-      )}
-    />
+    <div style={{ marginTop: "16px" }}>
+      <Controller
+        name={name}
+        control={control}
+        render={({
+          field: { onChange, onBlur, value },
+          fieldState: { invalid, error },
+        }) => (
+          <>
+            <FormLabel component="legend">{label}</FormLabel>
+            <RadioGroup
+              name={name}
+              row
+              value={value}
+              onChange={onChange}
+              onBlur={onBlur}
+            >
+              {children}
+            </RadioGroup>
+          </>
+        )}
+      />
+    </div>
   );
 }

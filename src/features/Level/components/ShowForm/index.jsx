@@ -3,13 +3,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Avatar, Button, CircularProgress, Stack } from "@mui/material";
-import InputField from "components/InputField";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import "./styles.scss";
+import { InputField } from "components";
 
 ShowForm.propTypes = {
   onSubmit: PropTypes.func,
