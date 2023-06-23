@@ -17,7 +17,7 @@ import Filter from "features/Invoice/components/Filter";
 import InvoiceList from "features/Invoice/components/InvoiceList";
 import ReadXml from "features/Invoice/components/ReadXml";
 import Show from "features/Invoice/components/Show";
-import { getData } from "features/Invoice/invoiceSlice";
+import { getData, removeXml } from "features/Invoice/invoiceSlice";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -48,7 +48,7 @@ function ListPage(props) {
       try {
         const { invoiceList, paginations } = await invoiceApi.getAll(filters);
         setInvoiceList(
-          invoiceList.map((user, index) => ({ ...user, stt: index + 1 }))
+          invoiceList.map((invoice, index) => ({ ...invoice, stt: index + 1 }))
         );
         setPaginations(paginations);
         setLoadding(false);
@@ -101,6 +101,9 @@ function ListPage(props) {
     setCloseDialog(closeDialog + 1);
     setOpenDialogCreate(true);
   };
+  const handleCloseDialogReadXmlButton = () => {
+    setOpenDialogReadXml(false);
+  };
 
   const handleOpenDialogCreate = () => {
     setOpenDialogReadXml(false);
@@ -109,6 +112,8 @@ function ListPage(props) {
   const handleCloseDialogCreate = () => {
     setOpenDialogCreate(false);
     setCloseDialog(closeDialog + 1);
+    const action = removeXml();
+    dispatch(action);
   };
 
   const handleOpenDialogShow = async () => {
@@ -179,7 +184,7 @@ function ListPage(props) {
         </DialogContent>
         <DialogActions className="dialogAction">
           <Button
-            onClick={handleCloseDialogReadXml}
+            onClick={handleCloseDialogReadXmlButton}
             className="dialogButtonClose dialogButton"
             variant="contained"
             startIcon={<CancelIcon />}

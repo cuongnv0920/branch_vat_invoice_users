@@ -14,7 +14,7 @@ import LoaddingTable from "components/LoaddingTable";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import Moment from "react-moment";
-import { showStatus } from "utils/showStatus";
+import { showStatusInvoice } from "utils/showStatusInvoice";
 import "./styles.scss";
 
 InvoiceList.propTypes = {
@@ -38,18 +38,18 @@ const columns = [
   },
   {
     title: "Số hóa đơn",
-    field: "no",
+    field: "invoiceNo",
   },
   {
     title: "Ngày hóa đơn",
-    field: "date",
+    field: "invoiceDate",
   },
   {
     title: "Đơn vị cung cấp",
     field: "seller",
   },
   {
-    title: "Tổng số tiền",
+    title: "Tổng số tiền (VNĐ)",
     field: "payment",
   },
   {
@@ -134,25 +134,25 @@ function InvoiceList(props) {
                     {invoice.serial}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
-                    {invoice.no}
+                    {invoice.invoiceNo}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
-                    <Moment format="DD/MM/YYYY">{invoice.date}</Moment>
+                    <Moment format="DD/MM/YYYY">{invoice.invoiceDate}</Moment>
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
                     {invoice.seller}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
-                    {invoice.payment}
+                    {invoice.payment.toLocaleString()}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
                     {invoice.content}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
-                    {invoice.createUser.fullName}
+                    {invoice.createdUser?.fullName}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
-                    {invoice.approveUser.fullName}
+                    {invoice.approvedUser?.fullName}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
                     <button
@@ -162,14 +162,16 @@ function InvoiceList(props) {
                           : "statusFalse buttonStatus"
                       }
                     >
-                      {showStatus(invoice.status)}
+                      {showStatusInvoice(invoice.status)}
                     </button>
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
                     <Moment format="DD/MM/YYYY">{invoice.createdAt}</Moment>
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
-                    <Moment format="DD/MM/YYYY">{invoice.updatedAt}</Moment>
+                    {invoice.updatedAt !== null && (
+                      <Moment format="DD/MM/YYYY">{invoice.updatedAt}</Moment>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
