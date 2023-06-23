@@ -15,21 +15,28 @@ ReadXmlFrom.propTypes = {
 };
 
 function ReadXmlFrom(props) {
-  const fileSize = 2 * 1024 * 1024;
-  const supportedFormats = ["text/xml"];
+  const FILE_SIZE = 2 * 1024 * 1024;
+  const SUPPORTED_FORMATS = ["text/xml"];
+
   const schema = yup.object().shape({
-    upload: yup
+    fileXml: yup
       .mixed()
-      .required("Vui lòng chọn tệp tin xml.")
+      .test("isRequired", "Vui lòng chọn tệp tin xml.", function (value) {
+        return value !== "" && value !== null;
+      })
       .test(
         "fileSize",
         "Kích thước tệp tin không được vượt quá 2Mb.",
-        (value) => value && value.size <= fileSize
+        function (value) {
+          return value && value.size <= FILE_SIZE;
+        }
       )
       .test(
         "fileFormat",
         "Vui lòng chỉ chọn tệp tin có định dạng xml.",
-        (value) => value && supportedFormats.includes(value.type)
+        function (value) {
+          return value && SUPPORTED_FORMATS.includes(value.type);
+        }
       ),
   });
 
@@ -61,7 +68,7 @@ function ReadXmlFrom(props) {
         <MarkChatReadIcon />
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <UploadField name="upload" label="Chọn tệp tin" form={form} />
+        <UploadField name="fileXml" label="Chọn tệp tin xml" form={form} />
         <Stack
           direction="row"
           spacing={3}

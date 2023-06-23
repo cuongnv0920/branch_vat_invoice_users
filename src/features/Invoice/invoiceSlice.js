@@ -6,7 +6,7 @@ export const readXml = createAsyncThunk("invoice/readXml", async (payload) => {
   const data = await invoiceApi.readXml(payload);
 
   // save data to local storage
-  localStorage.setItem(storageKeys.READXML, JSON.stringify(data.invoice));
+  localStorage.setItem(storageKeys.READXML, JSON.stringify(data.invoice[0]));
 
   return data;
 });
@@ -33,6 +33,7 @@ const invoiceSlice = createSlice({
   name: "invoice",
   initialState: {
     getData: {},
+    current: JSON.parse(localStorage.getItem(storageKeys.READXML)),
   },
   reducers: {
     getData(state, action) {
@@ -40,6 +41,11 @@ const invoiceSlice = createSlice({
         ...state,
         getData: action.payload,
       };
+    },
+    removeXml(state) {
+      localStorage.removeItem(storageKeys.READXML);
+
+      state.current = {};
     },
   },
   extraReducers: {
@@ -62,5 +68,5 @@ const invoiceSlice = createSlice({
 });
 
 const { actions, reducer } = invoiceSlice;
-export const { getData } = actions;
+export const { getData, removeXml } = actions;
 export default reducer;

@@ -1,8 +1,8 @@
 import { unwrapResult } from "@reduxjs/toolkit";
+import { create } from "features/Invoice/invoiceSlice";
 import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { create } from "features/User/userSlice";
 import CreateForm from "../CreateForm";
 
 Create.propTypes = {
@@ -14,19 +14,18 @@ function Create(props) {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values) => {
-    console.log(values);
-    // try {
-    //   const action = create(values);
-    //   const resultAction = await dispatch(action);
-    //   unwrapResult(resultAction);
+    try {
+      const action = create(values);
+      const resultAction = await dispatch(action);
+      unwrapResult(resultAction);
 
-    //   const { closeDialog } = props; // close dialog
-    //   if (closeDialog) {
-    //     closeDialog();
-    //   }
-    // } catch (error) {
-    //   enqueueSnackbar(error.message, { variant: "error" });
-    // }
+      const { closeDialog } = props; // close dialog
+      if (closeDialog) {
+        closeDialog();
+      }
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+    }
   };
 
   return (
