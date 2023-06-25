@@ -19,7 +19,7 @@ function ReadXmlFrom(props) {
   const SUPPORTED_FORMATS = ["text/xml"];
 
   const schema = yup.object().shape({
-    fileXml: yup
+    xmlFile: yup
       .mixed()
       .test("isRequired", "Vui lòng chọn tệp tin xml.", function (value) {
         return value !== "" && value !== null;
@@ -42,7 +42,7 @@ function ReadXmlFrom(props) {
 
   const form = useForm({
     defaultValues: {
-      upload: "",
+      xmlFile: "",
     },
 
     resolver: yupResolver(schema),
@@ -68,7 +68,7 @@ function ReadXmlFrom(props) {
         <MarkChatReadIcon />
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <UploadField name="fileXml" label="Chọn tệp tin xml" form={form} />
+        <UploadField name="xmlFile" label="Chọn tệp tin xml" form={form} />
         <Stack
           direction="row"
           spacing={3}

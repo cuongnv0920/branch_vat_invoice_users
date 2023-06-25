@@ -1,5 +1,9 @@
+import MenuIcon from "@mui/icons-material/Menu";
 import {
   FormControlLabel,
+  IconButton,
+  Menu,
+  MenuItem,
   Radio,
   RadioGroup,
   Table,
@@ -8,12 +12,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import LoaddingTable from "components/LoaddingTable";
+import api from "configs/apiConf";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import Moment from "react-moment";
+import { showFile } from "utils/showFile";
 import { showStatusInvoice } from "utils/showStatusInvoice";
 import "./styles.scss";
 
@@ -21,6 +28,7 @@ InvoiceList.propTypes = {
   data: PropTypes.array.isRequired,
   loadding: PropTypes.bool,
   selectedRow: PropTypes.func,
+  pdfView: PropTypes.string,
 };
 
 const columns = [
@@ -57,6 +65,10 @@ const columns = [
     field: "content",
   },
   {
+    title: "File đính kèm",
+    field: "file",
+  },
+  {
     title: "Cán bộ tạo",
     field: "createUser",
   },
@@ -79,13 +91,27 @@ const columns = [
 ];
 
 function InvoiceList(props) {
-  const { data, loadding, selectedRow } = props;
+  const { data, loadding, selectedRow, pdfView } = props;
   const [value, setValue] = useState(undefined || "");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-  const handleSelectRow = async (event) => {
+  const handleSelectRow = (event) => {
     setValue(event.target.value);
     if (selectedRow) {
       selectedRow(event.target.value);
+    }
+  };
+
+  const handleClickPdfView = (path) => {
+    if (pdfView) {
+      pdfView(path);
     }
   };
 
@@ -148,6 +174,88 @@ function InvoiceList(props) {
                   <TableCell className="invoiceTable__cellBody">
                     {invoice.content}
                   </TableCell>
+
+                  <TableCell className="invoiceTable__cellBody">
+                    <Tooltip title="File đính kèm">
+                      <IconButton
+                        className="invoiceTable__iconButton"
+                        onClick={handleClick}
+                        size="small"
+                        sx={{ ml: 2 }}
+                        aria-controls={open ? "file-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                      >
+                        <MenuIcon className="invoiceTable__icon" />
+                      </IconButton>
+                    </Tooltip>
+                    <Menu
+                      className="menuFile"
+                      anchorEl={anchorEl}
+                      id="account-menu"
+                      open={open}
+                      onClose={handleClose}
+                      onClick={handleClose}
+                      PaperProps={{
+                        elevation: 0,
+                        sx: {
+                          overflow: "visible",
+                          filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                          mt: 1.5,
+                          "& .MuiAvatar-root": {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 1,
+                          },
+                          "&:before": {
+                            content: '""',
+                            display: "block",
+                            position: "absolute",
+                            top: 0,
+                            right: 11,
+                            width: 10,
+                            height: 10,
+                            bgcolor: "background.paper",
+                            transform: "translateY(-50%) rotate(45deg)",
+                            zIndex: 0,
+                          },
+                        },
+                      }}
+                      transformOrigin={{ horizontal: "right", vertical: "top" }}
+                      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                    >
+                      <MenuItem
+                        onClick={() => handleClickPdfView(invoice.pdfFile)}
+                        className="menuFile__menuItem"
+                      >
+                        <img
+                          className="menuFile__fileType"
+                          src={`${api.URL}/images/${
+                            showFile(invoice.pdfFile).fileType
+                          }.png`}
+                          alt="pdfFile"
+                        />
+                        <h5 className="menuFile__fileName">
+                          {showFile(invoice.pdfFile).fileName}
+                        </h5>
+                      </MenuItem>
+
+                      <MenuItem className="menuFile__menuItem">
+                        <img
+                          className="menuFile__fileType"
+                          src={`${api.URL}/images/${
+                            showFile(invoice.xmlFile).fileType
+                          }.png`}
+                          alt="xmlFile"
+                        />
+                        <h5 className="menuFile__fileName">
+                          {showFile(invoice.xmlFile).fileName}
+                        </h5>
+                      </MenuItem>
+                    </Menu>
+                  </TableCell>
+
                   <TableCell className="invoiceTable__cellBody">
                     {invoice.createdUser?.fullName}
                   </TableCell>

@@ -9,8 +9,8 @@ const configFormData = {
 };
 
 export const invoiceApi = {
-  readXml(data) {
-    const url = "/invoice/readXml";
+  xmlRead(data) {
+    const url = "/invoice/xmlRead";
     return axiosClient.post(url, data, configFormData);
   },
 

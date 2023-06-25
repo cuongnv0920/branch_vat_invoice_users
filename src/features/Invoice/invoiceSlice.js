@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { invoiceApi } from "api";
 import storageKeys from "configs/storageKeysConf";
 
-export const readXml = createAsyncThunk("invoice/readXml", async (payload) => {
-  const data = await invoiceApi.readXml(payload);
+export const xmlRead = createAsyncThunk("invoice/xmlRead", async (payload) => {
+  const data = await invoiceApi.xmlRead(payload);
 
   // save data to local storage
   localStorage.setItem(storageKeys.READXML, JSON.stringify(data.invoice[0]));
@@ -49,7 +49,7 @@ const invoiceSlice = createSlice({
     },
   },
   extraReducers: {
-    [readXml.fulfilled]: (state, action) => {
+    [xmlRead.fulfilled]: (state, action) => {
       state.current = action.payload;
     },
 
