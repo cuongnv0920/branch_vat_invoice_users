@@ -6,6 +6,7 @@ import {
   DialogActions,
   DialogContent,
   Grid,
+  Pagination,
   Paper,
 } from "@mui/material";
 import { invoiceApi, userApi } from "api";
@@ -20,6 +21,10 @@ import Show from "features/Invoice/components/Show";
 import { getData, removeXml } from "features/Invoice/invoiceSlice";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Document, Page, pdfjs } from "react-pdf";
+import api from "configs/apiConf";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 ListPage.propTypes = {};
 
@@ -28,6 +33,10 @@ function ListPage(props) {
   const [openDialogCreate, setOpenDialogCreate] = useState(false);
   const [openDialogShow, setOpenDialogShow] = useState(false);
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
+  const [openDialogPdfView, setOpenDialogPdfView] = useState(false);
+  const [pdfPath, setPdfPath] = useState("");
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
   const [closeDialog, setCloseDialog] = useState(0);
   const [invoiceList, setInvoiceList] = useState([]);
   const [loadding, setLoadding] = useState(true);
@@ -133,6 +142,20 @@ function ListPage(props) {
     setCloseDialog(closeDialog + 1);
   };
 
+  const handleOpenDialogPdfView = (path) => {
+    setPdfPath(path);
+    setOpenDialogPdfView(true);
+  };
+  const handleCloseDialogPdfView = () => {
+    setOpenDialogPdfView(false);
+  };
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
+  const handleChangePagePdfView = (event, page) => {
+    setPageNumber(page);
+  };
+
   return (
     <Box>
       <Grid container>
@@ -155,6 +178,7 @@ function ListPage(props) {
               data={invoiceList}
               loadding={loadding}
               selectedRow={handleSelectedRow}
+              pdfView={handleOpenDialogPdfView}
             />
             <PaginationPage
               item={paginations.total}
@@ -262,6 +286,44 @@ function ListPage(props) {
         <DialogActions className="dialogAction">
           <Button
             onClick={handleCloseDialogDelete}
+            className="dialogButtonClose dialogButton"
+            variant="contained"
+            startIcon={<CancelIcon />}
+          >
+            Thoát
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        maxWidth="md"
+        fullWidth="md"
+        open={openDialogPdfView}
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick") {
+            handleCloseDialogPdfView(event, reason);
+          }
+        }}
+      >
+        <DialogContent>
+          <Document
+            file={`${api.URL}/${pdfPath}`}
+            onLoadSuccess={onDocumentLoadSuccess}
+          >
+            <Page pageNumber={pageNumber} width={850} />
+          </Document>
+          <p>
+            Page {pageNumber} of {numPages}
+          </p>
+        </DialogContent>
+        <DialogActions className="dialogAction">
+          <Pagination
+            count={numPages}
+            page={pageNumber}
+            onChange={handleChangePagePdfView}
+          />
+          <Button
+            onClick={handleCloseDialogPdfView}
             className="dialogButtonClose dialogButton"
             variant="contained"
             startIcon={<CancelIcon />}

@@ -33,4 +33,26 @@
   &__rowBody:nth-of-type(odd) {
     background-color: #ebedf0;
   }
+
+  &__iconButton {
+    background: rgba(248, 202, 291, 0.815) !important;
+    color: rgb(237, 73, 73) !important;
+  }
+}
+
+.menuFile {
+  &__menuItem {
+    padding: 12px 16px !important;
+  }
+
+  &__fileType {
+    width: 24px;
+    height: 24px;
+  }
+
+  &__fileName {
+    margin-left: 8px;
+    line-height: 1.5;
+    font-size: 1rem;
+  }
 }

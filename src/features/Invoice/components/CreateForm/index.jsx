@@ -25,7 +25,7 @@ function CreateForm(props) {
   );
 
   const schema = yup.object().shape({
-    filePdf: yup
+    pdfFile: yup
       .mixed()
       .test(
         "isRequired",
@@ -61,8 +61,8 @@ function CreateForm(props) {
 
   const form = useForm({
     defaultValues: {
-      filePdf: "",
-      fileXml: invoice?.path || "",
+      pdfFile: "",
+      xmlFile: invoice?.xmlFile || "",
       serial: invoice?.serial[0] || "",
       invoiceNo: invoice?.invoiceNo[0] || "",
       invoiceDate: invoiceDate,
@@ -96,7 +96,7 @@ function CreateForm(props) {
         <AddCircleIcon />
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <UploadField name="filePdf" label="Chọn tệp tin pdf" form={form} />
+        <UploadField name="pdfFile" label="Chọn tệp tin pdf" form={form} />
         <InputField name="serial" label="Ký hiệu hóa đơn" form={form} />
         <InputField name="invoiceNo" label="Số hóa đơn" form={form} />
         <DateField

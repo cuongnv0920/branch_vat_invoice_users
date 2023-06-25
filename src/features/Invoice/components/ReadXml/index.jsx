@@ -1,9 +1,9 @@
 import { unwrapResult } from "@reduxjs/toolkit";
-import { readXml } from "features/Invoice/invoiceSlice";
 import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import ReadXmlFrom from "../ReaXmlForm";
+import { xmlRead } from "features/Invoice/invoiceSlice";
 
 ReadXml.propTypes = {
   closeDialog: PropTypes.func,
@@ -18,7 +18,7 @@ function ReadXml(props) {
 
   const handleSubmit = async (values) => {
     try {
-      const action = readXml(values);
+      const action = xmlRead(values);
       const resultAction = await dispatch(action);
       unwrapResult(resultAction);
 
