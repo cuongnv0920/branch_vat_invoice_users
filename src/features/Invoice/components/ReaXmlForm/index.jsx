@@ -74,7 +74,7 @@ function ReadXmlFrom(props) {
         <MarkChatReadIcon />
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <UploadField name="xmlFile" label="Chọn tệp tin xml" form={form} />
+        <UploadField name="xmlFile" label="Chọn tệp tin xml." form={form} />
         <Stack
           direction="row"
           spacing={3}
