@@ -25,28 +25,7 @@ function CreateForm(props) {
     new Date(invoice?.invoiceDate) || new Date()
   );
 
-  const schema = yup.object().shape({
-    xmlFile: yup
-      .mixed()
-      .test("isRequired", "Vui lòng chọn tệp tin xml.", function (value) {
-        return value !== "" && value !== null;
-      })
-      .test(
-        "fileSize",
-        "Kích thước tệp tin không được vượt quá 2Mb.",
-        function (value) {
-          return value && value.size <= validatorKeys.FILE_SIZE_XML;
-        }
-      )
-      .test(
-        "fileFormat",
-        "Vui lòng chỉ chọn tệp tin có định dạng xml.",
-        function (value) {
-          return (
-            value && validatorKeys.SUPPORTED_FORMATS_XML.includes(value.type)
-          );
-        }
-      ),
+  const schemaObject = {
     pdfFile: yup
       .mixed()
       .test("isRequired", "Vui lòng chọn tệp tin pdf.", function (value) {
@@ -81,7 +60,33 @@ function CreateForm(props) {
     seller: yup.string().required("Vui lòng nhập Tên đơn vị cung cấp."),
     payment: yup.string().required("Vui lòng nhập tổng số tiền trên hóa đơn."),
     content: yup.string().required("Vui lòng nhập nội dung thanh toán."),
-  });
+  };
+
+  if (inputStatus) {
+    schemaObject.xmlFile = yup
+      .mixed()
+      .test("isRequired", "Vui lòng chọn tệp tin xml.", function (value) {
+        return value !== "" && value !== null;
+      })
+      .test(
+        "fileSize",
+        "Kích thước tệp tin không được vượt quá 2Mb.",
+        function (value) {
+          return value && value.size <= validatorKeys.FILE_SIZE_XML;
+        }
+      )
+      .test(
+        "fileFormat",
+        "Vui lòng chỉ chọn tệp tin có định dạng xml.",
+        function (value) {
+          return (
+            value && validatorKeys.SUPPORTED_FORMATS_XML.includes(value.type)
+          );
+        }
+      );
+  }
+
+  const schema = yup.object().shape(schemaObject);
 
   const form = useForm({
     defaultValues: {
