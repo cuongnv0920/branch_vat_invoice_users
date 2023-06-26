@@ -3,7 +3,7 @@ import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import ReadXmlFrom from "../ReaXmlForm";
-import { xmlRead } from "features/Invoice/invoiceSlice";
+import { inputStatus, xmlRead } from "features/Invoice/invoiceSlice";
 
 ReadXml.propTypes = {
   closeDialog: PropTypes.func,
@@ -24,13 +24,16 @@ function ReadXml(props) {
 
       if (closeDialog) {
         closeDialog();
+
+        const action = inputStatus(false); // update false input status
+        dispatch(action);
       }
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
     }
   };
 
-  const handleCloseDialogCreate = () => {
+  const handleOpenDialogCreate = () => {
     if (openDialogCreate) {
       openDialogCreate();
     }
@@ -40,7 +43,7 @@ function ReadXml(props) {
     <div>
       <ReadXmlFrom
         onSubmit={handleSubmit}
-        openDialogCreate={handleCloseDialogCreate}
+        openDialogCreate={handleOpenDialogCreate}
       />
     </div>
   );

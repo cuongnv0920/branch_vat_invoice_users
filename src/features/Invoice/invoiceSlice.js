@@ -34,6 +34,7 @@ const invoiceSlice = createSlice({
   initialState: {
     getData: {},
     current: JSON.parse(localStorage.getItem(storageKeys.READXML)),
+    inputStatus: false,
   },
   reducers: {
     getData(state, action) {
@@ -46,6 +47,12 @@ const invoiceSlice = createSlice({
       localStorage.removeItem(storageKeys.READXML);
 
       state.current = {};
+    },
+    inputStatus(state, action) {
+      return {
+        ...state,
+        inputStatus: action.payload,
+      };
     },
   },
   extraReducers: {
@@ -68,5 +75,5 @@ const invoiceSlice = createSlice({
 });
 
 const { actions, reducer } = invoiceSlice;
-export const { getData, removeXml } = actions;
+export const { getData, removeXml, inputStatus } = actions;
 export default reducer;

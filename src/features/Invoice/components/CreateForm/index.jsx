@@ -3,10 +3,12 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SaveIcon from "@mui/icons-material/Save";
 import { Avatar, Button, CircularProgress, Stack } from "@mui/material";
 import { DateField, InputField, TextareaField, UploadField } from "components";
+import validatorKeys from "configs/validatorKeysConf";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { addZeros } from "utils/addZeros";
 import * as yup from "yup";
 import "./styles.scss";
 
@@ -15,8 +17,7 @@ CreateForm.propTypes = {
 };
 
 function CreateForm(props) {
-  const FILE_SIZE = 8 * 1024 * 1024;
-  const SUPPORTED_FORMATS = ["application/pdf", "text/html"];
+  const inputStatus = useSelector((state) => state.invoice.inputStatus);
   const data = useSelector((state) => state.invoice.current?.invoice || []);
   const user = useSelector((state) => state.auth.current);
   const invoice = data[0];
@@ -25,31 +26,54 @@ function CreateForm(props) {
   );
 
   const schema = yup.object().shape({
-    pdfFile: yup
+    xmlFile: yup
       .mixed()
+      .test("isRequired", "Vui lòng chọn tệp tin xml.", function (value) {
+        return value !== "" && value !== null;
+      })
       .test(
-        "isRequired",
-        "Vui lòng chọn tệp tin pdf hoặc html.",
+        "fileSize",
+        "Kích thước tệp tin không được vượt quá 2Mb.",
         function (value) {
-          return value !== "" && value !== null;
+          return value && value.size <= validatorKeys.FILE_SIZE_XML;
         }
       )
+      .test(
+        "fileFormat",
+        "Vui lòng chỉ chọn tệp tin có định dạng xml.",
+        function (value) {
+          return (
+            value && validatorKeys.SUPPORTED_FORMATS_XML.includes(value.type)
+          );
+        }
+      ),
+    pdfFile: yup
+      .mixed()
+      .test("isRequired", "Vui lòng chọn tệp tin pdf.", function (value) {
+        return value !== "" && value !== null;
+      })
       .test(
         "fileSize",
         "Kích thước tệp tin không được vượt quá 8Mb.",
         function (value) {
-          return value && value.size <= FILE_SIZE;
+          return value && value.size <= validatorKeys.FILE_SIZE_PDF;
         }
       )
       .test(
         "fileFormat",
         "Vui lòng chỉ chọn tệp tin có định dạng pdf.",
         function (value) {
-          return value && SUPPORTED_FORMATS.includes(value.type);
+          return (
+            value && validatorKeys.SUPPORTED_FORMATS_PDF.includes(value.type)
+          );
         }
       ),
     serial: yup.string().required("Vui lòng nhập Ký hiệu hóa đơn."),
-    invoiceNo: yup.string().required("Vui lòng nhập Số hóa đơn."),
+    invoiceNo: yup
+      .string()
+      .required("Vui lòng nhập Số hóa đơn.")
+      .min(8, "Số hóa đơn không được nhỏ hơn 8 ký tự.")
+      .max(8, "Số hóa đơn không được lớn hơn 8 ký tự."),
     invoiceDate: yup.string().required("Vui lòng chọn Ngày xuất hóa đơn."),
     taxCode: yup
       .string()
@@ -64,7 +88,7 @@ function CreateForm(props) {
       pdfFile: "",
       xmlFile: invoice?.xmlFile || "",
       serial: invoice?.serial[0] || "",
-      invoiceNo: invoice?.invoiceNo[0] || "",
+      invoiceNo: addZeros(invoice?.invoiceNo[0]) || "",
       invoiceDate: invoiceDate,
       taxCode: invoice?.taxCode[0] || "",
       seller: invoice?.seller[0] || "",
@@ -77,7 +101,6 @@ function CreateForm(props) {
   });
 
   const handleSubmit = async (values) => {
-    console.log(values);
     const { onSubmit } = props;
     if (onSubmit) {
       await onSubmit(values);
@@ -96,6 +119,9 @@ function CreateForm(props) {
         <AddCircleIcon />
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
+        {inputStatus && (
+          <UploadField name="xmlFile" label="Chọn tệp tin xml" form={form} />
+        )}
         <UploadField name="pdfFile" label="Chọn tệp tin pdf" form={form} />
         <InputField name="serial" label="Ký hiệu hóa đơn" form={form} />
         <InputField name="invoiceNo" label="Số hóa đơn" form={form} />

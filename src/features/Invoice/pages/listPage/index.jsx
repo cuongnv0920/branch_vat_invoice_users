@@ -12,19 +12,23 @@ import {
 import { invoiceApi, userApi } from "api";
 import ActionBar from "components/ActionBar";
 import PaginationPage from "components/PaginationPage";
+import api from "configs/apiConf";
 import Create from "features/Invoice/components/Create";
 import Delete from "features/Invoice/components/Delete";
 import Filter from "features/Invoice/components/Filter";
 import InvoiceList from "features/Invoice/components/InvoiceList";
 import ReadXml from "features/Invoice/components/ReadXml";
 import Show from "features/Invoice/components/Show";
-import { getData, removeXml } from "features/Invoice/invoiceSlice";
+import { getData, inputStatus, removeXml } from "features/Invoice/invoiceSlice";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Document, Page, pdfjs } from "react-pdf";
-import api from "configs/apiConf";
+import { useDispatch } from "react-redux";
+import "./styles.scss";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.js",
+  import.meta.url
+).toString();
 
 ListPage.propTypes = {};
 
@@ -34,6 +38,7 @@ function ListPage(props) {
   const [openDialogShow, setOpenDialogShow] = useState(false);
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const [openDialogPdfView, setOpenDialogPdfView] = useState(false);
+  const [openDialogXmlView, setOpenDialogXmlView] = useState(false);
   const [pdfPath, setPdfPath] = useState("");
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -96,7 +101,6 @@ function ListPage(props) {
 
   const handleSelectedRow = async (value) => {
     const data = await userApi.get(value);
-    console.log(data);
     const action = getData(data);
     dispatch(action);
     setDisabled(!!value);
@@ -121,8 +125,11 @@ function ListPage(props) {
   const handleCloseDialogCreate = () => {
     setOpenDialogCreate(false);
     setCloseDialog(closeDialog + 1);
-    const action = removeXml();
+    const action = removeXml(); // remove xml data
     dispatch(action);
+
+    const actionInputStatus = inputStatus(false); // update false input status
+    dispatch(actionInputStatus);
   };
 
   const handleOpenDialogShow = async () => {
@@ -156,6 +163,13 @@ function ListPage(props) {
     setPageNumber(page);
   };
 
+  const handleOpenDialogXmlView = (path) => {
+    setOpenDialogXmlView(true);
+  };
+  const handleCloseDialogXmlView = () => {
+    setOpenDialogXmlView(false);
+  };
+
   return (
     <Box>
       <Grid container>
@@ -179,6 +193,7 @@ function ListPage(props) {
               loadding={loadding}
               selectedRow={handleSelectedRow}
               pdfView={handleOpenDialogPdfView}
+              xmlView={handleOpenDialogXmlView}
             />
             <PaginationPage
               item={paginations.total}
@@ -191,8 +206,8 @@ function ListPage(props) {
       </Grid>
 
       <Dialog
-        maxWidth="xs"
-        fullWidth="xs"
+        maxWidth="sm"
+        fullWidth="sm"
         open={openDialogReadXml}
         onClose={(event, reason) => {
           if (reason !== "backdropClick") {
@@ -309,8 +324,9 @@ function ListPage(props) {
           <Document
             file={`${api.URL}/${pdfPath}`}
             onLoadSuccess={onDocumentLoadSuccess}
+            options={{ cMapUrl: "cmaps/", cMapPacked: true }}
           >
-            <Page pageNumber={pageNumber} width={850} />
+            <Page pageNumber={pageNumber} width={850} renderTextLayer={false} />
           </Document>
           <p>
             Page {pageNumber} of {numPages}
@@ -318,12 +334,38 @@ function ListPage(props) {
         </DialogContent>
         <DialogActions className="dialogAction">
           <Pagination
+            sx={{ flexGrow: 1 }}
             count={numPages}
             page={pageNumber}
+            variant="outlined"
+            color="primary"
             onChange={handleChangePagePdfView}
           />
           <Button
             onClick={handleCloseDialogPdfView}
+            className="dialogButtonClose dialogButton"
+            variant="contained"
+            startIcon={<CancelIcon />}
+          >
+            Thoát
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        maxWidth="md"
+        fullWidth="md"
+        open={openDialogXmlView}
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick") {
+            handleCloseDialogXmlView(event, reason);
+          }
+        }}
+      >
+        <DialogContent>nội dung xml</DialogContent>
+        <DialogActions className="dialogAction">
+          <Button
+            onClick={handleCloseDialogXmlView}
             className="dialogButtonClose dialogButton"
             variant="contained"
             startIcon={<CancelIcon />}
