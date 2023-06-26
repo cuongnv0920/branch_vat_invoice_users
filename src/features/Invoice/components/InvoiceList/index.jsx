@@ -29,6 +29,7 @@ InvoiceList.propTypes = {
   loadding: PropTypes.bool,
   selectedRow: PropTypes.func,
   pdfView: PropTypes.string,
+  xmlView: PropTypes.string,
 };
 
 const columns = [
@@ -41,24 +42,16 @@ const columns = [
     field: "stt",
   },
   {
-    title: "Ký hiệu",
-    field: "serial",
+    title: "Cán bộ tạo",
+    field: "createUser",
   },
   {
     title: "Số hóa đơn",
     field: "invoiceNo",
   },
   {
-    title: "Ngày hóa đơn",
-    field: "invoiceDate",
-  },
-  {
     title: "Đơn vị cung cấp",
     field: "seller",
-  },
-  {
-    title: "Tổng số tiền (VNĐ)",
-    field: "payment",
   },
   {
     title: "Nội dung thanh toán",
@@ -68,17 +61,22 @@ const columns = [
     title: "File đính kèm",
     field: "file",
   },
-  {
-    title: "Cán bộ tạo",
-    field: "createUser",
-  },
+
   {
     title: "Cán bộ xử lý",
     field: "approveUser",
   },
   {
+    title: "Tổng số tiền (VNĐ)",
+    field: "payment",
+  },
+  {
     title: "Trạng thái",
     field: "status",
+  },
+  {
+    title: "Ngày hóa đơn",
+    field: "invoiceDate",
   },
   {
     title: "Ngày khởi tạo",
@@ -91,7 +89,7 @@ const columns = [
 ];
 
 function InvoiceList(props) {
-  const { data, loadding, selectedRow, pdfView } = props;
+  const { data, loadding, selectedRow, pdfView, xmlView } = props;
   const [value, setValue] = useState(undefined || "");
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -112,6 +110,11 @@ function InvoiceList(props) {
   const handleClickPdfView = (path) => {
     if (pdfView) {
       pdfView(path);
+    }
+  };
+  const handleClickXmlView = (path) => {
+    if (xmlView) {
+      xmlView(path);
     }
   };
 
@@ -157,20 +160,15 @@ function InvoiceList(props) {
                     {invoice.stt}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
-                    {invoice.serial}
+                    {invoice.createdUser?.fullName}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
                     {invoice.invoiceNo}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
-                    <Moment format="DD/MM/YYYY">{invoice.invoiceDate}</Moment>
-                  </TableCell>
-                  <TableCell className="invoiceTable__cellBody">
                     {invoice.seller}
                   </TableCell>
-                  <TableCell className="invoiceTable__cellBody">
-                    {invoice.payment.toLocaleString()}
-                  </TableCell>
+
                   <TableCell className="invoiceTable__cellBody">
                     {invoice.content}
                   </TableCell>
@@ -241,7 +239,10 @@ function InvoiceList(props) {
                         </h5>
                       </MenuItem>
 
-                      <MenuItem className="menuFile__menuItem">
+                      <MenuItem
+                        onClick={() => handleClickXmlView(invoice.xmlFile)}
+                        className="menuFile__menuItem"
+                      >
                         <img
                           className="menuFile__fileType"
                           src={`${api.URL}/images/${
@@ -257,10 +258,10 @@ function InvoiceList(props) {
                   </TableCell>
 
                   <TableCell className="invoiceTable__cellBody">
-                    {invoice.createdUser?.fullName}
+                    {invoice.approvedUser?.fullName}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
-                    {invoice.approvedUser?.fullName}
+                    {invoice.payment.toLocaleString()}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
                     <button
@@ -272,6 +273,10 @@ function InvoiceList(props) {
                     >
                       {showStatusInvoice(invoice.status)}
                     </button>
+                  </TableCell>
+
+                  <TableCell className="invoiceTable__cellBody">
+                    <Moment format="DD/MM/YYYY">{invoice.invoiceDate}</Moment>
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
                     <Moment format="DD/MM/YYYY">{invoice.createdAt}</Moment>

@@ -8,6 +8,9 @@ import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import "./styles.scss";
+import { useDispatch } from "react-redux";
+import { inputStatus } from "features/Invoice/invoiceSlice";
+import validatorKeys from "configs/validatorKeysConf";
 
 ReadXmlFrom.propTypes = {
   onSubmit: PropTypes.func,
@@ -15,8 +18,7 @@ ReadXmlFrom.propTypes = {
 };
 
 function ReadXmlFrom(props) {
-  const FILE_SIZE = 2 * 1024 * 1024;
-  const SUPPORTED_FORMATS = ["text/xml"];
+  const dispatch = useDispatch();
 
   const schema = yup.object().shape({
     xmlFile: yup
@@ -26,16 +28,18 @@ function ReadXmlFrom(props) {
       })
       .test(
         "fileSize",
-        "Kích thước tệp tin không được vượt quá 2Mb.",
+        "Kích thước tệp tin không được vượt quá 3Mb.",
         function (value) {
-          return value && value.size <= FILE_SIZE;
+          return value && value.size <= validatorKeys.FILE_SIZE_XML;
         }
       )
       .test(
         "fileFormat",
         "Vui lòng chỉ chọn tệp tin có định dạng xml.",
         function (value) {
-          return value && SUPPORTED_FORMATS.includes(value.type);
+          return (
+            value && validatorKeys.SUPPORTED_FORMATS_XML.includes(value.type)
+          );
         }
       ),
   });
@@ -57,6 +61,8 @@ function ReadXmlFrom(props) {
 
   const handleOpenDialogCreate = () => {
     const { openDialogCreate } = props;
+    const action = inputStatus(true);
+    dispatch(action);
     openDialogCreate();
   };
 
@@ -89,7 +95,7 @@ function ReadXmlFrom(props) {
                 className="createUser__progress"
               />
             ) : (
-              "Gửi"
+              "Nhập tự động"
             )}
           </Button>
           <Button
