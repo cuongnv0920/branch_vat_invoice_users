@@ -17,18 +17,19 @@ import RoomList from "features/Room/components/RoomList";
 import Show from "features/Room/components/Show";
 import { getData } from "features/Room/roomSlice";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 ListPage.propTypes = {};
 
 function ListPage(props) {
+  const roomId = useSelector((state) => state.room.roomId);
+  const dispatch = useDispatch();
   const [openDialogCreate, setOpenDialogCreate] = useState(false);
   const [openDialogShow, setOpenDialogShow] = useState(false);
   const [closeDialog, setCloseDialog] = useState(0);
   const [roomList, setRoomList] = useState([]);
   const [loadding, setLoadding] = useState(true);
-  const [disabled, setDisabled] = useState(false);
-  const dispatch = useDispatch();
+  const [disabledButtonAction, setDisabledButtonAction] = useState(true);
   const [paginations, setPaginations] = useState({
     limit: 20,
     count: 20,
@@ -68,13 +69,6 @@ function ListPage(props) {
     }));
   };
 
-  const handleSelectedRow = async (value) => {
-    const data = await roomApi.get(value);
-    const action = getData(data);
-    dispatch(action);
-    setDisabled(!!value);
-  };
-
   const handleOpenDialogCreate = () => {
     setOpenDialogCreate(true);
   };
@@ -84,12 +78,23 @@ function ListPage(props) {
   };
 
   const handleOpenDialogShow = async () => {
-    await setOpenDialogShow(true);
+    const data = await roomApi.get(roomId);
+    const action = getData(data);
+    dispatch(action);
+
+    setOpenDialogShow(true);
   };
   const handleCloseDialogShow = () => {
     setOpenDialogShow(false);
     setCloseDialog(closeDialog + 1);
   };
+
+  useEffect(() => {
+    const statusDisabledButtonAction = !!roomId;
+    if (statusDisabledButtonAction) {
+      setDisabledButtonAction(false);
+    }
+  }, [roomId]);
 
   return (
     <Box>
@@ -101,15 +106,11 @@ function ListPage(props) {
             </div>
             <Filter values={handleChangeFilter} />
             <ActionBar
-              disabledButton={!disabled}
               openDialogCreate={handleOpenDialogCreate}
               openDialogShow={handleOpenDialogShow}
+              disabledButton={disabledButtonAction}
             />
-            <RoomList
-              data={roomList}
-              loadding={loadding}
-              selectedRow={handleSelectedRow}
-            />
+            <RoomList data={roomList} loadding={loadding} />
             <PaginationPage
               item={paginations.total}
               page={paginations.page}

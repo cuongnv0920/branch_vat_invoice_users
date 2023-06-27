@@ -17,11 +17,12 @@ import Moment from "react-moment";
 import "./styles.scss";
 import { showPermissionName } from "utils/showPermissionName";
 import { showStatus } from "utils/showStatus";
+import { useDispatch } from "react-redux";
+import { userId } from "features/User/userSlice";
 
 UserList.propTypes = {
   data: PropTypes.array.isRequired,
   loadding: PropTypes.bool,
-  selectedRow: PropTypes.func,
 };
 
 const columns = [
@@ -76,14 +77,16 @@ const columns = [
 ];
 
 function UserList(props) {
-  const { data, loadding, selectedRow } = props;
-  const [value, setValue] = useState(undefined || "");
+  const { data, loadding } = props;
+  const dispatch = useDispatch();
+  const [value, setValue] = useState("");
 
-  const handleSelectRow = async (event) => {
-    setValue(event.target.value);
-    if (selectedRow) {
-      selectedRow(event.target.value);
-    }
+  const handleSelectRow = (event) => {
+    const id = event.target.value;
+    setValue(id);
+
+    const action = userId(id);
+    dispatch(action);
   };
 
   return (

@@ -6,4 +6,8 @@
   &__stack {
     justify-content: right !important;
   }
+
+  &__serial input {
+    text-transform: uppercase;
+  }
 }

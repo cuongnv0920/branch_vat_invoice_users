@@ -31,7 +31,7 @@ export const invoiceApi = {
 
   update(data) {
     const url = `/invoice/update/${data.id}`;
-    return axiosClient.put(url, data, configJson);
+    return axiosClient.put(url, data, configFormData);
   },
 
   delete(data) {

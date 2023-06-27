@@ -23,11 +23,13 @@ import Moment from "react-moment";
 import { showFile } from "utils/showFile";
 import { showStatusInvoice } from "utils/showStatusInvoice";
 import "./styles.scss";
+import { showInputStatus } from "utils/showInputStatus";
+import { invoiceId } from "features/Invoice/invoiceSlice";
+import { useDispatch } from "react-redux";
 
 InvoiceList.propTypes = {
   data: PropTypes.array.isRequired,
   loadding: PropTypes.bool,
-  selectedRow: PropTypes.func,
   pdfView: PropTypes.string,
   xmlView: PropTypes.string,
 };
@@ -44,6 +46,10 @@ const columns = [
   {
     title: "Cán bộ tạo",
     field: "createUser",
+  },
+  {
+    title: "Trạng thái nhập liệu",
+    field: "inputStatus",
   },
   {
     title: "Số hóa đơn",
@@ -89,22 +95,31 @@ const columns = [
 ];
 
 function InvoiceList(props) {
-  const { data, loadding, selectedRow, pdfView, xmlView } = props;
-  const [value, setValue] = useState(undefined || "");
-  const [anchorEl, setAnchorEl] = useState(null);
+  const { data, loadding, pdfView, xmlView } = props;
+  const dispatch = useDispatch();
+  const [value, setValue] = useState("");
+  const [anchorEl, setAnchorEl] = useState({});
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+
+  const handleClick = (event, id) => {
+    setAnchorEl((prevAnchorEl) => ({
+      ...prevAnchorEl,
+      [id]: event.currentTarget,
+    }));
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClose = (id) => {
+    setAnchorEl((prevAnchorEl) => ({
+      ...prevAnchorEl,
+      [id]: null,
+    }));
   };
 
   const handleSelectRow = (event) => {
-    setValue(event.target.value);
-    if (selectedRow) {
-      selectedRow(event.target.value);
-    }
+    const id = event.target.value;
+    setValue(id);
+
+    const action = invoiceId(id);
+    dispatch(action);
   };
 
   const handleClickPdfView = (path) => {
@@ -127,7 +142,7 @@ function InvoiceList(props) {
           <Table stickyHeader className="invoiceTable__table">
             <TableHead className="invoiceTable__head">
               <TableRow className="invoiceTable__rowHead">
-                {columns.map((column, index) => (
+                {columns.map((column, _) => (
                   <TableCell
                     key={column.field}
                     className="invoiceTable__cellHead"
@@ -137,7 +152,6 @@ function InvoiceList(props) {
                 ))}
               </TableRow>
             </TableHead>
-
             <TableBody className="invoiceTable__body">
               {data.map((invoice, _) => (
                 <TableRow
@@ -163,37 +177,52 @@ function InvoiceList(props) {
                     {invoice.createdUser?.fullName}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
+                    <button
+                      className={
+                        invoice.inputStatus
+                          ? "inputStatusTrue buttonStatus"
+                          : "inputStatusFalse buttonStatus"
+                      }
+                    >
+                      {showInputStatus(invoice.inputStatus)}
+                    </button>
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
                     {invoice.invoiceNo}
                   </TableCell>
-                  <TableCell className="invoiceTable__cellBody">
-                    {invoice.seller}
-                  </TableCell>
-
-                  <TableCell className="invoiceTable__cellBody">
-                    {invoice.content}
-                  </TableCell>
-
+                  <Tooltip title={invoice.seller}>
+                    <TableCell className="invoiceTable__cellBody">
+                      {invoice.seller}
+                    </TableCell>
+                  </Tooltip>
+                  <Tooltip title={invoice.content}>
+                    <TableCell className="invoiceTable__cellBody">
+                      {invoice.content}
+                    </TableCell>
+                  </Tooltip>
                   <TableCell className="invoiceTable__cellBody">
                     <Tooltip title="File đính kèm">
                       <IconButton
                         className="invoiceTable__iconButton"
-                        onClick={handleClick}
+                        onClick={(event) => handleClick(event, invoice.id)}
                         size="small"
                         sx={{ ml: 2 }}
-                        aria-controls={open ? "file-menu" : undefined}
+                        aria-controls={
+                          open[invoice.id] ? `menu-${invoice.id}` : undefined
+                        }
                         aria-haspopup="true"
-                        aria-expanded={open ? "true" : undefined}
+                        aria-expanded={open[invoice.id] ? "true" : undefined}
                       >
                         <MenuIcon className="invoiceTable__icon" />
                       </IconButton>
                     </Tooltip>
                     <Menu
                       className="menuFile"
-                      anchorEl={anchorEl}
-                      id="account-menu"
-                      open={open}
-                      onClose={handleClose}
-                      onClick={handleClose}
+                      anchorEl={anchorEl[invoice.id]}
+                      id={`menu-${invoice.id}`}
+                      open={Boolean(anchorEl[invoice.id])}
+                      onClose={() => handleClose(invoice.id)}
+                      onClick={() => handleClose(invoice.id)}
                       PaperProps={{
                         elevation: 0,
                         sx: {
@@ -256,7 +285,6 @@ function InvoiceList(props) {
                       </MenuItem>
                     </Menu>
                   </TableCell>
-
                   <TableCell className="invoiceTable__cellBody">
                     {invoice.approvedUser?.fullName}
                   </TableCell>
@@ -274,7 +302,6 @@ function InvoiceList(props) {
                       {showStatusInvoice(invoice.status)}
                     </button>
                   </TableCell>
-
                   <TableCell className="invoiceTable__cellBody">
                     <Moment format="DD/MM/YYYY">{invoice.invoiceDate}</Moment>
                   </TableCell>

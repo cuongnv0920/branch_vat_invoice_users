@@ -9,6 +9,7 @@ InputField.propTypes = {
   label: PropTypes.string,
   disabled: PropTypes.bool,
   type: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };
 
 InputField.defaultProps = {
@@ -16,7 +17,7 @@ InputField.defaultProps = {
 };
 
 export function InputField(props) {
-  const { form, name, label, inputProps, disabled, type } = props;
+  const { form, name, label, inputProps, disabled, type, className } = props;
   const { control } = form;
 
   return (
@@ -29,6 +30,7 @@ export function InputField(props) {
           fieldState: { invalid, error },
         }) => (
           <TextField
+            className={className}
             margin="normal"
             variant="outlined"
             type={type}

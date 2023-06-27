@@ -1,8 +1,11 @@
-.showUser {
+.showInvoice {
   &__avatar {
     margin: 0 auto;
   }
   &__stack {
     justify-content: right !important;
+  }
+  &__serial input {
+    text-transform: uppercase;
   }
 }
