@@ -32,22 +32,32 @@ export const deleted = createAsyncThunk("invoice/delete", async (payload) => {
 const invoiceSlice = createSlice({
   name: "invoice",
   initialState: {
+    invoiceId: "",
     getData: {},
     current: JSON.parse(localStorage.getItem(storageKeys.READXML)),
     inputStatus: false,
   },
   reducers: {
+    invoiceId(state, action) {
+      return {
+        ...state,
+        invoiceId: action.payload,
+      };
+    },
+
     getData(state, action) {
       return {
         ...state,
         getData: action.payload,
       };
     },
+
     removeXml(state) {
       localStorage.removeItem(storageKeys.READXML);
 
       state.current = {};
     },
+
     inputStatus(state, action) {
       return {
         ...state,
@@ -75,5 +85,5 @@ const invoiceSlice = createSlice({
 });
 
 const { actions, reducer } = invoiceSlice;
-export const { getData, removeXml, inputStatus } = actions;
+export const { getData, removeXml, inputStatus, invoiceId } = actions;
 export default reducer;

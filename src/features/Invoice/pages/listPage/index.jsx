@@ -22,7 +22,7 @@ import Show from "features/Invoice/components/Show";
 import { getData, inputStatus, removeXml } from "features/Invoice/invoiceSlice";
 import { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./styles.scss";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -33,6 +33,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ListPage.propTypes = {};
 
 function ListPage(props) {
+  const invoiceId = useSelector((state) => state.invoice.invoiceId);
+  const dispatch = useDispatch();
   const [openDialogReadXml, setOpenDialogReadXml] = useState(false);
   const [openDialogCreate, setOpenDialogCreate] = useState(false);
   const [openDialogShow, setOpenDialogShow] = useState(false);
@@ -45,8 +47,7 @@ function ListPage(props) {
   const [closeDialog, setCloseDialog] = useState(0);
   const [invoiceList, setInvoiceList] = useState([]);
   const [loadding, setLoadding] = useState(true);
-  const [disabled, setDisabled] = useState(false);
-  const dispatch = useDispatch();
+  const [disabledButtonAction, setDisabledButtonAction] = useState(true);
   const [paginations, setPaginations] = useState({
     limit: 20,
     count: 20,
@@ -99,13 +100,6 @@ function ListPage(props) {
     }));
   };
 
-  const handleSelectedRow = async (value) => {
-    const data = await userApi.get(value);
-    const action = getData(data);
-    dispatch(action);
-    setDisabled(!!value);
-  };
-
   const handleOpenDialogReadXml = () => {
     setOpenDialogReadXml(true);
   };
@@ -133,7 +127,11 @@ function ListPage(props) {
   };
 
   const handleOpenDialogShow = async () => {
-    await setOpenDialogShow(true);
+    const data = await invoiceApi.get(invoiceId);
+    const action = getData(data);
+    dispatch(action);
+
+    setOpenDialogShow(true);
   };
   const handleCloseDialogShow = () => {
     setOpenDialogShow(false);
@@ -169,6 +167,12 @@ function ListPage(props) {
   const handleCloseDialogXmlView = () => {
     setOpenDialogXmlView(false);
   };
+  useEffect(() => {
+    const statusDisabledButtonAction = !!invoiceId;
+    if (statusDisabledButtonAction) {
+      setDisabledButtonAction(false);
+    }
+  }, [invoiceId]);
 
   return (
     <Box>
@@ -184,14 +188,13 @@ function ListPage(props) {
               filterStatus={handleChangeFilterStatus}
             />
             <ActionBar
-              disabledButton={!disabled}
+              disabledButton={disabledButtonAction}
               openDialogCreate={handleOpenDialogReadXml}
               openDialogShow={handleOpenDialogShow}
             />
             <InvoiceList
               data={invoiceList}
               loadding={loadding}
-              selectedRow={handleSelectedRow}
               pdfView={handleOpenDialogPdfView}
               xmlView={handleOpenDialogXmlView}
             />
@@ -259,8 +262,8 @@ function ListPage(props) {
       </Dialog>
 
       <Dialog
-        maxWidth="md"
-        fullWidth="md"
+        maxWidth="xs"
+        fullWidth="xs"
         open={openDialogShow}
         onClose={(event, reason) => {
           if (reason !== "backdropClick") {

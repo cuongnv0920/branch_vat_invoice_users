@@ -3,7 +3,7 @@ import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import ShowForm from "../ShowForm";
-import { edit } from "features/User/userSlice";
+import { edit } from "features/Invoice/invoiceSlice";
 
 Show.propTypes = {
   closeDialog: PropTypes.func,

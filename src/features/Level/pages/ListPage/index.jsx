@@ -17,18 +17,19 @@ import LevelList from "features/Level/components/LevelList";
 import Show from "features/Level/components/Show";
 import { getData } from "features/Level/levelSlice";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 ListPage.propTypes = {};
 
 function ListPage(props) {
+  const levelId = useSelector((state) => state.level.levelId);
+  const dispatch = useDispatch();
   const [openDialogCreate, setOpenDialogCreate] = useState(false);
   const [openDialogShow, setOpenDialogShow] = useState(false);
   const [closeDialog, setCloseDialog] = useState(0);
   const [levelList, setLevelList] = useState([]);
   const [loadding, setLoadding] = useState(true);
-  const [disabled, setDisabled] = useState(false);
-  const dispatch = useDispatch();
+  const [disabledButtonAction, setDisabledButtonAction] = useState(true);
   const [paginations, setPaginations] = useState({
     limit: 20,
     count: 20,
@@ -68,13 +69,6 @@ function ListPage(props) {
     }));
   };
 
-  const handleSelectedRow = async (value) => {
-    const data = await levelApi.get(value);
-    const action = getData(data);
-    dispatch(action);
-    setDisabled(!!value);
-  };
-
   const handleOpenDialogCreate = () => {
     setOpenDialogCreate(true);
   };
@@ -84,12 +78,23 @@ function ListPage(props) {
   };
 
   const handleOpenDialogShow = async () => {
-    await setOpenDialogShow(true);
+    const data = await levelApi.get(levelId);
+    const action = getData(data);
+    dispatch(action);
+
+    setOpenDialogShow(true);
   };
   const handleCloseDialogShow = () => {
     setOpenDialogShow(false);
     setCloseDialog(closeDialog + 1);
   };
+
+  useEffect(() => {
+    const statusDisabledButtonAction = !!levelId;
+    if (statusDisabledButtonAction) {
+      setDisabledButtonAction(false);
+    }
+  }, [levelId]);
 
   return (
     <Box>
@@ -101,15 +106,11 @@ function ListPage(props) {
             </div>
             <Filter values={handleChangeFilter} />
             <ActionBar
-              disabledButton={!disabled}
+              disabledButton={disabledButtonAction}
               openDialogCreate={handleOpenDialogCreate}
               openDialogShow={handleOpenDialogShow}
             />
-            <LevelList
-              data={levelList}
-              loadding={loadding}
-              selectedRow={handleSelectedRow}
-            />
+            <LevelList data={levelList} loadding={loadding} />
             <PaginationPage
               item={paginations.total}
               page={paginations.page}

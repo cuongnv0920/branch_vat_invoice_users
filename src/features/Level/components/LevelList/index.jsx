@@ -15,11 +15,12 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import "./styles.scss";
 import Moment from "react-moment";
+import { useDispatch } from "react-redux";
+import { levelId } from "features/Level/levelSlice";
 
 LevelList.propTypes = {
   data: PropTypes.array.isRequired,
   loadding: PropTypes.bool,
-  selectedRow: PropTypes.func,
 };
 
 const columns = [
@@ -46,14 +47,16 @@ const columns = [
 ];
 
 function LevelList(props) {
-  const { data, loadding, selectedRow } = props;
-  const [value, setValue] = useState(undefined || "");
+  const { data, loadding } = props;
+  const dispatch = useDispatch();
+  const [value, setValue] = useState("");
 
-  const handleSelectRow = async (event) => {
-    setValue(event.target.value);
-    if (selectedRow) {
-      selectedRow(event.target.value);
-    }
+  const handleSelectRow = (event) => {
+    const id = event.target.value;
+    setValue(id);
+
+    const action = levelId(id);
+    dispatch(action);
   };
 
   return (
@@ -65,7 +68,7 @@ function LevelList(props) {
           <Table stickyHeader className="levelTable__table">
             <TableHead className="levelTable__head">
               <TableRow className="levelTable__rowHead">
-                {columns.map((column, index) => (
+                {columns.map((column, _) => (
                   <TableCell
                     key={column.field}
                     className="levelTable__cellHead"

@@ -22,9 +22,17 @@ export const deleted = createAsyncThunk("user/delete", async (payload) => {
 const userSlice = createSlice({
   name: "user",
   initialState: {
+    userId: "",
     getData: {},
   },
   reducers: {
+    userId(state, action) {
+      return {
+        ...state,
+        userId: action.payload,
+      };
+    },
+
     getData(state, action) {
       return {
         ...state,
@@ -48,5 +56,5 @@ const userSlice = createSlice({
 });
 
 const { actions, reducer } = userSlice;
-export const { getData } = actions;
+export const { getData, userId } = actions;
 export default reducer;

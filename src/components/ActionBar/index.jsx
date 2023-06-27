@@ -7,11 +7,11 @@ import "./styles.scss";
 ActionBar.propTypes = {
   openDialogCreate: PropTypes.func,
   openDialogShow: PropTypes.func,
-  disabledButton: PropTypes.bool,
+  disabledButton: PropTypes.bool.isRequired,
 };
 
 ActionBar.defaultProps = {
-  disabledButton: false,
+  disabledButton: true,
 };
 
 function ActionBar(props) {

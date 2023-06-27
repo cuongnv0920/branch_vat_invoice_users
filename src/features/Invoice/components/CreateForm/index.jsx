@@ -18,11 +18,12 @@ CreateForm.propTypes = {
 
 function CreateForm(props) {
   const inputStatus = useSelector((state) => state.invoice.inputStatus);
+  const disabledField = !inputStatus;
   const data = useSelector((state) => state.invoice.current?.invoice || []);
   const user = useSelector((state) => state.auth.current);
   const invoice = data[0];
   const [invoiceDate, setInvoiceDate] = useState(
-    new Date(invoice?.invoiceDate) || new Date()
+    invoice?.invoiceDate && new Date(invoice?.invoiceDate || new Date())
   );
 
   const schemaObject = {
@@ -100,6 +101,7 @@ function CreateForm(props) {
       payment: invoice?.payment[0] || "",
       content: "",
       createdUser: user._id,
+      inputStatus: inputStatus,
     },
 
     resolver: yupResolver(schema),
@@ -125,25 +127,44 @@ function CreateForm(props) {
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         {inputStatus && (
-          <UploadField name="xmlFile" label="Chọn tệp tin xml" form={form} />
+          <UploadField
+            disabled={disabledField}
+            name="xmlFile"
+            label="Chọn tệp tin xml."
+            form={form}
+          />
         )}
-        <UploadField name="pdfFile" label="Chọn tệp tin pdf" form={form} />
-        <InputField name="serial" label="Ký hiệu hóa đơn" form={form} />
-        <InputField name="invoiceNo" label="Số hóa đơn" form={form} />
+        <UploadField name="pdfFile" label="Chọn tệp tin pdf." form={form} />
+        <InputField
+          className="createInvoice__serial"
+          disabled={disabledField}
+          name="serial"
+          label="Ký hiệu hóa đơn."
+          form={form}
+        />
+        <InputField
+          disabled={disabledField}
+          name="invoiceNo"
+          label="Số hóa đơn."
+          form={form}
+        />
         <DateField
+          disabled={disabledField}
           name="invoiceDate"
-          label="Ngày hóa đơn"
+          lable="Ngày hóa đơn."
           inputFormat="DD/MM/YYYY"
           value={invoiceDate}
           onChange={handleChangeInvoiceDate}
           form={form}
         />
         <InputField
+          disabled={disabledField}
           name="taxCode"
-          label="Mã số thuế đơn vị cung cấp"
+          label="Mã số thuế đơn vị cung cấp."
           form={form}
         />
         <TextareaField
+          disabled={disabledField}
           name="seller"
           placeholder="Tên đơn vị cung cấp..."
           form={form}
@@ -153,7 +174,12 @@ function CreateForm(props) {
           placeholder="Nội dung thanh toán..."
           form={form}
         />
-        <InputField name="payment" label="Tổng số tiền" form={form} />
+        <InputField
+          disabled={disabledField}
+          name="payment"
+          label="Tổng số tiền."
+          form={form}
+        />
         <Stack
           direction="row"
           spacing={3}

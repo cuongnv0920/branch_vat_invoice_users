@@ -248,11 +248,13 @@ html {
   border-radius: 4px;
   font-family: "Muli", sans-serif;
 }
-.statusTrue {
+.statusTrue,
+.inputStatusFalse {
   background: rgba(198, 251, 191, 0.815);
   color: rgb(2, 78, 42);
 }
-.statusFalse {
+.statusFalse,
+.inputStatusTrue {
   background: rgba(248, 202, 291, 0.815);
   color: rgba(237, 73, 73);
 }

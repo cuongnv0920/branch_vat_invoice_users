@@ -18,19 +18,20 @@ import Show from "features/User/components/Show";
 import UserList from "features/User/components/UserList";
 import { getData } from "features/User/userSlice";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 ListPage.propTypes = {};
 
 function ListPage(props) {
+  const userId = useSelector((state) => state.user.userId);
+  const dispatch = useDispatch();
   const [openDialogCreate, setOpenDialogCreate] = useState(false);
   const [openDialogShow, setOpenDialogShow] = useState(false);
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const [closeDialog, setCloseDialog] = useState(0);
   const [userList, setUserList] = useState([]);
   const [loadding, setLoadding] = useState(true);
-  const [disabled, setDisabled] = useState(false);
-  const dispatch = useDispatch();
+  const [disabledButtonAction, setDisabledButtonAction] = useState(true);
   const [paginations, setPaginations] = useState({
     limit: 20,
     count: 20,
@@ -83,13 +84,6 @@ function ListPage(props) {
     }));
   };
 
-  const handleSelectedRow = async (value) => {
-    const data = await userApi.get(value);
-    const action = getData(data);
-    dispatch(action);
-    setDisabled(!!value);
-  };
-
   const handleOpenDialogCreate = () => {
     setOpenDialogCreate(true);
   };
@@ -99,7 +93,11 @@ function ListPage(props) {
   };
 
   const handleOpenDialogShow = async () => {
-    await setOpenDialogShow(true);
+    const data = await userApi.get(userId);
+    const action = getData(data);
+    dispatch(action);
+
+    setOpenDialogShow(true);
   };
   const handleCloseDialogShow = () => {
     setOpenDialogShow(false);
@@ -114,6 +112,12 @@ function ListPage(props) {
     setOpenDialogDelete(false);
     setCloseDialog(closeDialog + 1);
   };
+  useEffect(() => {
+    const statusDisabledButtonAction = !!userId;
+    if (statusDisabledButtonAction) {
+      setDisabledButtonAction(false);
+    }
+  }, [userId]);
 
   return (
     <Box>
@@ -129,15 +133,11 @@ function ListPage(props) {
               filterLevel={handleChangeFilterLevel}
             />
             <ActionBar
-              disabledButton={!disabled}
+              disabledButton={disabledButtonAction}
               openDialogCreate={handleOpenDialogCreate}
               openDialogShow={handleOpenDialogShow}
             />
-            <UserList
-              data={userList}
-              loadding={loadding}
-              selectedRow={handleSelectedRow}
-            />
+            <UserList data={userList} loadding={loadding} />
             <PaginationPage
               item={paginations.total}
               page={paginations.page}

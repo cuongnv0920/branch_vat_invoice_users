@@ -11,15 +11,16 @@ import {
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import LoaddingTable from "components/LoaddingTable";
+import { roomId } from "features/Room/roomSlice";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import Moment from "react-moment";
+import { useDispatch } from "react-redux";
 import "./styles.scss";
 
 RoomList.propTypes = {
   data: PropTypes.array.isRequired,
   loadding: PropTypes.bool,
-  selectedRow: PropTypes.func,
 };
 
 const columns = [
@@ -50,14 +51,16 @@ const columns = [
 ];
 
 function RoomList(props) {
-  const { data, loadding, selectedRow } = props;
-  const [value, setValue] = useState(undefined || "");
+  const { data, loadding } = props;
+  const dispatch = useDispatch();
+  const [value, setValue] = useState("");
 
-  const handleSelectRow = async (event) => {
-    setValue(event.target.value);
-    if (selectedRow) {
-      selectedRow(event.target.value);
-    }
+  const handleSelectRow = (event) => {
+    const id = event.target.value;
+    setValue(id);
+
+    const action = roomId(id);
+    dispatch(action);
   };
 
   return (
@@ -69,7 +72,7 @@ function RoomList(props) {
           <Table stickyHeader className="roomTable__table">
             <TableHead className="roomTable__head">
               <TableRow className="roomTable__rowHead">
-                {columns.map((column, index) => (
+                {columns.map((column, _) => (
                   <TableCell key={column.field} className="roomTable__cellHead">
                     {column.title}
                   </TableCell>

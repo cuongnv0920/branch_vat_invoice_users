@@ -2,30 +2,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {
-  Avatar,
-  Button,
-  CircularProgress,
-  FormControlLabel,
-  Grid,
-  MenuItem,
-  Radio,
-  Stack,
-} from "@mui/material";
+import { Avatar, Button, CircularProgress, Stack } from "@mui/material";
+import { DateField, InputField, TextareaField, UploadField } from "components";
+import validatorKeys from "configs/validatorKeysConf";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import "./styles.scss";
-import { levelApi, roomApi } from "api";
-import {
-  DateField,
-  InputField,
-  PasswordField,
-  RadioField,
-  SelectField,
-} from "components";
 
 ShowForm.propTypes = {
   onSubmit: PropTypes.func,
@@ -34,54 +19,80 @@ ShowForm.propTypes = {
 
 function ShowForm(props) {
   const { onSubmit, openDialogDelete } = props;
-  const user = useSelector((state) => state.user.getData);
-  const [sex, setSex] = useState(user.sex);
-  const [birthday, setBirthday] = useState(user.birthday);
-  const [roomList, setRoomList] = useState([]);
-  const [levelList, setLevelList] = useState([]);
+  const invoice = useSelector((state) => state.invoice.getData);
   const [disabledField, setDisabledField] = useState(true);
+  const [invoiceDate, setInvoiceDate] = useState(
+    new Date(invoice?.invoiceDate)
+  );
 
   const schema = yup.object().shape({
-    fullName: yup.string().required("Vui lòng nhập họ và tên."),
-    email: yup
+    xmlFile: yup
+      .mixed()
+      .test(
+        "fileSize",
+        "Kích thước tệp tin không được vượt quá 2Mb.",
+        function (value) {
+          if (!value) return true;
+          return value && value.size <= validatorKeys.FILE_SIZE_XML;
+        }
+      )
+      .test(
+        "fileFormat",
+        "Vui lòng chỉ chọn tệp tin có định dạng xml.",
+        function (value) {
+          if (!value) return true;
+          return (
+            value && validatorKeys.SUPPORTED_FORMATS_XML.includes(value.type)
+          );
+        }
+      ),
+    pdfFile: yup
+      .mixed()
+      .test(
+        "fileSize",
+        "Kích thước tệp tin không được vượt quá 8Mb.",
+        function (value) {
+          if (!value) return true;
+          return value && value.size <= validatorKeys.FILE_SIZE_PDF;
+        }
+      )
+      .test(
+        "fileFormat",
+        "Vui lòng chỉ chọn tệp tin có định dạng pdf.",
+        function (value) {
+          if (!value) return true;
+          return (
+            value && validatorKeys.SUPPORTED_FORMATS_PDF.includes(value.type)
+          );
+        }
+      ),
+    serial: yup.string().required("Vui lòng nhập Ký hiệu hóa đơn."),
+    invoiceNo: yup
       .string()
-      .required("Vui lòng nhập địa chỉ email.")
-      .email("Địa chỉ email không hợp lệ."),
-    retypePassword: yup
+      .required("Vui lòng nhập Số hóa đơn.")
+      .min(8, "Số hóa đơn không được nhỏ hơn 8 ký tự.")
+      .max(8, "Số hóa đơn không được lớn hơn 8 ký tự."),
+    invoiceDate: yup.string().required("Vui lòng chọn Ngày xuất hóa đơn."),
+    taxCode: yup
       .string()
-      .oneOf([yup.ref("password")], "Mật khẩu xác nhận không đúng."),
-    room: yup.string().required("Vui phòng chọn phòng/ ban."),
-    level: yup.string().required("Vui phòng chọn chức danh."),
-    phone: yup.string().required("Vui phòng nhập số điện thoại di động."),
+      .required("Vui lòng nhập Mã số thuế của đơn vị cung cấp."),
+    seller: yup.string().required("Vui lòng nhập Tên đơn vị cung cấp."),
+    payment: yup.string().required("Vui lòng nhập tổng số tiền trên hóa đơn."),
+    content: yup.string().required("Vui lòng nhập nội dung thanh toán."),
   });
-
-  useEffect(() => {
-    (async () => {
-      const { roomList } = await roomApi.getAll();
-      setRoomList(roomList);
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const { levelList } = await levelApi.getAll();
-      setLevelList(levelList);
-    })();
-  }, []);
 
   const form = useForm({
     defaultValues: {
-      id: user._id,
-      fullName: user.fullName,
-      email: user.email,
-      password: "",
-      retypePassword: "",
-      room: user.room._id,
-      level: user.level._id,
-      phone: user.phone,
-      ext: user.ext,
-      sex: sex,
-      birthday: birthday,
+      id: invoice._id,
+      pdfFile: "",
+      xmlFile: "",
+      serial: invoice?.serial,
+      invoiceNo: invoice?.invoiceNo,
+      invoiceDate: invoiceDate,
+      taxCode: invoice?.taxCode,
+      seller: invoice?.seller,
+      payment: invoice?.payment,
+      content: invoice?.content,
     },
 
     resolver: yupResolver(schema),
@@ -90,13 +101,8 @@ function ShowForm(props) {
   const handleChangeDisabledField = () => {
     setDisabledField(false);
   };
-
-  const handleChangeBirtday = (date) => {
-    setBirthday(date);
-  };
-
-  const handleChangeSex = (event) => {
-    setSex(event.target.value);
+  const handleChangeInvoiceDate = (date) => {
+    setInvoiceDate(date);
   };
 
   const handleSubmit = async (values) => {
@@ -114,126 +120,76 @@ function ShowForm(props) {
   const { isSubmitting } = form.formState;
 
   return (
-    <div className="showUser">
-      <Avatar className="showUser__avatar avatarShow">
+    <div className="showInvoice">
+      <Avatar className="showInvoice__avatar avatarShow">
         <VisibilityIcon />
       </Avatar>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField
-              disabled={disabledField}
-              name="fullName"
-              label="Họ và tên"
-              form={form}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField
-              disabled={disabledField}
-              name="email"
-              label="Địa chỉ email"
-              form={form}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <PasswordField
-              disabled={disabledField}
-              name="password"
-              label="Mật khẩu"
-              form={form}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <PasswordField
-              disabled={disabledField}
-              name="retypePassword"
-              label="Xác nhận lại mật khẩu"
-              form={form}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <SelectField
-              disabled={disabledField}
-              name="room"
-              label="Phòng/ ban"
-              form={form}
-            >
-              {roomList.map((room, _) => (
-                <MenuItem value={room.id}>{room.name}</MenuItem>
-              ))}
-            </SelectField>
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <SelectField
-              disabled={disabledField}
-              name="level"
-              label="Chức danh"
-              form={form}
-            >
-              {levelList.map((level, _) => (
-                <MenuItem value={level.id}>{level.name}</MenuItem>
-              ))}
-            </SelectField>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField
-              disabled={disabledField}
-              name="phone"
-              label="Số điện thoại di động"
-              form={form}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <InputField
-              disabled={disabledField}
-              name="ext"
-              label="Số điện thoại nội bộ"
-              form={form}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} sm={6} mt={1}>
-            <RadioField
-              name="sex"
-              label="Giới tính"
-              onChange={handleChangeSex}
-              form={form}
-            >
-              <FormControlLabel
-                disabled={disabledField}
-                value="Mr"
-                control={<Radio />}
-                label="Nam"
-              />
-              <FormControlLabel
-                disabled={disabledField}
-                value="Ms"
-                control={<Radio />}
-                label="Nữ"
-              />
-            </RadioField>
-          </Grid>
-          <Grid item xs={12} md={6} sm={6}>
-            <DateField
-              disabled={disabledField}
-              name="birthday"
-              inputFormat="DD/MM/YYYY"
-              value={birthday}
-              onChange={handleChangeBirtday}
-              label="Ngày sinh nhật"
-              form={form}
-            />
-          </Grid>
-        </Grid>
-        <Stack direction="row" spacing={3} mt={3} className="showUser__stack">
+        <UploadField
+          disabled={disabledField}
+          name="xmlFile"
+          label="Chọn tệp tin xml."
+          form={form}
+        />
+
+        <UploadField
+          disabled={disabledField}
+          name="pdfFile"
+          label="Chọn tệp tin pdf."
+          form={form}
+        />
+        <InputField
+          className="showInvoice__serial"
+          disabled={disabledField}
+          name="serial"
+          label="Ký hiệu hóa đơn."
+          form={form}
+        />
+        <InputField
+          disabled={disabledField}
+          name="invoiceNo"
+          label="Số hóa đơn."
+          form={form}
+        />
+        <DateField
+          disabled={disabledField}
+          name="invoiceDate"
+          lable="Ngày hóa đơn."
+          inputFormat="DD/MM/YYYY"
+          value={invoiceDate}
+          onChange={handleChangeInvoiceDate}
+          form={form}
+        />
+        <InputField
+          disabled={disabledField}
+          name="taxCode"
+          label="Mã số thuế đơn vị cung cấp."
+          form={form}
+        />
+        <TextareaField
+          disabled={disabledField}
+          name="seller"
+          placeholder="Tên đơn vị cung cấp..."
+          form={form}
+        />
+        <TextareaField
+          disabled={disabledField}
+          name="content"
+          placeholder="Nội dung thanh toán..."
+          form={form}
+        />
+        <InputField
+          disabled={disabledField}
+          name="payment"
+          label="Tổng số tiền."
+          form={form}
+        />
+        <Stack
+          direction="row"
+          spacing={3}
+          mt={3}
+          className="showInvoice__stack"
+        >
           <Button
             className="dialogButtonSave dialogButton"
             type="submit"
@@ -245,7 +201,7 @@ function ShowForm(props) {
               <CircularProgress
                 size={20}
                 color="secondary"
-                className="showUser__progress"
+                className="showInvoice__progress"
               />
             ) : (
               "Lưu"
