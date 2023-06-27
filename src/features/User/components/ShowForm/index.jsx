@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Avatar,
   Button,
@@ -234,7 +235,7 @@ function ShowForm(props) {
           <Button
             type="button"
             variant="contained"
-            startIcon={<EditIcon />}
+            startIcon={<DeleteIcon />}
             className="dialogButtonDelete dialogButton"
             onClick={handleOpenDialogDelete}
           >

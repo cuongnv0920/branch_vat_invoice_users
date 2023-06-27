@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
+import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Avatar, Button, CircularProgress, Stack } from "@mui/material";
 import { DateField, InputField, TextareaField, UploadField } from "components";
@@ -219,7 +220,7 @@ function ShowForm(props) {
           <Button
             type="button"
             variant="contained"
-            startIcon={<EditIcon />}
+            startIcon={<DeleteIcon />}
             className="dialogButtonDelete dialogButton"
             onClick={handleOpenDialogDelete}
           >
