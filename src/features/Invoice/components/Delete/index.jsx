@@ -1,9 +1,9 @@
 import { unwrapResult } from "@reduxjs/toolkit";
-import { deleted } from "features/User/userSlice";
 import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import DeleteForm from "../DeleteForm";
+import { deleted } from "features/Invoice/invoiceSlice";
 
 Delete.propTypes = {
   closeDialog: PropTypes.func,

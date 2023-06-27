@@ -1,5 +1,4 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/icons-material/Save";
 import { Avatar, Button, CircularProgress, Stack } from "@mui/material";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
@@ -11,11 +10,11 @@ DeleteForm.propTypes = {
 };
 
 function DeleteForm(props) {
-  const user = useSelector((state) => state.user.getData);
+  const invoice = useSelector((state) => state.invoice.getData);
 
   const form = useForm({
     defaultValues: {
-      id: user._id,
+      id: invoice._id,
     },
   });
 
@@ -29,26 +28,31 @@ function DeleteForm(props) {
   const { isSubmitting } = form.formState;
 
   return (
-    <div className="deleteUser">
-      <Avatar className="deleteUser__avatar avatarDelete">
+    <div className="deleteInvoice">
+      <Avatar className="deleteInvoice__avatar avatarDelete">
         <DeleteIcon />
       </Avatar>
-      <h3 className="deleteUser__content">{`Bạn có chắc chắn muốn xóa Người dùng: ${user.email}`}</h3>
+      <h3 className="deleteInvoice__content">{`Bạn có chắc chắn muốn xóa Hóa đơn số: ${invoice.taxCode}`}</h3>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <Stack direction="row" spacing={3} mt={3} className="deleteUser__stack">
+        <Stack
+          direction="row"
+          spacing={3}
+          mt={3}
+          className="deleteInvoice__stack"
+        >
           <Button
             className="dialogButtonSave dialogButton"
             type="submit"
             variant="contained"
             fullWidth
-            startIcon={<SaveIcon />}
+            startIcon={<DeleteIcon />}
             disabled={isSubmitting}
           >
             {isSubmitting ? (
               <CircularProgress
                 size={20}
                 color="secondary"
-                className="deleteUser__progress"
+                className="deleteInvoice__progress"
               />
             ) : (
               "Xóa"

@@ -9,7 +9,7 @@ import {
   Pagination,
   Paper,
 } from "@mui/material";
-import { invoiceApi, userApi } from "api";
+import { invoiceApi } from "api";
 import ActionBar from "components/ActionBar";
 import PaginationPage from "components/PaginationPage";
 import api from "configs/apiConf";
