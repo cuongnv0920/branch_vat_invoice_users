@@ -13,6 +13,7 @@ import { invoiceApi } from "api";
 import ActionBar from "components/ActionBar";
 import PaginationPage from "components/PaginationPage";
 import api from "configs/apiConf";
+import Agress from "features/Invoice/components/Agress";
 import Create from "features/Invoice/components/Create";
 import Delete from "features/Invoice/components/Delete";
 import Filter from "features/Invoice/components/Filter";
@@ -24,6 +25,7 @@ import { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useDispatch, useSelector } from "react-redux";
 import "./styles.scss";
+import Abort from "features/Invoice/components/Abort";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
@@ -33,6 +35,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ListPage.propTypes = {};
 
 function ListPage(props) {
+  const invoice = useSelector((state) => state.invoice.getData);
   const invoiceId = useSelector((state) => state.invoice.invoiceId);
   const dispatch = useDispatch();
   const [openDialogReadXml, setOpenDialogReadXml] = useState(false);
@@ -41,6 +44,8 @@ function ListPage(props) {
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const [openDialogPdfView, setOpenDialogPdfView] = useState(false);
   const [openDialogXmlView, setOpenDialogXmlView] = useState(false);
+  const [openDialogAgress, setOpenDialogAgress] = useState(false);
+  const [openDialogAbort, setOpenDialogAbort] = useState(false);
   const [pdfPath, setPdfPath] = useState("");
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -167,13 +172,35 @@ function ListPage(props) {
   const handleCloseDialogXmlView = () => {
     setOpenDialogXmlView(false);
   };
+  const handleOpenDialogAgess = async () => {
+    const data = await invoiceApi.get(invoiceId);
+    const action = getData(data);
+    dispatch(action);
+
+    setOpenDialogAgress(true);
+  };
+  const handleCloseDialogAgess = () => {
+    setOpenDialogAgress(false);
+    setCloseDialog(closeDialog + 1);
+  };
+  const handleOpenDialogAbort = async () => {
+    const data = await invoiceApi.get(invoiceId);
+    const action = getData(data);
+    dispatch(action);
+
+    setOpenDialogAbort(true);
+  };
+  const handleCloseDialogAbort = () => {
+    setOpenDialogAbort(false);
+    setCloseDialog(closeDialog + 1);
+  };
+
   useEffect(() => {
     const statusDisabledButtonAction = !!invoiceId;
     if (statusDisabledButtonAction) {
       setDisabledButtonAction(false);
     }
-  }, [invoiceId]);
-
+  }, [invoiceId, invoice]);
   return (
     <Box>
       <Grid container>
@@ -191,6 +218,8 @@ function ListPage(props) {
               disabledButton={disabledButtonAction}
               openDialogCreate={handleOpenDialogReadXml}
               openDialogShow={handleOpenDialogShow}
+              openAgree={handleOpenDialogAgess}
+              openAbort={handleOpenDialogAbort}
             />
             <InvoiceList
               data={invoiceList}
@@ -369,6 +398,56 @@ function ListPage(props) {
         <DialogActions className="dialogAction">
           <Button
             onClick={handleCloseDialogXmlView}
+            className="dialogButtonClose dialogButton"
+            variant="contained"
+            startIcon={<CancelIcon />}
+          >
+            Thoát
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        maxWidth="xs"
+        fullWidth="xs"
+        open={openDialogAgress}
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick") {
+            handleCloseDialogAgess(event, reason);
+          }
+        }}
+      >
+        <DialogContent>
+          <Agress closeDialog={handleCloseDialogAgess} />
+        </DialogContent>
+        <DialogActions className="dialogAction">
+          <Button
+            onClick={handleCloseDialogAgess}
+            className="dialogButtonClose dialogButton"
+            variant="contained"
+            startIcon={<CancelIcon />}
+          >
+            Thoát
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        maxWidth="xs"
+        fullWidth="xs"
+        open={openDialogAbort}
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick") {
+            handleCloseDialogAbort(event, reason);
+          }
+        }}
+      >
+        <DialogContent>
+          <Abort closeDialog={handleCloseDialogAbort} />
+        </DialogContent>
+        <DialogActions className="dialogAction">
+          <Button
+            onClick={handleCloseDialogAbort}
             className="dialogButtonClose dialogButton"
             variant="contained"
             startIcon={<CancelIcon />}

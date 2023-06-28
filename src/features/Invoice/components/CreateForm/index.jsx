@@ -100,6 +100,7 @@ function CreateForm(props) {
       seller: invoice?.seller[0] || "",
       payment: invoice?.payment[0] || "",
       content: "",
+      createdRoom: user.room,
       createdUser: user._id,
       inputStatus: inputStatus,
     },

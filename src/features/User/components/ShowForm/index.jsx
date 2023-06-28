@@ -35,7 +35,7 @@ ShowForm.propTypes = {
 function ShowForm(props) {
   const { onSubmit, openDialogDelete } = props;
   const user = useSelector((state) => state.user.getData);
-  const { _id: id, fullName, email, room, level, phone, ext } = user;
+  const { _id: id, fullName, email, room, level, phone, ext, role } = user;
   const [sex, setSex] = useState(user.sex);
   const [birthday, setBirthday] = useState(user.birthday);
   const [roomList, setRoomList] = useState([]);
@@ -83,6 +83,7 @@ function ShowForm(props) {
       ext,
       sex: sex,
       birthday: birthday,
+      role: role[0],
     },
 
     resolver: yupResolver(schema),
@@ -185,6 +186,16 @@ function ShowForm(props) {
           label="Ngày sinh nhật"
           form={form}
         />
+        <SelectField
+          disabled={disabledField}
+          name="role"
+          label="Nhóm quyền"
+          form={form}
+        >
+          <MenuItem value="user">Cán bộ khởi tạo</MenuItem>
+          <MenuItem value="accountant">Kế toán</MenuItem>
+          <MenuItem value="admin">Quản trị</MenuItem>
+        </SelectField>
         <RadioField
           name="sex"
           label="Giới tính"

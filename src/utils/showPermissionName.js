@@ -1,14 +1,10 @@
 export function showPermissionName(role) {
-  switch (role[0]) {
+  switch (role) {
     case "admin":
       return "Quản trị";
     case "user":
-      return "Người sử dụng";
-    case "post":
-      return "Viết bài";
-    case "margin":
-      return "Biên độ tỷ giá";
-    case "postAndMargin":
-      return "Đăng bài viết & Biên độ tỷ giá";
+      return "Cán bộ khởi tạo";
+    case "accountant":
+      return "Kế toán";
   }
 }

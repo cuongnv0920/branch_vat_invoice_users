@@ -26,15 +26,15 @@ import { NavLink } from "react-router-dom";
 import logo from "../../images/logo-header.png";
 import "./styles.scss";
 import { logout } from "features/Auth/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const drawerWidth = 240;
 
-const menuList = [
+const menus = [
   {
     name: "Hóa đơn",
     href: "invoice",
-    role: ["user"],
+    role: ["user", "admin", "accountant"],
     icon: <DescriptionIcon />,
   },
 
@@ -62,7 +62,7 @@ const menuList = [
   {
     name: "About",
     href: "about",
-    role: ["user"],
+    role: ["user", "admin", "accountant"],
     icon: <InfoIcon />,
   },
 ];
@@ -137,6 +137,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MiniDrawer() {
+  const logged = useSelector((state) => state.auth.current);
   const dispatch = useDispatch();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -163,6 +164,8 @@ export default function MiniDrawer() {
     dispatch(action);
     setAnchorEl(null);
   };
+
+  const menuList = menus.filter((menu) => menu.role.includes(logged.role[0]));
 
   return (
     <Box sx={{ display: "flex" }}>

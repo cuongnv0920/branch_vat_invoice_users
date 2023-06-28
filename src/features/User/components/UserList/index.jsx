@@ -152,7 +152,7 @@ function UserList(props) {
                         : "userTable__cellBody"
                     }
                   >
-                    {showPermissionName(user.role)}
+                    {showPermissionName(user.role[0])}
                   </TableCell>
 
                   <TableCell className="userTable__cellBody">

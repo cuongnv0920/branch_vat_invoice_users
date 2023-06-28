@@ -44,16 +44,24 @@ const columns = [
     field: "stt",
   },
   {
-    title: "Cán bộ tạo",
+    title: "Cán bộ khởi tạo",
     field: "createUser",
   },
   {
-    title: "Trạng thái nhập liệu",
+    title: "Phòng khởi tạo",
+    field: "createdRoom",
+  },
+  {
+    title: "Nhập liệu",
     field: "inputStatus",
   },
   {
     title: "Số hóa đơn",
     field: "invoiceNo",
+  },
+  {
+    title: "File đính kèm",
+    field: "file",
   },
   {
     title: "Đơn vị cung cấp",
@@ -63,11 +71,6 @@ const columns = [
     title: "Nội dung thanh toán",
     field: "content",
   },
-  {
-    title: "File đính kèm",
-    field: "file",
-  },
-
   {
     title: "Cán bộ xử lý",
     field: "approveUser",
@@ -177,6 +180,9 @@ function InvoiceList(props) {
                     {invoice.createdUser?.fullName}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
+                    {invoice.createdRoom?.name}
+                  </TableCell>
+                  <TableCell className="invoiceTable__cellBody">
                     <button
                       className={
                         invoice.inputStatus
@@ -190,16 +196,6 @@ function InvoiceList(props) {
                   <TableCell className="invoiceTable__cellBody">
                     {invoice.invoiceNo}
                   </TableCell>
-                  <Tooltip title={invoice.seller}>
-                    <TableCell className="invoiceTable__cellBody">
-                      {invoice.seller}
-                    </TableCell>
-                  </Tooltip>
-                  <Tooltip title={invoice.content}>
-                    <TableCell className="invoiceTable__cellBody">
-                      {invoice.content}
-                    </TableCell>
-                  </Tooltip>
                   <TableCell className="invoiceTable__cellBody">
                     <Tooltip title="File đính kèm">
                       <IconButton
@@ -285,6 +281,16 @@ function InvoiceList(props) {
                       </MenuItem>
                     </Menu>
                   </TableCell>
+                  <Tooltip title={invoice.seller}>
+                    <TableCell className="invoiceTable__cellBody">
+                      {invoice.seller}
+                    </TableCell>
+                  </Tooltip>
+                  <Tooltip title={invoice.content}>
+                    <TableCell className="invoiceTable__cellBody">
+                      {invoice.content}
+                    </TableCell>
+                  </Tooltip>
                   <TableCell className="invoiceTable__cellBody">
                     {invoice.approvedUser?.fullName}
                   </TableCell>

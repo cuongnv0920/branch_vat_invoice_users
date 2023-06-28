@@ -23,6 +23,15 @@ export const edit = createAsyncThunk("invoice/edit", async (payload) => {
   return data;
 });
 
+export const updateStatus = createAsyncThunk(
+  "invoice/updateStatus",
+  async (payload) => {
+    const data = await invoiceApi.updateStatus(payload);
+
+    return data;
+  }
+);
+
 export const deleted = createAsyncThunk("invoice/delete", async (payload) => {
   const data = await invoiceApi.delete(payload);
 
@@ -79,6 +88,10 @@ const invoiceSlice = createSlice({
     },
 
     [deleted.fulfilled]: (state, action) => {
+      state.current = action.payload;
+    },
+
+    [updateStatus.fulfilled]: (state, action) => {
       state.current = action.payload;
     },
   },

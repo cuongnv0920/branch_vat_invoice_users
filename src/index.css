@@ -202,28 +202,37 @@ html {
   font-weight: 600 !important;
 }
 .dialogButtonSave,
+.dialogButtonAgress,
 .avatarCreate {
   background: rgba(198, 251, 191, 0.815) !important;
   color: rgb(2, 78, 42) !important;
 }
 .dialogButtonEdit,
-.avatarShow {
+.buttonAgree,
+.avatarShow,
+.avatarAgress {
   background: rgba(251, 247, 191, 0.815) !important;
-  color: rgb(150, 136, 12) !important;
+  color: rgb(117, 106, 10) !important;
+}
+.buttonAbort,
+.avatarAbort,
+.dialogButtonAbort {
+  background: rgba(248, 148, 118, 0.815) !important;
+  color: rgb(157, 52, 20) !important;
 }
 .dialogButtonDelete,
 .diglogButtonHandicraft,
 .avatarDelete {
-  background: rgba(248, 202, 291, 0.815) !important;
+  background: rgba(248, 202, 191, 0.815) !important;
   color: rgba(237, 73, 73) !important;
 }
 .dialogAction {
   padding: 16px 24px !important;
-  background-color: #f8f8f8;
+  background: #f8f8f8;
   border-top: 1.5px solid #daa520;
 }
 .dialogButtonClose {
-  background-color: rgba(20, 33, 65, 0.06) !important;
+  background: rgba(20, 33, 65, 0.06) !important;
   color: rgb(38, 40, 44) !important;
   text-transform: capitalize !important;
 }
