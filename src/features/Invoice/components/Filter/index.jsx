@@ -9,6 +9,8 @@ import {
 import { roomApi } from "api";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import isAdmin from "utils/isAdmin";
 import "./styles.scss";
 
 Filter.propTypes = {
@@ -18,6 +20,8 @@ Filter.propTypes = {
 };
 
 function Filter(props) {
+  const isLogged = useSelector((state) => state.auth.current);
+  const role = isAdmin(isLogged.role[0]);
   const { search, filterRoom, filterStatus } = props;
   const [roomList, setRoomList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -58,10 +62,19 @@ function Filter(props) {
     }
   };
   const handleChangeStatus = (event) => {
+    setStatusFilter(event.target.value);
     if (filterStatus) {
-      setStatusFilter(event.target.value);
+      filterStatus(event.target.value);
     }
   };
+
+  const filterRoomList = roomList.filter((room) => {
+    if (role) {
+      return true;
+    } else {
+      return room.id === isLogged?.room;
+    }
+  });
 
   return (
     <div className="filter">
@@ -71,7 +84,7 @@ function Filter(props) {
             fullWidth
             onChange={handleSearchTermChange}
             value={searchTerm}
-            label="Tìm kiếm..."
+            label="Số hóa đơn/ Mã số thuế"
             size="small"
             name="search"
           />
@@ -86,7 +99,7 @@ function Filter(props) {
               onChange={handleChangeRoom}
             >
               <MenuItem value="">Chọn tất cả...</MenuItem>
-              {roomList.map((room, _) => (
+              {filterRoomList.map((room, _) => (
                 <MenuItem value={room.id}>{room.name}</MenuItem>
               ))}
             </Select>

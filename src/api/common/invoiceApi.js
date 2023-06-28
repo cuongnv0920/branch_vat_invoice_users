@@ -34,6 +34,11 @@ export const invoiceApi = {
     return axiosClient.put(url, data, configFormData);
   },
 
+  updateStatus(data) {
+    const url = `/invoice/updateStatus/${data.id}`;
+    return axiosClient.put(url, data, configJson);
+  },
+
   delete(data) {
     const url = `/invoice/delete/${data.id}`;
     return axiosClient.put(url, data, configJson);

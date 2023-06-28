@@ -1,0 +1,14 @@
+.agress {
+  &__avatar {
+    margin: 0 auto;
+  }
+
+  &__content {
+    margin-top: 18px;
+    text-align: center;
+  }
+
+  &__stack {
+    justify-content: right !important;
+  }
+}

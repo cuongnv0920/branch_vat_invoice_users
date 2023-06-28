@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
-import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Avatar, Button, CircularProgress, Stack } from "@mui/material";
 import { DateField, InputField, TextareaField, UploadField } from "components";
@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import checkInvoiceStatus from "utils/checkInvoiceStatus";
 import * as yup from "yup";
 import "./styles.scss";
 
@@ -208,7 +209,9 @@ function ShowForm(props) {
               "Lưu"
             )}
           </Button>
+
           <Button
+            disabled={checkInvoiceStatus(invoice.status)}
             type="button"
             variant="contained"
             startIcon={<EditIcon />}
@@ -218,6 +221,7 @@ function ShowForm(props) {
             Sửa
           </Button>
           <Button
+            disabled={checkInvoiceStatus(invoice.status)}
             type="button"
             variant="contained"
             startIcon={<DeleteIcon />}
