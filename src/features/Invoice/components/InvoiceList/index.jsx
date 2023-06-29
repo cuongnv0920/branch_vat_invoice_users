@@ -17,15 +17,15 @@ import {
 import Paper from "@mui/material/Paper";
 import LoaddingTable from "components/LoaddingTable";
 import api from "configs/apiConf";
+import { invoiceId } from "features/Invoice/invoiceSlice";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import Moment from "react-moment";
+import { useDispatch, useSelector } from "react-redux";
 import { showFile } from "utils/showFile";
+import { showInputStatus } from "utils/showInputStatus";
 import { showStatusInvoice } from "utils/showStatusInvoice";
 import "./styles.scss";
-import { showInputStatus } from "utils/showInputStatus";
-import { invoiceId } from "features/Invoice/invoiceSlice";
-import { useDispatch } from "react-redux";
 
 InvoiceList.propTypes = {
   data: PropTypes.array.isRequired,
@@ -60,7 +60,7 @@ const columns = [
     field: "invoiceNo",
   },
   {
-    title: "File đính kèm",
+    title: "Tệp tin đính kèm",
     field: "file",
   },
   {
@@ -99,6 +99,7 @@ const columns = [
 
 function InvoiceList(props) {
   const { data, loadding, pdfView, xmlView } = props;
+  const user = useSelector((state) => state.auth.current);
   const dispatch = useDispatch();
   const [value, setValue] = useState("");
   const [anchorEl, setAnchorEl] = useState({});
@@ -136,6 +137,14 @@ function InvoiceList(props) {
     }
   };
 
+  const filteredInvoice = data.filter((invoice) => {
+    if (user.role[0] === "admin" || user.role[0] === "accountant") {
+      return true;
+    } else {
+      return invoice.createdRoom._id === user.room;
+    }
+  });
+
   return (
     <div className="invoiceTable">
       {loadding ? (
@@ -156,7 +165,7 @@ function InvoiceList(props) {
               </TableRow>
             </TableHead>
             <TableBody className="invoiceTable__body">
-              {data.map((invoice, _) => (
+              {filteredInvoice.map((invoice, _) => (
                 <TableRow
                   key={invoice.code}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -173,7 +182,7 @@ function InvoiceList(props) {
                       />
                     </RadioGroup>
                   </TableCell>
-                  <TableCell className="invoiceTable__cellBody">
+                  <TableCell className="invoiceTable__cellBody" align="center">
                     {invoice.stt}
                   </TableCell>
                   <TableCell className="invoiceTable__cellBody">
@@ -182,7 +191,7 @@ function InvoiceList(props) {
                   <TableCell className="invoiceTable__cellBody">
                     {invoice.createdRoom?.name}
                   </TableCell>
-                  <TableCell className="invoiceTable__cellBody">
+                  <TableCell className="invoiceTable__cellBody" align="center">
                     <button
                       className={
                         invoice.inputStatus
@@ -196,13 +205,12 @@ function InvoiceList(props) {
                   <TableCell className="invoiceTable__cellBody">
                     {invoice.invoiceNo}
                   </TableCell>
-                  <TableCell className="invoiceTable__cellBody">
+                  <TableCell className="invoiceTable__cellBody" align="center">
                     <Tooltip title="File đính kèm">
                       <IconButton
                         className="invoiceTable__iconButton"
                         onClick={(event) => handleClick(event, invoice.id)}
                         size="small"
-                        sx={{ ml: 2 }}
                         aria-controls={
                           open[invoice.id] ? `menu-${invoice.id}` : undefined
                         }
@@ -308,13 +316,13 @@ function InvoiceList(props) {
                       {showStatusInvoice(invoice.status)}
                     </button>
                   </TableCell>
-                  <TableCell className="invoiceTable__cellBody">
+                  <TableCell className="invoiceTable__cellBody" align="center">
                     <Moment format="DD/MM/YYYY">{invoice.invoiceDate}</Moment>
                   </TableCell>
-                  <TableCell className="invoiceTable__cellBody">
+                  <TableCell className="invoiceTable__cellBody" align="center">
                     <Moment format="DD/MM/YYYY">{invoice.createdAt}</Moment>
                   </TableCell>
-                  <TableCell className="invoiceTable__cellBody">
+                  <TableCell className="invoiceTable__cellBody" align="center">
                     {invoice.updatedAt !== null && (
                       <Moment format="DD/MM/YYYY">{invoice.updatedAt}</Moment>
                     )}

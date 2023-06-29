@@ -36,7 +36,7 @@ function AgressForm(props) {
         <ThumbUpAltIcon />
       </Avatar>
       <h3 className="agress__content">
-        {"Bạn có chắc chắn duyệt Hóa đơn số: " + invoice.invoiceNo}
+        {"Duyệt Hóa đơn số: " + invoice.invoiceNo}
       </h3>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <Stack direction="row" spacing={3} mt={3} className="agress__stack">

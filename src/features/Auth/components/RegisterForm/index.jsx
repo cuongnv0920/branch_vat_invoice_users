@@ -62,6 +62,7 @@ function RegisterForm(props) {
       ext: "",
       sex: sex,
       birthday: birthday,
+      role: "user",
     },
 
     resolver: yupResolver(schema),
@@ -121,7 +122,7 @@ function RegisterForm(props) {
         <InputField name="phone" label="Số điện thoại di động" form={form} />
         <InputField name="ext" label="Số điện thoại nội bộ" form={form} />
         <Grid container spacing={2}>
-          <Grid item xs={6} md={6} sm={6} sx={{ marginTop: "8px" }}>
+          <Grid item xs={6} md={6} sm={6}>
             <RadioField
               name="sex"
               label="Giới tính"

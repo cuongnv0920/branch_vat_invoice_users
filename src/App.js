@@ -1,14 +1,15 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MiniDrawer from "components/MiniDrawer";
+import About from "features/About";
+import Auth from "features/Auth";
 import Invoice from "features/Invoice";
+import Level from "features/Level";
+import Room from "features/Room";
+import User from "features/User";
+import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Auth from "features/Auth";
-import { useSelector } from "react-redux";
-import User from "features/User";
-import Room from "features/Room";
-import Level from "features/Level";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -23,7 +24,7 @@ const routeList = [
   {
     path: "invoice/*",
     element: <Invoice />,
-    role: ["user", "admin"],
+    role: ["user", "admin", "accountant"],
   },
   {
     path: "room/*",
@@ -39,6 +40,11 @@ const routeList = [
     path: "user/*",
     element: <User />,
     role: ["admin"],
+  },
+  {
+    path: "about/*",
+    element: <About />,
+    role: ["user", "admin", "accountant"],
   },
 ];
 
