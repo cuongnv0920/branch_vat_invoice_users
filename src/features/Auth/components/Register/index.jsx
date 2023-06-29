@@ -3,7 +3,7 @@ import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import RegisterForm from "../RegisterForm";
-import { create } from "features/User/userSlice";
+import { register } from "features/Auth/authSlice";
 
 Register.propTypes = {
   closeDialog: PropTypes.func,
@@ -15,7 +15,7 @@ function Register(props) {
 
   const handleSubmit = async (values) => {
     try {
-      const action = create(values);
+      const action = register(values);
       const resultAction = await dispatch(action);
       unwrapResult(resultAction);
 

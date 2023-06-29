@@ -33,7 +33,7 @@ function AbortForm(props) {
       <Avatar className="abort__avatar avatarAbort">
         <ThumbDownIcon />
       </Avatar>
-      <h3 className="abort__content">{`Bạn có Đồng ý hủy duyệt Hóa đơn số: ${invoice.invoiceNo}`}</h3>
+      <h3 className="abort__content">{`Hủy duyệt Hóa đơn số: ${invoice.invoiceNo}`}</h3>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <Stack direction="row" spacing={3} mt={3} className="abort__stack">
           <Button
@@ -51,7 +51,7 @@ function AbortForm(props) {
                 className="abort__progress"
               />
             ) : (
-              "Duyệt"
+              "Hủy duyệt"
             )}
           </Button>
         </Stack>
