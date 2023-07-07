@@ -34,7 +34,7 @@ const menus = [
   {
     name: "Hóa đơn",
     href: "invoice",
-    role: ["user", "admin", "accountant"],
+    role: ["user", "admin", "accountant", "post", "margin", "postAndMargin"],
     icon: <DescriptionIcon />,
   },
 
@@ -62,7 +62,7 @@ const menus = [
   {
     name: "About",
     href: "about",
-    role: ["user", "admin", "accountant"],
+    role: ["user", "admin", "accountant", "post", "margin", "postAndMargin"],
     icon: <InfoIcon />,
   },
 ];
@@ -191,7 +191,7 @@ export default function MiniDrawer() {
           </h1>
 
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Tooltip title="Thông báo">
+            {/* <Tooltip title="Thông báo">
               <IconButton
                 size="large"
                 sx={{
@@ -204,7 +204,7 @@ export default function MiniDrawer() {
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
 
             <Tooltip title="Người dùng">
               <IconButton

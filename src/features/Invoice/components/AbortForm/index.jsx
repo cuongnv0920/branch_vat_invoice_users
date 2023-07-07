@@ -51,7 +51,7 @@ function AbortForm(props) {
                 className="abort__progress"
               />
             ) : (
-              "Hủy duyệt"
+              "Từ chối duyệt"
             )}
           </Button>
         </Stack>

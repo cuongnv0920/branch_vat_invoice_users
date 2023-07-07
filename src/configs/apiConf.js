@@ -1,5 +1,5 @@
 const api = {
-  URL: "http://localhost:5004",
+  URL: "http://10.181.195.80:5004",
 };
 
 export default api;
