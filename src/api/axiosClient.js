@@ -1,9 +1,28 @@
 import axios from "axios";
-import api from "configs/apiConf";
 
-const axiosClient = axios.create({
-  baseURL: api.URL,
-});
+const axiosClient = axios.create();
+
+const configPath = process.env.PUBLIC_URL + "/config.txt";
+
+axiosClient.interceptors.request.use(
+  async (config) => {
+    const response = await fetch(configPath);
+    const text = await response.text();
+    const lines = text.split("\n");
+    const configObj = {};
+    lines.forEach((line) => {
+      const [key, value] = line.split("=");
+      configObj[key.trim()] = value.trim();
+    });
+
+    config.baseURL = configObj.SERVER_API_IP;
+    return config;
+  },
+  (error) => {
+    console.error("Đã xảy ra lỗi khi đọc tệp config.txt:", error);
+    return Promise.reject(error);
+  }
+);
 
 // Add a request interceptor
 axiosClient.interceptors.request.use(

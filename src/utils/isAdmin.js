@@ -1,5 +1,5 @@
 function isAdmin(role) {
-  if (role === "admin" || role === "accountant") {
+  if (role === "accountant") {
     return true;
   } else {
     return false;

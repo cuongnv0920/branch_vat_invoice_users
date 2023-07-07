@@ -93,7 +93,7 @@ function ActionBar(props) {
               startIcon={<ThumbDownIcon />}
               onClick={handleClickOpenDialogAbort}
             >
-              Hủy duyệt
+              Từ chối duyệt
             </Button>
           </>
         )}

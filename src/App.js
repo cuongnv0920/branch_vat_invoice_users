@@ -24,7 +24,7 @@ const routeList = [
   {
     path: "invoice/*",
     element: <Invoice />,
-    role: ["user", "admin", "accountant"],
+    role: ["user", "admin", "accountant", "post", "margin", "postAndMargin"],
   },
   {
     path: "room/*",
@@ -44,7 +44,7 @@ const routeList = [
   {
     path: "about/*",
     element: <About />,
-    role: ["user", "admin", "accountant"],
+    role: ["user", "admin", "accountant", "post", "margin", "postAndMargin"],
   },
 ];
 

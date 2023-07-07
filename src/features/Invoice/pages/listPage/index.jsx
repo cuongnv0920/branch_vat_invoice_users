@@ -27,10 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./styles.scss";
 import Abort from "features/Invoice/components/Abort";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.js",
-  import.meta.url
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 ListPage.propTypes = {};
 
@@ -357,6 +354,7 @@ function ListPage(props) {
             file={`${api.URL}/${pdfPath}`}
             onLoadSuccess={onDocumentLoadSuccess}
             options={{ cMapUrl: "cmaps/", cMapPacked: true }}
+            worker={"pdf.worker.min.js"}
           >
             <Page pageNumber={pageNumber} width={850} renderTextLayer={false} />
           </Document>
@@ -394,7 +392,7 @@ function ListPage(props) {
           }
         }}
       >
-        <DialogContent>nội dung xml</DialogContent>
+        <DialogContent>Chức năng đang được hoàn thiện.</DialogContent>
         <DialogActions className="dialogAction">
           <Button
             onClick={handleCloseDialogXmlView}
